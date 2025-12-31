@@ -9,6 +9,7 @@ Nexus é um sistema abrangente de gerenciamento de vida pessoal projetado para s
 - **Insights Assistidos por IA**: Detecção de padrões, correlações e resumos contextuais
 - **Foco em Privacidade**: Armazenamento de dados local com controle do usuário
 - **Interface Atraente**: Interface calma e neutra com profundidade progressiva
+- **Sistema de Temas**: 5 temas personalizáveis (Padrão, Oceano, Floresta, Pôr do Sol, Meia-Noite)
 - **Multiplataforma**: Funciona em dispositivos desktop e móveis
 
 ## Stack Tecnológico
@@ -18,6 +19,7 @@ Nexus é um sistema abrangente de gerenciamento de vida pessoal projetado para s
 - **Backend**: Supabase (PostgreSQL + Auth + Storage)
 - **Armazenamento Local**: Dexie (wrapper do IndexedDB)
 - **Roteamento**: React Router
+- **Estado**: Zustand
 - **Ícones**: Lucide React
 
 ## Começando
@@ -37,13 +39,49 @@ npm run dev
 npm run build
 ```
 
-## Arquitetura
+## Arquitetura Modular
 
-Nexus segue uma arquitetura local-first com:
-- Persistência de dados no lado do cliente usando IndexedDB
-- Estrutura de domínio modular
-- Camada de interpretação de IA para insights
-- Modelo de sincronização de consistência eventual
+Nexus segue uma arquitetura modular baseada em monorepo com separação clara de responsabilidades:
+
+### Estrutura de Diretórios
+
+```
+NEXUS/
+├─ apps/client/          # Aplicação React principal
+│  ├─ src/app/           # Bootstrap e configuração
+│  ├─ src/ui/            # Componentes de interface
+│  ├─ src/screens/       # Telas da aplicação
+│  ├─ src/state/         # Gerenciamento de estado (Zustand)
+│  ├─ src/data/          # Camada de dados (Dexie/Supabase)
+│  └─ src/ai/            # Integração com IA
+│
+├─ packages/
+│  ├─ core/              # Lógica de domínio (DDD + Hexagonal)
+│  │  ├─ domain/         # Entidades e regras de negócio
+│  │  ├─ use-cases/      # Casos de uso
+│  │  └─ ports/          # Interfaces (Hexagonal Architecture)
+│  ├─ shared/            # Utilitários e tipos compartilhados
+│  ├─ data-model/        # Schemas e migrações
+│  ├─ sync-engine/       # Motor de sincronização
+│  ├─ analytics/         # Análise de dados
+│  ├─ ai-core/           # Núcleo de IA
+│  └─ privacy/           # Privacidade e conformidade
+│
+├─ services/             # Serviços backend (futuro)
+├─ infra/                # Infraestrutura e configuração
+└─ docs/                 # Documentação
+
+```
+
+### Princípios Arquiteturais
+
+1. **Domain-Driven Design (DDD)**: Entidades de domínio bem definidas
+2. **Hexagonal Architecture**: Core isolado de detalhes de implementação
+3. **Local-First**: Dados locais como fonte primária
+4. **Modularidade**: Pacotes independentes e reutilizáveis
+5. **Privacy by Design**: Controle total do usuário sobre seus dados
+
+Consulte `docs/context/architecture.txt` para mais detalhes sobre a arquitetura.
 
 ## Configuração do Supabase
 

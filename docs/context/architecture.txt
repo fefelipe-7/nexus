@@ -1,0 +1,51 @@
+# Arquitetura Nexus
+
+## Visão Geral
+
+O Nexus segue uma arquitetura modular baseada em monorepo, separando claramente as responsabilidades entre camadas e domínios.
+
+## Estrutura de Diretórios
+
+### apps/
+Aplicações front-end e interfaces do usuário
+
+- **client/**: Aplicação React principal
+  - **src/app/**: Configuração e bootstrap da aplicação
+  - **src/ui/**: Componentes de interface
+  - **src/screens/**: Telas da aplicação
+  - **src/state/**: Gerenciamento de estado
+  - **src/data/**: Camada de dados
+  - **src/ai/**: Integração com IA
+  - **src/config/**: Configurações
+
+### packages/
+Pacotes compartilhados e lógica de negócio
+
+- **core/**: Lógica de domínio e casos de uso (DDD + Hexagonal)
+- **shared/**: Utilitários e tipos compartilhados
+- **data-model/**: Modelo de dados e schemas
+- **sync-engine/**: Motor de sincronização
+- **analytics/**: Análise de dados
+- **ai-core/**: Núcleo de IA
+- **privacy/**: Privacidade e conformidade
+
+### services/
+Serviços backend (futuro)
+
+### infra/
+Infraestrutura e configuração
+
+## Princípios Arquiteturais
+
+1. **Separação de Responsabilidades**
+2. **Modularidade**
+3. **Domain-Driven Design**
+4. **Hexagonal Architecture**
+5. **Local-First**
+6. **Privacy by Design**
+
+## Tecnologias
+
+- React 18, TypeScript, Vite
+- Tailwind CSS, shadcn/ui
+- Zustand, Dexie, Supabase

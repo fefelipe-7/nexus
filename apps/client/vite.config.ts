@@ -7,6 +7,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@nexus/core': path.resolve(__dirname, '../../packages/core/src'),
+      '@nexus/shared': path.resolve(__dirname, '../../packages/shared/src'),
     },
   },
 })
