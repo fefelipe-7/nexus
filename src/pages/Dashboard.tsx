@@ -46,30 +46,30 @@ export function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Painel</h1>
         <p className="text-muted-foreground mt-1">{formatDate(currentDate)}</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Current State</CardTitle>
+            <CardTitle className="text-sm font-medium">Estado Atual</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             {recentState ? (
               <div className="space-y-1">
                 <div className="text-2xl font-bold">
-                  {recentState.mood ? getMoodLabel(recentState.mood) : 'Not tracked'}
+                  {recentState.mood ? getMoodLabel(recentState.mood) : 'Não rastreado'}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {recentState.energy && `Energy: ${getEnergyLabel(recentState.energy)}`}
+                  {recentState.energy && `Energia: ${getEnergyLabel(recentState.energy)}`}
                 </p>
               </div>
             ) : (
               <div className="space-y-1">
-                <div className="text-2xl font-bold">No data</div>
-                <p className="text-xs text-muted-foreground">Track your state</p>
+                <div className="text-2xl font-bold">Sem dados</div>
+                <p className="text-xs text-muted-foreground">Rastreie seu estado</p>
               </div>
             )}
           </CardContent>
@@ -77,7 +77,7 @@ export function Dashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Today's Progress</CardTitle>
+            <CardTitle className="text-sm font-medium">Progresso de Hoje</CardTitle>
             <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -85,33 +85,33 @@ export function Dashboard() {
               {completedToday}/{totalToday}
             </div>
             <p className="text-xs text-muted-foreground">
-              Actions completed
+              Ações concluídas
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Events Today</CardTitle>
+            <CardTitle className="text-sm font-medium">Eventos Hoje</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{todayEvents?.length || 0}</div>
             <p className="text-xs text-muted-foreground">
-              Scheduled events
+              Eventos agendados
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Goals</CardTitle>
+            <CardTitle className="text-sm font-medium">Metas Ativas</CardTitle>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{activeGoals?.length || 0}</div>
             <p className="text-xs text-muted-foreground">
-              In progress
+              Em progresso
             </p>
           </CardContent>
         </Card>
@@ -120,8 +120,8 @@ export function Dashboard() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Today's Actions</CardTitle>
-            <CardDescription>Tasks and activities for today</CardDescription>
+            <CardTitle>Ações de Hoje</CardTitle>
+            <CardDescription>Tarefas e atividades para hoje</CardDescription>
           </CardHeader>
           <CardContent>
             {todayActions && todayActions.length > 0 ? (
@@ -150,19 +150,19 @@ export function Dashboard() {
                 ))}
                 <Link to="/actions">
                   <Button variant="outline" className="w-full mt-2">
-                    View All Actions
+                    Ver Todas as Ações
                   </Button>
                 </Link>
               </div>
             ) : (
               <div className="text-center py-8">
                 <p className="text-sm text-muted-foreground mb-4">
-                  No actions for today
+                  Nenhuma ação para hoje
                 </p>
                 <Link to="/actions">
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
-                    Add Action
+                    Adicionar Ação
                   </Button>
                 </Link>
               </div>
@@ -172,8 +172,8 @@ export function Dashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Active Goals</CardTitle>
-            <CardDescription>Your current objectives</CardDescription>
+            <CardTitle>Metas Ativas</CardTitle>
+            <CardDescription>Seus objetivos atuais</CardDescription>
           </CardHeader>
           <CardContent>
             {activeGoals && activeGoals.length > 0 ? (
@@ -200,19 +200,19 @@ export function Dashboard() {
                 ))}
                 <Link to="/goals">
                   <Button variant="outline" className="w-full mt-2">
-                    View All Goals
+                    Ver Todas as Metas
                   </Button>
                 </Link>
               </div>
             ) : (
               <div className="text-center py-8">
                 <p className="text-sm text-muted-foreground mb-4">
-                  No active goals
+                  Nenhuma meta ativa
                 </p>
                 <Link to="/goals">
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
-                    Create Goal
+                    Criar Meta
                   </Button>
                 </Link>
               </div>
@@ -223,29 +223,29 @@ export function Dashboard() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Common tasks to get started</CardDescription>
+          <CardTitle>Ações Rápidas</CardTitle>
+          <CardDescription>Tarefas comuns para começar</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-2 md:grid-cols-4">
             <Link to="/state">
               <Button variant="outline" className="w-full">
-                Track State
+                Rastrear Estado
               </Button>
             </Link>
             <Link to="/actions">
               <Button variant="outline" className="w-full">
-                Add Action
+                Adicionar Ação
               </Button>
             </Link>
             <Link to="/reflections">
               <Button variant="outline" className="w-full">
-                Write Reflection
+                Escrever Reflexão
               </Button>
             </Link>
             <Link to="/knowledge">
               <Button variant="outline" className="w-full">
-                Capture Note
+                Capturar Nota
               </Button>
             </Link>
           </div>

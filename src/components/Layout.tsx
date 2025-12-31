@@ -17,14 +17,14 @@ interface LayoutProps {
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-  { name: 'State', href: '/state', icon: Heart },
-  { name: 'Actions', href: '/actions', icon: CheckSquare },
-  { name: 'Events', href: '/events', icon: Calendar },
-  { name: 'Goals', href: '/goals', icon: Target },
-  { name: 'Routines', href: '/routines', icon: Repeat },
-  { name: 'Knowledge', href: '/knowledge', icon: BookOpen },
-  { name: 'Reflections', href: '/reflections', icon: MessageSquare },
+  { name: 'Painel', href: '/', icon: LayoutDashboard },
+  { name: 'Estado', href: '/state', icon: Heart },
+  { name: 'Ações', href: '/actions', icon: CheckSquare },
+  { name: 'Eventos', href: '/events', icon: Calendar },
+  { name: 'Metas', href: '/goals', icon: Target },
+  { name: 'Rotinas', href: '/routines', icon: Repeat },
+  { name: 'Conhecimento', href: '/knowledge', icon: BookOpen },
+  { name: 'Reflexões', href: '/reflections', icon: MessageSquare },
 ];
 
 export function Layout({ children }: LayoutProps) {
@@ -60,7 +60,7 @@ export function Layout({ children }: LayoutProps) {
             </nav>
             <div className="border-t p-4">
               <p className="text-xs text-muted-foreground">
-                Your personal command center
+                Seu centro de comando pessoal
               </p>
             </div>
           </div>

@@ -31,33 +31,33 @@ export function getRelativeTime(date: Date): string {
   const diffHours = Math.floor(diffMins / 60);
   const diffDays = Math.floor(diffHours / 24);
 
-  if (diffMins < 1) return 'just now';
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffMins < 1) return 'agora mesmo';
+  if (diffMins < 60) return `há ${diffMins}m`;
+  if (diffHours < 24) return `há ${diffHours}h`;
+  if (diffDays < 7) return `há ${diffDays}d`;
   return formatDate(date);
 }
 
 export function getMoodLabel(mood: number): string {
-  if (mood >= 8) return 'Excellent';
-  if (mood >= 6) return 'Good';
-  if (mood >= 4) return 'Neutral';
-  if (mood >= 2) return 'Low';
-  return 'Very Low';
+  if (mood >= 8) return 'Excelente';
+  if (mood >= 6) return 'Bom';
+  if (mood >= 4) return 'Neutro';
+  if (mood >= 2) return 'Baixo';
+  return 'Muito Baixo';
 }
 
 export function getEnergyLabel(energy: number): string {
-  if (energy >= 8) return 'High';
-  if (energy >= 6) return 'Good';
-  if (energy >= 4) return 'Moderate';
-  if (energy >= 2) return 'Low';
-  return 'Exhausted';
+  if (energy >= 8) return 'Alta';
+  if (energy >= 6) return 'Boa';
+  if (energy >= 4) return 'Moderada';
+  if (energy >= 2) return 'Baixa';
+  return 'Exausto';
 }
 
 export function getStressLabel(stress: number): string {
-  if (stress >= 8) return 'Very High';
-  if (stress >= 6) return 'High';
-  if (stress >= 4) return 'Moderate';
-  if (stress >= 2) return 'Low';
-  return 'Minimal';
+  if (stress >= 8) return 'Muito Alto';
+  if (stress >= 6) return 'Alto';
+  if (stress >= 4) return 'Moderado';
+  if (stress >= 2) return 'Baixo';
+  return 'Mínimo';
 }
