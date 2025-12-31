@@ -44,17 +44,21 @@ export function Dashboard() {
   const totalToday = todayActions?.length || 0;
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Painel</h1>
-        <p className="text-muted-foreground mt-1">{formatDate(currentDate)}</p>
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold tracking-tight">Painel</h1>
+          <p className="text-muted-foreground mt-2 text-lg">{formatDate(currentDate)}</p>
+        </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card className="border-l-4 border-l-primary">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Estado Atual</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <TrendingUp className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
             {recentState ? (
@@ -75,10 +79,12 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-green-500">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Progresso de Hoje</CardTitle>
-            <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+            <div className="p-2 bg-green-500/10 rounded-lg">
+              <CheckCircle2 className="h-4 w-4 text-green-500" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -90,10 +96,12 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-blue-500">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Eventos Hoje</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <div className="p-2 bg-blue-500/10 rounded-lg">
+              <Calendar className="h-4 w-4 text-blue-500" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{todayEvents?.length || 0}</div>
@@ -103,10 +111,12 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-l-4 border-l-purple-500">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Metas Ativas</CardTitle>
-            <Target className="h-4 w-4 text-muted-foreground" />
+            <div className="p-2 bg-purple-500/10 rounded-lg">
+              <Target className="h-4 w-4 text-purple-500" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{activeGoals?.length || 0}</div>
@@ -117,7 +127,7 @@ export function Dashboard() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Ações de Hoje</CardTitle>
@@ -129,7 +139,7 @@ export function Dashboard() {
                 {todayActions.slice(0, 5).map((action) => (
                   <div
                     key={action.id}
-                    className="flex items-center justify-between rounded-lg border p-3"
+                    className="flex items-center justify-between rounded-lg border p-3 hover:bg-accent/50 transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <div
@@ -181,7 +191,7 @@ export function Dashboard() {
                 {activeGoals.slice(0, 5).map((goal) => (
                   <div
                     key={goal.id}
-                    className="flex items-center justify-between rounded-lg border p-3"
+                    className="flex items-center justify-between rounded-lg border p-3 hover:bg-accent/50 transition-colors"
                   >
                     <div className="flex-1">
                       <span className="text-sm font-medium">{goal.title}</span>
