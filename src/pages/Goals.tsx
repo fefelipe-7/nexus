@@ -70,12 +70,12 @@ export function Goals() {
               <p className="text-sm text-muted-foreground">{goal.description}</p>
             )}
             <div className="flex gap-2 text-xs text-muted-foreground">
-              <span>Created: {formatDate(goal.createdAt)}</span>
+              <span>Criada: {formatDate(goal.createdAt)}</span>
               {goal.targetDate && (
-                <span>Target: {formatDate(goal.targetDate)}</span>
+                <span>Alvo: {formatDate(goal.targetDate)}</span>
               )}
               {goal.priority && (
-                <span>Priority: {goal.priority}/10</span>
+                <span>Prioridade: {goal.priority}/10</span>
               )}
             </div>
           </div>
@@ -93,7 +93,7 @@ export function Goals() {
       {goal.status === 'active' && (
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Progress</span>
+            <span className="text-muted-foreground">Progresso</span>
             <span className="font-medium">{goal.progress || 0}%</span>
           </div>
           <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
@@ -119,45 +119,45 @@ export function Goals() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Goals</h1>
-          <p className="text-muted-foreground mt-1">Define and track your objectives</p>
+          <h1 className="text-3xl font-bold tracking-tight">Metas</h1>
+          <p className="text-muted-foreground mt-1">Defina e acompanhe seus objetivos</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              New Goal
+              Nova Meta
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create New Goal</DialogTitle>
+              <DialogTitle>Criar Nova Meta</DialogTitle>
               <DialogDescription>
-                Define a new objective to work towards
+                Defina um novo objetivo para trabalhar
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Title</label>
+                <label className="text-sm font-medium">Título</label>
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="What do you want to achieve?"
+                  placeholder="O que você quer alcançar?"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Description</label>
+                <label className="text-sm font-medium">Descrição</label>
                 <Textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Why is this important?"
+                  placeholder="Por que isso é importante?"
                   rows={3}
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">
-                  Priority: {priority}/10
+                  Prioridade: {priority}/10
                 </label>
                 <Input
                   type="range"
@@ -169,14 +169,14 @@ export function Goals() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Target Date (optional)</label>
+                <label className="text-sm font-medium">Data Alvo (opcional)</label>
                 <Input
                   type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
                 />
               </div>
-              <Button type="submit" className="w-full">Create Goal</Button>
+              <Button type="submit" className="w-full">Criar Meta</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -184,16 +184,16 @@ export function Goals() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Your Goals</CardTitle>
-          <CardDescription>Track progress on your objectives</CardDescription>
+          <CardTitle>Suas Metas</CardTitle>
+          <CardDescription>Acompanhe o progresso dos seus objetivos</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="all">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="active">Active</TabsTrigger>
-              <TabsTrigger value="completed">Completed</TabsTrigger>
-              <TabsTrigger value="paused">Paused</TabsTrigger>
+              <TabsTrigger value="all">Todas</TabsTrigger>
+              <TabsTrigger value="active">Ativas</TabsTrigger>
+              <TabsTrigger value="completed">Concluídas</TabsTrigger>
+              <TabsTrigger value="paused">Pausadas</TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="space-y-3 mt-4">
               {filterGoals('all').length > 0 ? (
@@ -202,7 +202,7 @@ export function Goals() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No goals yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma meta ainda</p>
                 </div>
               )}
             </TabsContent>
@@ -213,7 +213,7 @@ export function Goals() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No active goals</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma meta ativa</p>
                 </div>
               )}
             </TabsContent>
@@ -224,7 +224,7 @@ export function Goals() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No completed goals</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma meta concluída</p>
                 </div>
               )}
             </TabsContent>
@@ -235,7 +235,7 @@ export function Goals() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No paused goals</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma meta pausada</p>
                 </div>
               )}
             </TabsContent>

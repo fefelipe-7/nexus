@@ -44,27 +44,27 @@ export function StateTracker() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Personal State</h1>
-          <p className="text-muted-foreground mt-1">Track your mood, energy, and stress levels</p>
+          <h1 className="text-3xl font-bold tracking-tight">Estado Pessoal</h1>
+          <p className="text-muted-foreground mt-1">Acompanhe seu humor, energia e níveis de estresse</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Track State
+              Rastrear Estado
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Track Your Current State</DialogTitle>
+              <DialogTitle>Rastreie Seu Estado Atual</DialogTitle>
               <DialogDescription>
-                Record how you're feeling right now
+                Registre como você está se sentindo agora
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">
-                  Mood: {getMoodLabel(mood)} ({mood}/10)
+                  Humor: {getMoodLabel(mood)} ({mood}/10)
                 </label>
                 <Input
                   type="range"
@@ -77,7 +77,7 @@ export function StateTracker() {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">
-                  Energy: {getEnergyLabel(energy)} ({energy}/10)
+                  Energia: {getEnergyLabel(energy)} ({energy}/10)
                 </label>
                 <Input
                   type="range"
@@ -90,7 +90,7 @@ export function StateTracker() {
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">
-                  Stress: {getStressLabel(stress)} ({stress}/10)
+                  Estresse: {getStressLabel(stress)} ({stress}/10)
                 </label>
                 <Input
                   type="range"
@@ -102,15 +102,15 @@ export function StateTracker() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Notes (optional)</label>
+                <label className="text-sm font-medium">Notas (opcional)</label>
                 <Textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Any additional context..."
+                  placeholder="Contexto adicional..."
                   rows={3}
                 />
               </div>
-              <Button type="submit" className="w-full">Save State</Button>
+              <Button type="submit" className="w-full">Salvar Estado</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -119,45 +119,45 @@ export function StateTracker() {
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Latest Mood</CardTitle>
+            <CardTitle className="text-sm font-medium">Último Humor</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {states?.[0]?.mood ? getMoodLabel(states[0].mood) : 'No data'}
+              {states?.[0]?.mood ? getMoodLabel(states[0].mood) : 'Sem dados'}
             </div>
             <p className="text-xs text-muted-foreground">
-              {states?.[0]?.mood ? `${states[0].mood}/10` : 'Track your state'}
+              {states?.[0]?.mood ? `${states[0].mood}/10` : 'Rastreie seu estado'}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Latest Energy</CardTitle>
+            <CardTitle className="text-sm font-medium">Última Energia</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {states?.[0]?.energy ? getEnergyLabel(states[0].energy) : 'No data'}
+              {states?.[0]?.energy ? getEnergyLabel(states[0].energy) : 'Sem dados'}
             </div>
             <p className="text-xs text-muted-foreground">
-              {states?.[0]?.energy ? `${states[0].energy}/10` : 'Track your state'}
+              {states?.[0]?.energy ? `${states[0].energy}/10` : 'Rastreie seu estado'}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Latest Stress</CardTitle>
+            <CardTitle className="text-sm font-medium">Último Estresse</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {states?.[0]?.stress ? getStressLabel(states[0].stress) : 'No data'}
+              {states?.[0]?.stress ? getStressLabel(states[0].stress) : 'Sem dados'}
             </div>
             <p className="text-xs text-muted-foreground">
-              {states?.[0]?.stress ? `${states[0].stress}/10` : 'Track your state'}
+              {states?.[0]?.stress ? `${states[0].stress}/10` : 'Rastreie seu estado'}
             </p>
           </CardContent>
         </Card>
@@ -165,8 +165,8 @@ export function StateTracker() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent States</CardTitle>
-          <CardDescription>Your tracked states over time</CardDescription>
+          <CardTitle>Estados Recentes</CardTitle>
+          <CardDescription>Seus estados rastreados ao longo do tempo</CardDescription>
         </CardHeader>
         <CardContent>
           {states && states.length > 0 ? (
@@ -178,9 +178,9 @@ export function StateTracker() {
                 >
                   <div className="space-y-1 flex-1">
                     <div className="flex gap-4 text-sm">
-                      <span>Mood: <strong>{getMoodLabel(state.mood || 0)}</strong></span>
-                      <span>Energy: <strong>{getEnergyLabel(state.energy || 0)}</strong></span>
-                      <span>Stress: <strong>{getStressLabel(state.stress || 0)}</strong></span>
+                      <span>Humor: <strong>{getMoodLabel(state.mood || 0)}</strong></span>
+                      <span>Energia: <strong>{getEnergyLabel(state.energy || 0)}</strong></span>
+                      <span>Estresse: <strong>{getStressLabel(state.stress || 0)}</strong></span>
                     </div>
                     {state.notes && (
                       <p className="text-sm text-muted-foreground">{state.notes}</p>
@@ -195,7 +195,7 @@ export function StateTracker() {
           ) : (
             <div className="text-center py-8">
               <p className="text-sm text-muted-foreground">
-                No states tracked yet. Start tracking to see patterns over time.
+                Nenhum estado rastreado ainda. Comece a rastrear para ver padrões ao longo do tempo.
               </p>
             </div>
           )}

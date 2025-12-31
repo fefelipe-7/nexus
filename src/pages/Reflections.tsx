@@ -75,7 +75,7 @@ export function Reflections() {
             <div className="flex gap-2 text-xs text-muted-foreground">
               <span>{formatDateTime(reflection.timestamp)}</span>
               {reflection.period && (
-                <span>Period: {reflection.period}</span>
+                <span>Período: {reflection.period}</span>
               )}
             </div>
           </div>
@@ -97,65 +97,65 @@ export function Reflections() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Reflections</h1>
-          <p className="text-muted-foreground mt-1">Journal, review, and retrospect on your journey</p>
+          <h1 className="text-3xl font-bold tracking-tight">Reflexões</h1>
+          <p className="text-muted-foreground mt-1">Registre, revise e reflita sobre sua jornada</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              New Reflection
+              Nova Reflexão
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Create Reflection</DialogTitle>
+              <DialogTitle>Criar Reflexão</DialogTitle>
               <DialogDescription>
-                Write a journal entry, review, or retrospective
+                Escreva uma entrada de diário, revisão ou retrospectiva
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Type</label>
+                <label className="text-sm font-medium">Tipo</label>
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value as any)}
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="journal">Journal</option>
-                  <option value="review">Review</option>
-                  <option value="retrospective">Retrospective</option>
+                  <option value="journal">Diário</option>
+                  <option value="review">Revisão</option>
+                  <option value="retrospective">Retrospectiva</option>
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Title (optional)</label>
+                <label className="text-sm font-medium">Título (opcional)</label>
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Give it a title"
+                  placeholder="Dê um título"
                 />
               </div>
               {type !== 'journal' && (
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Period (optional)</label>
+                  <label className="text-sm font-medium">Período (opcional)</label>
                   <Input
                     value={period}
                     onChange={(e) => setPeriod(e.target.value)}
-                    placeholder="e.g., Week 1, December 2024, Q4 2024"
+                    placeholder="ex: Semana 1, Dezembro 2024, Q4 2024"
                   />
                 </div>
               )}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Content</label>
+                <label className="text-sm font-medium">Conteúdo</label>
                 <Textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="Write your reflection..."
+                  placeholder="Escreva sua reflexão..."
                   rows={10}
                   required
                 />
               </div>
-              <Button type="submit" className="w-full">Save Reflection</Button>
+              <Button type="submit" className="w-full">Salvar Reflexão</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -163,16 +163,16 @@ export function Reflections() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Your Reflections</CardTitle>
-          <CardDescription>A record of your thoughts and insights</CardDescription>
+          <CardTitle>Suas Reflexões</CardTitle>
+          <CardDescription>Um registro dos seus pensamentos e insights</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="all">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="journal">Journal</TabsTrigger>
-              <TabsTrigger value="review">Reviews</TabsTrigger>
-              <TabsTrigger value="retrospective">Retrospectives</TabsTrigger>
+              <TabsTrigger value="all">Todas</TabsTrigger>
+              <TabsTrigger value="journal">Diário</TabsTrigger>
+              <TabsTrigger value="review">Revisões</TabsTrigger>
+              <TabsTrigger value="retrospective">Retrospectivas</TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="space-y-3 mt-4">
               {filterReflections('all').length > 0 ? (
@@ -181,7 +181,7 @@ export function Reflections() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No reflections yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma reflexão ainda</p>
                 </div>
               )}
             </TabsContent>
@@ -192,7 +192,7 @@ export function Reflections() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No journal entries yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma entrada de diário ainda</p>
                 </div>
               )}
             </TabsContent>
@@ -203,7 +203,7 @@ export function Reflections() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No reviews yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma revisão ainda</p>
                 </div>
               )}
             </TabsContent>
@@ -214,7 +214,7 @@ export function Reflections() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No retrospectives yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma retrospectiva ainda</p>
                 </div>
               )}
             </TabsContent>

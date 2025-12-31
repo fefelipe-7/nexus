@@ -71,9 +71,9 @@ export function Knowledge() {
                 : item.content}
             </p>
             <div className="flex gap-2 text-xs text-muted-foreground">
-              <span>Created: {formatDateTime(item.createdAt)}</span>
+              <span>Criada: {formatDateTime(item.createdAt)}</span>
               {item.updatedAt.getTime() !== item.createdAt.getTime() && (
-                <span>Updated: {formatDateTime(item.updatedAt)}</span>
+                <span>Atualizada: {formatDateTime(item.updatedAt)}</span>
               )}
             </div>
           </div>
@@ -97,57 +97,57 @@ export function Knowledge() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Knowledge</h1>
-          <p className="text-muted-foreground mt-1">Capture notes, ideas, and learnings</p>
+          <h1 className="text-3xl font-bold tracking-tight">Conhecimento</h1>
+          <p className="text-muted-foreground mt-1">Capture notas, ideias e aprendizados</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              New Entry
+              Nova Entrada
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Create Knowledge Entry</DialogTitle>
+              <DialogTitle>Criar Entrada de Conhecimento</DialogTitle>
               <DialogDescription>
-                Capture a note, idea, learning, or documentation
+                Capture uma nota, ideia, aprendizado ou documentação
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Title</label>
+                <label className="text-sm font-medium">Título</label>
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Give it a title"
+                  placeholder="Dê um título"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Type</label>
+                <label className="text-sm font-medium">Tipo</label>
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value as any)}
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="note">Note</option>
-                  <option value="idea">Idea</option>
-                  <option value="learning">Learning</option>
-                  <option value="documentation">Documentation</option>
+                  <option value="note">Nota</option>
+                  <option value="idea">Ideia</option>
+                  <option value="learning">Aprendizado</option>
+                  <option value="documentation">Documentação</option>
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Content</label>
+                <label className="text-sm font-medium">Conteúdo</label>
                 <Textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="Write your content here..."
+                  placeholder="Escreva seu conteúdo aqui..."
                   rows={8}
                   required
                 />
               </div>
-              <Button type="submit" className="w-full">Save Entry</Button>
+              <Button type="submit" className="w-full">Salvar Entrada</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -155,16 +155,16 @@ export function Knowledge() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Your Knowledge Base</CardTitle>
-          <CardDescription>All your captured information</CardDescription>
+          <CardTitle>Sua Base de Conhecimento</CardTitle>
+          <CardDescription>Todas as suas informações capturadas</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="all">
             <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="note">Notes</TabsTrigger>
-              <TabsTrigger value="idea">Ideas</TabsTrigger>
-              <TabsTrigger value="learning">Learning</TabsTrigger>
+              <TabsTrigger value="all">Todas</TabsTrigger>
+              <TabsTrigger value="note">Notas</TabsTrigger>
+              <TabsTrigger value="idea">Ideias</TabsTrigger>
+              <TabsTrigger value="learning">Aprendizados</TabsTrigger>
               <TabsTrigger value="documentation">Docs</TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="space-y-3 mt-4">
@@ -174,7 +174,7 @@ export function Knowledge() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No knowledge entries yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma entrada de conhecimento ainda</p>
                 </div>
               )}
             </TabsContent>
@@ -185,7 +185,7 @@ export function Knowledge() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No notes yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma nota ainda</p>
                 </div>
               )}
             </TabsContent>
@@ -196,7 +196,7 @@ export function Knowledge() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No ideas yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma ideia ainda</p>
                 </div>
               )}
             </TabsContent>
@@ -207,7 +207,7 @@ export function Knowledge() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No learning entries yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhum aprendizado ainda</p>
                 </div>
               )}
             </TabsContent>
@@ -218,7 +218,7 @@ export function Knowledge() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No documentation yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma documentação ainda</p>
                 </div>
               )}
             </TabsContent>

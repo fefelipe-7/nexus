@@ -85,55 +85,55 @@ export function Routines() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Routines</h1>
-          <p className="text-muted-foreground mt-1">Build and track your daily habits</p>
+          <h1 className="text-3xl font-bold tracking-tight">Rotinas</h1>
+          <p className="text-muted-foreground mt-1">Construa e acompanhe seus hábitos diários</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              New Routine
+              Nova Rotina
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create New Routine</DialogTitle>
+              <DialogTitle>Criar Nova Rotina</DialogTitle>
               <DialogDescription>
-                Define a new routine to track regularly
+                Defina uma nova rotina para acompanhar regularmente
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Title</label>
+                <label className="text-sm font-medium">Título</label>
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Routine name"
+                  placeholder="Nome da rotina"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Description</label>
+                <label className="text-sm font-medium">Descrição</label>
                 <Textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="What does this routine involve?"
+                  placeholder="O que essa rotina envolve?"
                   rows={3}
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Frequency</label>
+                <label className="text-sm font-medium">Frequência</label>
                 <select
                   value={frequency}
                   onChange={(e) => setFrequency(e.target.value as any)}
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="daily">Daily</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="monthly">Monthly</option>
+                  <option value="daily">Diária</option>
+                  <option value="weekly">Semanal</option>
+                  <option value="monthly">Mensal</option>
                 </select>
               </div>
-              <Button type="submit" className="w-full">Create Routine</Button>
+              <Button type="submit" className="w-full">Criar Rotina</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -141,8 +141,8 @@ export function Routines() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Today's Routines</CardTitle>
-          <CardDescription>Check off your routines as you complete them</CardDescription>
+          <CardTitle>Rotinas de Hoje</CardTitle>
+          <CardDescription>Marque suas rotinas conforme as completa</CardDescription>
         </CardHeader>
         <CardContent>
           {routines && routines.length > 0 ? (
@@ -183,7 +183,7 @@ export function Routines() {
           ) : (
             <div className="text-center py-8">
               <p className="text-sm text-muted-foreground">
-                No routines yet. Create one to start building habits.
+                Nenhuma rotina ainda. Crie uma para começar a construir hábitos.
               </p>
             </div>
           )}

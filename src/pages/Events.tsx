@@ -46,55 +46,55 @@ export function Events() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Events</h1>
-          <p className="text-muted-foreground mt-1">Track scheduled and unexpected events</p>
+          <h1 className="text-3xl font-bold tracking-tight">Eventos</h1>
+          <p className="text-muted-foreground mt-1">Acompanhe eventos agendados e inesperados</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              New Event
+              Novo Evento
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create New Event</DialogTitle>
+              <DialogTitle>Criar Novo Evento</DialogTitle>
               <DialogDescription>
-                Record a scheduled or unexpected event
+                Registre um evento agendado ou inesperado
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Title</label>
+                <label className="text-sm font-medium">Título</label>
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Event name"
+                  placeholder="Nome do evento"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Description</label>
+                <label className="text-sm font-medium">Descrição</label>
                 <Textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Event details..."
+                  placeholder="Detalhes do evento..."
                   rows={3}
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Type</label>
+                <label className="text-sm font-medium">Tipo</label>
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value as any)}
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="scheduled">Scheduled</option>
-                  <option value="unexpected">Unexpected</option>
+                  <option value="scheduled">Agendado</option>
+                  <option value="unexpected">Inesperado</option>
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Start Time</label>
+                <label className="text-sm font-medium">Hora de Início</label>
                 <Input
                   type="datetime-local"
                   value={startTime}
@@ -103,14 +103,14 @@ export function Events() {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">End Time (optional)</label>
+                <label className="text-sm font-medium">Hora de Término (opcional)</label>
                 <Input
                   type="datetime-local"
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
                 />
               </div>
-              <Button type="submit" className="w-full">Create Event</Button>
+              <Button type="submit" className="w-full">Criar Evento</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -118,8 +118,8 @@ export function Events() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Your Events</CardTitle>
-          <CardDescription>Timeline of your events</CardDescription>
+          <CardTitle>Seus Eventos</CardTitle>
+          <CardDescription>Linha do tempo dos seus eventos</CardDescription>
         </CardHeader>
         <CardContent>
           {events && events.length > 0 ? (
@@ -145,9 +145,9 @@ export function Events() {
                       <p className="text-sm text-muted-foreground">{event.description}</p>
                     )}
                     <div className="flex gap-2 text-xs text-muted-foreground">
-                      <span>Start: {formatDateTime(event.startTime)}</span>
+                      <span>Início: {formatDateTime(event.startTime)}</span>
                       {event.endTime && (
-                        <span>End: {formatDateTime(event.endTime)}</span>
+                        <span>Fim: {formatDateTime(event.endTime)}</span>
                       )}
                     </div>
                   </div>
@@ -157,7 +157,7 @@ export function Events() {
           ) : (
             <div className="text-center py-8">
               <p className="text-sm text-muted-foreground">
-                No events recorded yet
+                Nenhum evento registrado ainda
               </p>
             </div>
           )}

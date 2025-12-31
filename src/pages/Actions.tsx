@@ -85,9 +85,9 @@ export function Actions() {
           <p className="text-sm text-muted-foreground">{action.description}</p>
         )}
         <div className="flex gap-2 text-xs text-muted-foreground">
-          <span>Created: {formatDate(action.createdAt)}</span>
+          <span>Criada: {formatDate(action.createdAt)}</span>
           {action.dueDate && (
-            <span>Due: {formatDate(action.dueDate)}</span>
+            <span>Vencimento: {formatDate(action.dueDate)}</span>
           )}
         </div>
       </div>
@@ -98,63 +98,63 @@ export function Actions() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Actions</h1>
-          <p className="text-muted-foreground mt-1">Manage your tasks, habits, and activities</p>
+          <h1 className="text-3xl font-bold tracking-tight">Ações</h1>
+          <p className="text-muted-foreground mt-1">Gerencie suas tarefas, hábitos e atividades</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              New Action
+              Nova Ação
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create New Action</DialogTitle>
+              <DialogTitle>Criar Nova Ação</DialogTitle>
               <DialogDescription>
-                Add a task, habit, or activity to track
+                Adicione uma tarefa, hábito ou atividade para rastrear
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Title</label>
+                <label className="text-sm font-medium">Título</label>
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="What do you want to do?"
+                  placeholder="O que você quer fazer?"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Description</label>
+                <label className="text-sm font-medium">Descrição</label>
                 <Textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Additional details..."
+                  placeholder="Detalhes adicionais..."
                   rows={3}
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Type</label>
+                <label className="text-sm font-medium">Tipo</label>
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value as any)}
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="task">Task</option>
-                  <option value="habit">Habit</option>
-                  <option value="activity">Activity</option>
+                  <option value="task">Tarefa</option>
+                  <option value="habit">Hábito</option>
+                  <option value="activity">Atividade</option>
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Due Date (optional)</label>
+                <label className="text-sm font-medium">Data de Vencimento (opcional)</label>
                 <Input
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
                 />
               </div>
-              <Button type="submit" className="w-full">Create Action</Button>
+              <Button type="submit" className="w-full">Criar Ação</Button>
             </form>
           </DialogContent>
         </Dialog>
@@ -162,16 +162,16 @@ export function Actions() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Your Actions</CardTitle>
-          <CardDescription>Track and manage all your actions</CardDescription>
+          <CardTitle>Suas Ações</CardTitle>
+          <CardDescription>Acompanhe e gerencie todas as suas ações</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="all">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="planned">Planned</TabsTrigger>
-              <TabsTrigger value="in-progress">In Progress</TabsTrigger>
-              <TabsTrigger value="completed">Completed</TabsTrigger>
+              <TabsTrigger value="all">Todas</TabsTrigger>
+              <TabsTrigger value="planned">Planejadas</TabsTrigger>
+              <TabsTrigger value="in-progress">Em Progresso</TabsTrigger>
+              <TabsTrigger value="completed">Concluídas</TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="space-y-3 mt-4">
               {filterActions('all').length > 0 ? (
@@ -180,7 +180,7 @@ export function Actions() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No actions yet</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma ação ainda</p>
                 </div>
               )}
             </TabsContent>
@@ -191,7 +191,7 @@ export function Actions() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No planned actions</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma ação planejada</p>
                 </div>
               )}
             </TabsContent>
@@ -202,7 +202,7 @@ export function Actions() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No actions in progress</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma ação em progresso</p>
                 </div>
               )}
             </TabsContent>
@@ -213,7 +213,7 @@ export function Actions() {
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <p className="text-sm text-muted-foreground">No completed actions</p>
+                  <p className="text-sm text-muted-foreground">Nenhuma ação concluída</p>
                 </div>
               )}
             </TabsContent>
