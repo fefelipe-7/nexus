@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Construction } from 'lucide-react';
-import { Button } from '@nexus/ui';
+import { Button } from '@/ui/components/components/ui';
 
 interface SubmodulePlaceholderProps {
   title: string;

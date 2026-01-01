@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MODULES } from '@/config/modules.config';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@nexus/ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/components/components/ui';
 
 export function Insights() {
   const module = MODULES.INSIGHTS;

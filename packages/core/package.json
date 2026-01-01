@@ -9,7 +9,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@nexus/shared": "workspace:*"
+    "@nexus/shared": "file:../shared"
   },
   "devDependencies": {
     "typescript": "^5.2.2"
