@@ -10,9 +10,9 @@ import {
   BookOpen, 
   MessageSquare 
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@nexus/shared';
 import { ThemeSelector } from './ThemeSelector';
-import { useThemeStore } from '@/store/themeStore';
+import { useThemeStore } from '@/state/stores/themeStore';
 
 interface LayoutProps {
   children: ReactNode;

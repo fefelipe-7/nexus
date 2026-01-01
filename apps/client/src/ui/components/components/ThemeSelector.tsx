@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useThemeStore } from '@/store/themeStore';
-import { themes } from '@/lib/themes';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useThemeStore } from '@/state/stores/themeStore';
+import { themes } from '@/ui/themes/themes';
+import { Button } from '@/ui/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/components/ui/dialog';
 import { Palette, Check } from 'lucide-react';
 
 export function ThemeSelector() {

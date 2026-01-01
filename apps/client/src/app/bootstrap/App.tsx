@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Layout } from './components/Layout';
-import { Dashboard } from './pages/Dashboard';
-import { StateTracker } from './pages/StateTracker';
-import { Actions } from './pages/Actions';
-import { Events } from './pages/Events';
-import { Goals } from './pages/Goals';
-import { Routines } from './pages/Routines';
-import { Knowledge } from './pages/Knowledge';
-import { Reflections } from './pages/Reflections';
+import { Layout } from '@/ui/components/Layout';
+import { Dashboard } from '@/screens/domains/pages/Dashboard';
+import { StateTracker } from '@/screens/domains/pages/StateTracker';
+import { Actions } from '@/screens/domains/pages/Actions';
+import { Events } from '@/screens/domains/pages/Events';
+import { Goals } from '@/screens/domains/pages/Goals';
+import { Routines } from '@/screens/domains/pages/Routines';
+import { Knowledge } from '@/screens/domains/pages/Knowledge';
+import { Reflections } from '@/screens/domains/pages/Reflections';
 
 function App() {
   return (
@@ -29,5 +29,4 @@ function App() {
   );
 }
 
-export { App };
 export default App;

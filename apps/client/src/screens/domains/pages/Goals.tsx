@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, Goal } from '@/lib/db';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Target } from 'lucide-react';
-import { formatDate } from '@/lib/utils';
+import { db, Goal } from '@/data/local/db';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/components/ui/card';
+import { Button } from '@/ui/components/ui/button';
+import { Input } from '@/ui/components/ui/input';
+import { Textarea } from '@/ui/components/ui/textarea';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/components/ui/tabs';
+import { Plus, Target, TrendingUp } from 'lucide-react';
+import { formatDate } from '@nexus/shared';
 
 export function Goals() {
   const [open, setOpen] = useState(false);

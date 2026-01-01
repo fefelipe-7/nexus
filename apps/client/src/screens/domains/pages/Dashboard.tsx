@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db } from '@/lib/db';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { db } from '@/data/local/db';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/components/ui/card';
+import { Button } from '@/ui/components/ui/button';
 import { Plus, TrendingUp, CheckCircle2, Calendar, Target } from 'lucide-react';
-import { formatDate, getMoodLabel, getEnergyLabel } from '@/lib/utils';
+import { formatDate, getMoodLabel, getEnergyLabel } from '@nexus/shared';
 import { Link } from 'react-router-dom';
 
 export function Dashboard() {

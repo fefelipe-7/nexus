@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Theme, themes, applyTheme, getStoredTheme } from '@/lib/themes';
+import { Theme, themes, applyTheme, getStoredTheme } from '@/ui/themes/themes';
 
 interface ThemeStore {
   currentTheme: Theme;
