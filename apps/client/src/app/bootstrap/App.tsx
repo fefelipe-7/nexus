@@ -1,28 +1,68 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Layout } from '@/ui/components/Layout';
-import { Dashboard } from '@/screens/domains/pages/Dashboard';
-import { StateTracker } from '@/screens/domains/pages/StateTracker';
-import { Actions } from '@/screens/domains/pages/Actions';
-import { Events } from '@/screens/domains/pages/Events';
-import { Goals } from '@/screens/domains/pages/Goals';
-import { Routines } from '@/screens/domains/pages/Routines';
-import { Knowledge } from '@/screens/domains/pages/Knowledge';
-import { Reflections } from '@/screens/domains/pages/Reflections';
+import { Layout } from '@/ui/components/components/Layout';
+import { MODULES } from '@/config/modules.config';
+import { SubmodulePlaceholder } from '@/ui/components/SubmodulePlaceholder';
+
+import { Overview } from '@/modules/overview';
+import { Money } from '@/modules/money';
+import { Time } from '@/modules/time';
+import { Goals } from '@/modules/goals';
+import { Health } from '@/modules/health';
+import { People } from '@/modules/people';
+import { WorkStudy } from '@/modules/work-study';
+import { HomeThings } from '@/modules/home-things';
+import { Projects } from '@/modules/projects';
+import { DigitalLife } from '@/modules/digital-life';
+import { Memories } from '@/modules/memories';
+import { Insights } from '@/modules/insights';
+
+const moduleComponents: Record<string, React.ComponentType> = {
+  'overview': Overview,
+  'money': Money,
+  'time': Time,
+  'goals': Goals,
+  'health': Health,
+  'people': People,
+  'work-study': WorkStudy,
+  'home-things': HomeThings,
+  'projects': Projects,
+  'digital-life': DigitalLife,
+  'memories': Memories,
+  'insights': Insights,
+};
 
 function App() {
   return (
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/state" element={<StateTracker />} />
-          <Route path="/actions" element={<Actions />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/goals" element={<Goals />} />
-          <Route path="/routines" element={<Routines />} />
-          <Route path="/knowledge" element={<Knowledge />} />
-          <Route path="/reflections" element={<Reflections />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/" element={<Navigate to="/overview" replace />} />
+          
+          {Object.values(MODULES).map((module) => {
+            const ModuleComponent = moduleComponents[module.id];
+            
+            return (
+              <Route key={module.id} path={module.path}>
+                <Route index element={<ModuleComponent />} />
+                
+                {module.submodules.map((submodule) => (
+                  <Route
+                    key={submodule.id}
+                    path={submodule.path.replace(module.path + '/', '')}
+                    element={
+                      <SubmodulePlaceholder
+                        title={submodule.name}
+                        description={submodule.description}
+                        moduleName={module.name}
+                      />
+                    }
+                  />
+                ))}
+              </Route>
+            );
+          })}
+          
+          <Route path="*" element={<Navigate to="/overview" replace />} />
         </Routes>
       </Layout>
     </Router>
