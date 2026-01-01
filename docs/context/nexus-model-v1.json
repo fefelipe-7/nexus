@@ -1,0 +1,339 @@
+{
+  "nexus_model_version": "1.0.0",
+  "description": "Canonical conceptual model for Nexus, a life operating system. This model defines the minimum set of universal entities required to represent all areas of a human life in a unified, extensible and AI-friendly way.",
+
+  "design_principles": {
+    "single_entry_point": "Users never choose modules explicitly. They only create Records. Classification is automatic.",
+    "minimum_entities": "The system is built on a small number of expressive base entities.",
+    "cross_domain": "A single entity may belong to multiple life domains simultaneously.",
+    "progressive_enrichment": "Data can start incomplete and be enriched over time.",
+    "ai_first": "All entities are designed to be machine-interpretable and correlatable."
+  },
+
+  "base_entities": {
+
+    "Record": {
+      "description": "The fundamental atomic unit of the Nexus. Anything explicitly added by the user starts as a Record.",
+      "role_in_system": "Acts as the universal input layer and raw material for all higher-level interpretations.",
+      "examples": [
+        "A financial expense",
+        "A task",
+        "A diary entry",
+        "A health symptom",
+        "A completed habit",
+        "A purchase intention"
+      ],
+
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "Globally unique identifier for the record."
+        },
+        "record_type": {
+          "type": "string",
+          "description": "Logical, human-oriented classification inferred or confirmed by the system (e.g. expense, task, emotion, note)."
+        },
+        "title": {
+          "type": "string",
+          "description": "Short human-readable summary."
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional extended free-text content."
+        },
+        "timestamp": {
+          "type": "datetime",
+          "description": "When the record occurred or was registered."
+        },
+        "status": {
+          "type": "string",
+          "description": "Lifecycle state of the record (e.g. pending, completed, archived)."
+        },
+        "tags": {
+          "type": "array",
+          "items": "string",
+          "description": "User or system-defined semantic labels."
+        },
+        "associated_domains": {
+          "type": "array",
+          "items": "string",
+          "description": "Life domains inferred for this record (e.g. money, health, time, relationships)."
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "entity": "string",
+            "entity_id": "string",
+            "relationship_type": "string"
+          },
+          "description": "Explicit semantic relationships to other entities."
+        },
+        "origin": {
+          "type": "string",
+          "enum": ["manual", "imported", "automatic"],
+          "description": "How this record was created."
+        }
+      },
+
+      "system_behavior": {
+        "classification": "AI analyzes content to infer domains, type and related entities.",
+        "promotion": "A Record may generate Events, Metrics or Resource changes.",
+        "immutability": "Original user input is preserved even if reclassified."
+      }
+    },
+
+    "Event": {
+      "description": "A temporal occurrence that may impact resources, projects, people or metrics.",
+      "role_in_system": "Organizes life in time, connecting past, present and future.",
+
+      "examples": [
+        "Medical appointment",
+        "Trip",
+        "Meeting",
+        "Bill due date",
+        "Project milestone"
+      ],
+
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "Unique event identifier."
+        },
+        "title": {
+          "type": "string",
+          "description": "Short description of the event."
+        },
+        "start_time": {
+          "type": "datetime",
+          "description": "Event start."
+        },
+        "end_time": {
+          "type": "datetime",
+          "optional": true,
+          "description": "Event end, if applicable."
+        },
+        "recurrence": {
+          "type": "object",
+          "optional": true,
+          "description": "Rules defining repetition patterns."
+        },
+        "participants": {
+          "type": "array",
+          "items": "Person.id",
+          "description": "People involved in the event."
+        },
+        "impacts": {
+          "type": "object",
+          "description": "Expected or observed impact on resources.",
+          "properties": {
+            "money": "number",
+            "time": "number",
+            "health": "number",
+            "energy": "number"
+          }
+        },
+        "related_records": {
+          "type": "array",
+          "items": "Record.id",
+          "description": "Records that originated or are associated with this event."
+        }
+      }
+    },
+
+    "Person": {
+      "description": "Any individual relevant to the user's life.",
+      "role_in_system": "Acts as a contextual hub connecting records, events and projects.",
+
+      "examples": [
+        "User",
+        "Family member",
+        "Friend",
+        "Coworker",
+        "Service provider"
+      ],
+
+      "fields": {
+        "id": {
+          "type": "string",
+          "description": "Unique person identifier."
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name."
+        },
+        "relationship_type": {
+          "type": "string",
+          "description": "Nature of the relationship (family, professional, romantic, etc)."
+        },
+        "contact_data": {
+          "type": "object",
+          "description": "Optional communication details."
+        },
+        "important_dates": {
+          "type": "array",
+          "items": {
+            "label": "string",
+            "date": "datetime"
+          }
+        },
+        "associated_records": {
+          "type": "array",
+          "items": "Record.id"
+        },
+        "interaction_history": {
+          "type": "array",
+          "items": "Event.id"
+        }
+      }
+    },
+
+    "Project": {
+      "description": "An intentional grouping of effort aimed at achieving a goal.",
+      "role_in_system": "Connects objectives with actions, time and resources.",
+
+      "examples": [
+        "Organize finances",
+        "Change jobs",
+        "Plan a trip",
+        "Build Nexus"
+      ],
+
+      "fields": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "goal": {
+          "type": "string",
+          "description": "Desired outcome."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["planned", "active", "paused", "completed", "abandoned"]
+        },
+        "start_date": {
+          "type": "datetime"
+        },
+        "end_date": {
+          "type": "datetime",
+          "optional": true
+        },
+        "linked_records": {
+          "type": "array",
+          "items": "Record.id"
+        },
+        "progress_metrics": {
+          "type": "array",
+          "items": "Metric.id"
+        }
+      }
+    },
+
+    "Resource": {
+      "description": "Anything that can be consumed, accumulated or depleted.",
+      "role_in_system": "Allows quantitative analysis of life trade-offs.",
+
+      "resource_types": [
+        "money",
+        "time",
+        "energy",
+        "attention",
+        "health",
+        "physical_space"
+      ],
+
+      "fields": {
+        "id": {
+          "type": "string"
+        },
+        "resource_type": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string",
+          "description": "Measurement unit (e.g. BRL, hours, points)."
+        },
+        "current_value": {
+          "type": "number"
+        },
+        "change_history": {
+          "type": "array",
+          "items": {
+            "timestamp": "datetime",
+            "delta": "number",
+            "source_record": "Record.id"
+          }
+        },
+        "origin": {
+          "type": "string",
+          "description": "Where this resource comes from."
+        }
+      }
+    },
+
+    "Metric": {
+      "description": "A quantitative or categorical measurement over time.",
+      "role_in_system": "Feeds insights, trends and correlations.",
+
+      "examples": [
+        "Weight",
+        "Sleep duration",
+        "Mood",
+        "Account balance",
+        "Productivity score"
+      ],
+
+      "fields": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "metric_type": {
+          "type": "string",
+          "enum": ["numeric", "categorical", "boolean"]
+        },
+        "value": {
+          "type": "any"
+        },
+        "timestamp": {
+          "type": "datetime"
+        },
+        "origin": {
+          "type": "string",
+          "description": "Manual, imported or derived."
+        },
+        "related_records": {
+          "type": "array",
+          "items": "Record.id"
+        }
+      }
+    }
+  },
+
+  "creation_flow": {
+    "entry_point": "New Record",
+    "user_action": "User inputs free-form information without choosing a module.",
+    "system_actions": [
+      "Parse content",
+      "Infer record_type",
+      "Detect related domains",
+      "Suggest links to people, projects, events",
+      "Generate metrics or resource changes if applicable"
+    ],
+    "user_confirmation": "Optional and minimal",
+    "enrichment": "Continuous over time via AI and user behavior"
+  },
+
+  "implementation": {
+    "database": "supabase/migrations/002_nexus_core_entities.sql",
+    "types": "packages/data-model/schemas/core-entities.ts",
+    "validation": "packages/data-model/schemas/validation.ts"
+  }
+}
