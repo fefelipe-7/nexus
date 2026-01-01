@@ -1,6 +1,16 @@
 -- Criar extensão para UUID
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- Remover tabelas existentes (na ordem reversa de dependências)
+DROP TABLE IF EXISTS reflections CASCADE;
+DROP TABLE IF EXISTS knowledge CASCADE;
+DROP TABLE IF EXISTS routine_logs CASCADE;
+DROP TABLE IF EXISTS routines CASCADE;
+DROP TABLE IF EXISTS events CASCADE;
+DROP TABLE IF EXISTS actions CASCADE;
+DROP TABLE IF EXISTS goals CASCADE;
+DROP TABLE IF EXISTS personal_states CASCADE;
+
 -- Tabela de estados pessoais
 CREATE TABLE personal_states (
   id BIGSERIAL PRIMARY KEY,
@@ -12,6 +22,21 @@ CREATE TABLE personal_states (
   notes TEXT,
   tags TEXT[],
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Tabela de metas (criada antes de actions para permitir referência)
+CREATE TABLE goals (
+  id BIGSERIAL PRIMARY KEY,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  description TEXT,
+  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'paused', 'completed', 'abandoned')),
+  priority INTEGER CHECK (priority >= 1 AND priority <= 10),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  target_date TIMESTAMPTZ,
+  completed_at TIMESTAMPTZ,
+  progress INTEGER DEFAULT 0 CHECK (progress >= 0 AND progress <= 100),
+  tags TEXT[]
 );
 
 -- Tabela de ações
@@ -41,21 +66,6 @@ CREATE TABLE events (
   category TEXT,
   tags TEXT[],
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- Tabela de metas
-CREATE TABLE goals (
-  id BIGSERIAL PRIMARY KEY,
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  title TEXT NOT NULL,
-  description TEXT,
-  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'paused', 'completed', 'abandoned')),
-  priority INTEGER CHECK (priority >= 1 AND priority <= 10),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  target_date TIMESTAMPTZ,
-  completed_at TIMESTAMPTZ,
-  progress INTEGER DEFAULT 0 CHECK (progress >= 0 AND progress <= 100),
-  tags TEXT[]
 );
 
 -- Tabela de rotinas
