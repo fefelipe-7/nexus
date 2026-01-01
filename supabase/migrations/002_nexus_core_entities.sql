@@ -544,7 +544,7 @@ RETURNS TABLE (
   record_id UUID,
   title TEXT,
   record_type TEXT,
-  timestamp TIMESTAMPTZ
+  record_timestamp TIMESTAMPTZ
 ) AS $$
 BEGIN
   RETURN QUERY
