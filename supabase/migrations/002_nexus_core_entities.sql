@@ -9,6 +9,29 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pg_trgm"; -- For text search
 
 -- ============================================================================
+-- DROP EXISTING TABLES (from previous schema)
+-- ============================================================================
+
+-- Drop relationship tables first (in reverse order of dependencies)
+DROP TABLE IF EXISTS metric_records CASCADE;
+DROP TABLE IF EXISTS person_interactions CASCADE;
+DROP TABLE IF EXISTS person_records CASCADE;
+DROP TABLE IF EXISTS project_metrics CASCADE;
+DROP TABLE IF EXISTS project_records CASCADE;
+DROP TABLE IF EXISTS event_records CASCADE;
+DROP TABLE IF EXISTS event_participants CASCADE;
+DROP TABLE IF EXISTS record_links CASCADE;
+
+-- Drop core entity tables
+DROP TABLE IF EXISTS metrics CASCADE;
+DROP TABLE IF EXISTS resource_changes CASCADE;
+DROP TABLE IF EXISTS resources CASCADE;
+DROP TABLE IF EXISTS projects CASCADE;
+DROP TABLE IF EXISTS people CASCADE;
+DROP TABLE IF EXISTS events CASCADE;
+DROP TABLE IF EXISTS records CASCADE;
+
+-- ============================================================================
 -- CORE ENTITIES
 -- ============================================================================
 
