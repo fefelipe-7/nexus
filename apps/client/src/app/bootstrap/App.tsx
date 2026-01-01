@@ -3,7 +3,7 @@ import { Layout } from '@/ui/components/components/Layout';
 import { MODULES } from '@/config/modules.config';
 import { SubmodulePlaceholder } from '@/ui/components/SubmodulePlaceholder';
 
-import { Overview } from '@/modules/overview';
+import { Overview, Daily, Weekly, Alerts, Pending, Upcoming, Indicators, Suggestions } from '@/modules/overview';
 import { Money } from '@/modules/money';
 import { Time } from '@/modules/time';
 import { Goals } from '@/modules/goals';
@@ -38,7 +38,18 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/overview" replace />} />
           
-          {Object.values(MODULES).map((module) => {
+          <Route path="/overview">
+            <Route index element={<Overview />} />
+            <Route path="daily" element={<Daily />} />
+            <Route path="weekly" element={<Weekly />} />
+            <Route path="alerts" element={<Alerts />} />
+            <Route path="pending" element={<Pending />} />
+            <Route path="upcoming" element={<Upcoming />} />
+            <Route path="indicators" element={<Indicators />} />
+            <Route path="suggestions" element={<Suggestions />} />
+          </Route>
+
+          {Object.values(MODULES).filter(m => m.id !== 'overview').map((module) => {
             const ModuleComponent = moduleComponents[module.id];
             
             return (
