@@ -11,4 +11,24 @@ export default defineConfig({
       '@nexus/shared': path.resolve(__dirname, '../../packages/shared/src'),
     },
   },
+  server: {
+    strictPort: false,
+    hmr: {
+      protocol: 'ws',
+      host: 'localhost',
+      port: 5183,
+    },
+  },
+  build: {
+    target: 'esnext',
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+      },
+    },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
+  },
 })
