@@ -8,7 +8,15 @@
     "build": "npm run build --workspace=apps/client",
     "preview": "npm run preview --workspace=apps/client",
     "lint": "npm run lint --workspace=apps/client",
-    "install:all": "npm install && npm install --workspace=apps/client"
+    "install:all": "npm install && npm install --workspace=apps/client",
+    "tauri:dev": "npm run tauri:dev --workspace=apps/client",
+    "tauri:build": "npm run tauri:build --workspace=apps/client",
+    "tauri:build:debug": "npm run tauri:build:debug --workspace=apps/client",
+    "cap:sync": "npm run cap:sync --workspace=apps/client",
+    "cap:build:android": "npm run cap:build:android --workspace=apps/client",
+    "cap:build:ios": "npm run cap:build:ios --workspace=apps/client",
+    "cap:open:android": "npm run cap:open:android --workspace=apps/client",
+    "cap:open:ios": "npm run cap:open:ios --workspace=apps/client"
   },
   "workspaces": [
     "apps/client",
