@@ -36,16 +36,14 @@ function App() {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<Navigate to="/overview" replace />} />
+          <Route path="/" element={<Home />} />
           
           <Route path="/overview">
-            <Route index element={<Overview />} />
-            <Route path="daily" element={<Daily />} />
+            <Route index element={<Home />} />
             <Route path="weekly" element={<Weekly />} />
             <Route path="alerts" element={<Alerts />} />
             <Route path="pending" element={<Pending />} />
             <Route path="upcoming" element={<Upcoming />} />
-            <Route path="indicators" element={<Indicators />} />
             <Route path="suggestions" element={<Suggestions />} />
           </Route>
 
