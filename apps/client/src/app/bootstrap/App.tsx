@@ -3,7 +3,7 @@ import { Layout } from '@/ui/components/components/Layout';
 import { MODULES } from '@/config/modules.config';
 import { SubmodulePlaceholder } from '@/ui/components/SubmodulePlaceholder';
 
-import { Overview, Daily, Weekly, Alerts, Pending, Upcoming, Indicators, Suggestions } from '@/modules/overview';
+import { Overview, Home, Weekly, Alerts, Pending, Upcoming, Suggestions } from '@/modules/overview';
 import { Money } from '@/modules/money';
 import { Time } from '@/modules/time';
 import { Goals } from '@/modules/goals';
