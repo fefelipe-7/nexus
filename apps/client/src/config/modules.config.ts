@@ -17,12 +17,10 @@ export const MODULES: ModuleConfig = {
     color: 'blue',
     description: 'Ponto de entrada do Nexus. Visão consolidada de tudo.',
     submodules: [
-      { id: 'daily', name: 'Resumo do Dia', path: '/overview/daily' },
       { id: 'weekly', name: 'Resumo da Semana', path: '/overview/weekly' },
       { id: 'alerts', name: 'Alertas Importantes', path: '/overview/alerts', icon: Bell },
       { id: 'pending', name: 'Pendências Críticas', path: '/overview/pending' },
       { id: 'upcoming', name: 'Próximos Eventos', path: '/overview/upcoming', icon: Calendar },
-      { id: 'indicators', name: 'Indicadores Rápidos', path: '/overview/indicators', icon: BarChart3 },
       { id: 'suggestions', name: 'Sugestões Inteligentes', path: '/overview/suggestions', icon: Sparkles },
     ]
   },
