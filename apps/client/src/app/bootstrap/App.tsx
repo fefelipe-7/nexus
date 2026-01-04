@@ -39,7 +39,7 @@ function App() {
           <Route path="/" element={<Home />} />
           
           <Route path="/overview">
-            <Route index element={<Home />} />
+            <Route index element={<Overview />} />
             <Route path="weekly" element={<Weekly />} />
             <Route path="alerts" element={<Alerts />} />
             <Route path="pending" element={<Pending />} />

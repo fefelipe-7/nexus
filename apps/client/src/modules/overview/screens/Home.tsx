@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button } from '@/ui/components/components/ui';
-import { DollarSign, Heart, Clock, Smile, Target, FolderKanban, TrendingUp, TrendingDown, Minus, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { DollarSign, Heart, Clock, Smile, Target, FolderKanban, TrendingUp, TrendingDown, Minus, ChevronRight, CheckCircle2, AlertCircle, Zap } from 'lucide-react';
 
 export function Home() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export function Home() {
       status: 'positive',
       trend: 'stable',
       icon: DollarSign,
-      description: 'Seus gastos estão alinhados com o planejado'
+      value: 'R$ 1.234,56'
     },
     {
       domain: 'health',
@@ -20,15 +20,15 @@ export function Home() {
       status: 'attention',
       trend: 'down',
       icon: Heart,
-      description: 'Padrão de sono precisa melhorar'
+      value: '6h sono'
     },
     {
       domain: 'time',
-      label: 'Agenda cheia hoje',
+      label: 'Agenda cheia',
       status: 'neutral',
       trend: 'up',
       icon: Clock,
-      description: 'Você tem 5 compromissos agendados'
+      value: '5 eventos'
     },
     {
       domain: 'mood',
@@ -36,7 +36,7 @@ export function Home() {
       status: 'positive',
       trend: 'stable',
       icon: Smile,
-      description: 'Seu humor está consistente'
+      value: 'Positivo'
     },
     {
       domain: 'goals',
@@ -44,7 +44,7 @@ export function Home() {
       status: 'attention',
       trend: 'down',
       icon: Target,
-      description: 'Um objetivo está atrasado'
+      value: '1 atrasado'
     },
     {
       domain: 'projects',
@@ -52,7 +52,7 @@ export function Home() {
       status: 'positive',
       trend: 'up',
       icon: FolderKanban,
-      description: 'Seus projetos estão avançando bem'
+      value: '3 ativo'
     }
   ];
 
@@ -63,11 +63,9 @@ export function Home() {
       amount: 150.00,
       category: 'Alimentação'
     },
-    narrative: 'Hoje você tem 2 compromissos, 3 tarefas pendentes e um gasto planejado de R$ 150,00 em alimentação.',
     highlights: [
       'Começou o dia com energia',
-      'Completou 2 tarefas importantes',
-      'Manteve o orçamento sob controle'
+      'Completou 2 tarefas importantes'
     ],
     concerns: [
       'Ainda há 3 tarefas pendentes',
@@ -137,193 +135,215 @@ export function Home() {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Seção: Resumo do Dia */}
+    <div className="space-y-6">
+      {/* Cabeçalho */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight mb-2">Bem-vindo ao Nexus</h1>
+        <h1 className="text-3xl font-bold tracking-tight mb-1">Bem-vindo ao Nexus</h1>
         <p className="text-muted-foreground">Sua visão consolidada de vida em um só lugar</p>
       </div>
 
-      <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-200/20">
-        <CardHeader>
-          <CardTitle className="text-2xl">Hoje</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <p className="text-lg text-foreground leading-relaxed">
-            {dailyData.narrative}
-          </p>
-
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="flex items-start gap-3 p-4 rounded-lg bg-background/50 border border-border">
-              <Clock className="h-5 w-5 text-blue-500 mt-1 flex-shrink-0" />
-              <div>
-                <p className="text-sm text-muted-foreground">Compromissos</p>
-                <p className="text-2xl font-bold">{dailyData.commitments}</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 p-4 rounded-lg bg-background/50 border border-border">
-              <CheckCircle2 className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
-              <div>
-                <p className="text-sm text-muted-foreground">Tarefas Pendentes</p>
-                <p className="text-2xl font-bold">{dailyData.pendingTasks}</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 p-4 rounded-lg bg-background/50 border border-border">
-              <DollarSign className="h-5 w-5 text-amber-500 mt-1 flex-shrink-0" />
-              <div>
-                <p className="text-sm text-muted-foreground">Gasto Planejado</p>
-                <p className="text-2xl font-bold">R$ {dailyData.plannedExpense.amount.toFixed(2)}</p>
-                <p className="text-xs text-muted-foreground mt-1">{dailyData.plannedExpense.category}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div>
-              <h3 className="font-semibold text-green-600 mb-3">✨ Destaques</h3>
-              <ul className="space-y-2">
-                {dailyData.highlights.map((highlight, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm">
-                    <span className="h-2 w-2 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></span>
-                    <span>{highlight}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-amber-600 mb-3">⚠️ Pontos de Atenção</h3>
-              <ul className="space-y-2">
-                {dailyData.concerns.map((concern, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm">
-                    <span className="h-2 w-2 rounded-full bg-amber-500 mt-1.5 flex-shrink-0"></span>
-                    <span>{concern}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div className="pt-4 border-t border-border">
-            <p className="text-sm text-muted-foreground mb-4">Próximas ações recomendadas:</p>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-blue-500"></span>
-                Confirmar compromissos do dia
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-green-500"></span>
-                Priorizar as 3 tarefas pendentes
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-amber-500"></span>
-                Acompanhar gastos planejados
-              </li>
-            </ul>
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={() => navigate('/overview/weekly')}>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Clock className="h-5 w-5" />
-              Ver Agenda Completa
-            </CardTitle>
-            <CardDescription>Visualize todos os seus compromissos</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="ghost" className="w-full justify-between">
-              Abrir <ChevronRight className="h-4 w-4" />
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={() => navigate('/overview/weekly')}>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5" />
-              Gerenciar Tarefas
-            </CardTitle>
-            <CardDescription>Organize suas tarefas do dia</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="ghost" className="w-full justify-between">
-              Abrir <ChevronRight className="h-4 w-4" />
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Seção: Indicadores Rápidos */}
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight mb-4">Estado da Sua Vida em 10 Segundos</h2>
-        <p className="text-muted-foreground mb-6">Indicadores rápidos de como você está em cada área</p>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {indicators.map((indicator) => {
-            const IconComponent = indicator.icon;
-            return (
-              <Card 
-                key={indicator.domain} 
-                className={`cursor-pointer hover:shadow-md transition-all ${getStatusColor(indicator.status)}`}
-                onClick={() => navigate(`/${indicator.domain}`)}
-              >
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className={`p-2 rounded-lg ${getStatusBadgeColor(indicator.status)}`}>
-                      <IconComponent className="h-5 w-5" />
-                    </div>
-                    <div className="flex items-center gap-1">
+      {/* Grid Principal: Indicadores Compactos + Resumo do Dia */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Coluna Esquerda: Indicadores em Grid Compacto */}
+        <div className="lg:col-span-1 space-y-4">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Estado Geral</h2>
+          <div className="grid gap-3 grid-cols-2">
+            {indicators.map((indicator) => {
+              const IconComponent = indicator.icon;
+              return (
+                <Card 
+                  key={indicator.domain} 
+                  className={`cursor-pointer hover:shadow-sm transition-all p-3 ${getStatusColor(indicator.status)}`}
+                  onClick={() => navigate(`/${indicator.domain}`)}
+                >
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-start justify-between">
+                      <div className={`p-1.5 rounded-lg ${getStatusBadgeColor(indicator.status)}`}>
+                        <IconComponent className="h-4 w-4" />
+                      </div>
                       {getTrendIcon(indicator.trend)}
-                      <span className="text-xs text-muted-foreground">{getTrendLabel(indicator.trend)}</span>
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-foreground line-clamp-2">{indicator.label}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{indicator.value}</p>
                     </div>
                   </div>
-                  <h3 className="font-semibold text-foreground mb-1">{indicator.label}</h3>
-                  <p className="text-xs text-muted-foreground mb-3">{indicator.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusBadgeColor(indicator.status)}`}>
-                      {getStatusLabel(indicator.status)}
-                    </span>
-                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Coluna Direita: Resumo do Dia */}
+        <div className="lg:col-span-2">
+          <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-200/20 h-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl">Hoje</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Métricas do Dia em Grid Horizontal */}
+              <div className="grid gap-3 grid-cols-3">
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-background/50 border border-border">
+                  <Clock className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">Compromissos</p>
+                    <p className="text-lg font-bold">{dailyData.commitments}</p>
                   </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                </div>
+
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-background/50 border border-border">
+                  <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">Tarefas</p>
+                    <p className="text-lg font-bold">{dailyData.pendingTasks}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-background/50 border border-border">
+                  <DollarSign className="h-4 w-4 text-amber-500 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">Gasto</p>
+                    <p className="text-lg font-bold">R$ {dailyData.plannedExpense.amount.toFixed(0)}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Destaques e Atenção em Grid Horizontal */}
+              <div className="grid gap-3 grid-cols-2">
+                <div className="p-3 rounded-lg bg-green-500/5 border border-green-500/20">
+                  <h3 className="text-xs font-semibold text-green-700 mb-2 flex items-center gap-1">
+                    <span>✨</span> Destaques
+                  </h3>
+                  <ul className="space-y-1">
+                    {dailyData.highlights.map((highlight, idx) => (
+                      <li key={idx} className="text-xs text-foreground leading-snug">
+                        • {highlight}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/20">
+                  <h3 className="text-xs font-semibold text-amber-700 mb-2 flex items-center gap-1">
+                    <AlertCircle className="h-3 w-3" /> Atenção
+                  </h3>
+                  <ul className="space-y-1">
+                    {dailyData.concerns.map((concern, idx) => (
+                      <li key={idx} className="text-xs text-foreground leading-snug">
+                        • {concern}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Ações Rápidas */}
+              <div className="flex gap-2 pt-2">
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="flex-1 text-xs"
+                  onClick={() => navigate('/overview/weekly')}
+                >
+                  <Clock className="h-3 w-3 mr-1" />
+                  Agenda
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="flex-1 text-xs"
+                  onClick={() => navigate('/overview/weekly')}
+                >
+                  <CheckCircle2 className="h-3 w-3 mr-1" />
+                  Tarefas
+                </Button>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="flex-1 text-xs"
+                  onClick={() => navigate('/overview/alerts')}
+                >
+                  <AlertCircle className="h-3 w-3 mr-1" />
+                  Alertas
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
-      <Card className="bg-blue-500/5 border-blue-500/30">
-        <CardHeader>
-          <CardTitle className="text-lg">Interpretação vs Dados Brutos</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground mb-3">
-            Cada indicador mostra uma interpretação do seu estado, não apenas números. Por exemplo:
-          </p>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li>• <span className="font-medium">Dinheiro:</span> "Dentro do orçamento" (não apenas "R$ 1.234,56")</li>
-            <li>• <span className="font-medium">Saúde:</span> "Abaixo do ideal" (não apenas "6 horas de sono")</li>
-            <li>• <span className="font-medium">Tempo:</span> "Agenda cheia" (não apenas "5 eventos")</li>
-          </ul>
-        </CardContent>
-      </Card>
+      {/* Seção: Submódulos Principais */}
+      <div className="space-y-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Explore Mais</h2>
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+          <Card 
+            className="cursor-pointer hover:shadow-md transition-all border-l-4 border-l-blue-500"
+            onClick={() => navigate('/overview/weekly')}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                Semana
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs text-muted-foreground">
+              Análise estratégica da semana
+            </CardContent>
+          </Card>
 
-      <Card className="bg-green-500/5 border-green-500/30">
-        <CardHeader>
-          <CardTitle className="text-lg">Próximas Ações Recomendadas</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">Clique em qualquer indicador para explorar detalhes e tomar ações específicas.</p>
-            <Button variant="outline" className="w-full mt-3" onClick={() => navigate('/health/sleep')}>
-              Melhorar Padrão de Sono
-            </Button>
-          </div>
+          <Card 
+            className="cursor-pointer hover:shadow-md transition-all border-l-4 border-l-red-500"
+            onClick={() => navigate('/overview/alerts')}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <AlertCircle className="h-4 w-4" />
+                Alertas
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs text-muted-foreground">
+              Sistema de risco e atenção
+            </CardContent>
+          </Card>
+
+          <Card 
+            className="cursor-pointer hover:shadow-md transition-all border-l-4 border-l-amber-500"
+            onClick={() => navigate('/overview/pending')}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <Zap className="h-4 w-4" />
+                Pendências
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs text-muted-foreground">
+              Passivo ativo que precisa resolver
+            </CardContent>
+          </Card>
+
+          <Card 
+            className="cursor-pointer hover:shadow-md transition-all border-l-4 border-l-purple-500"
+            onClick={() => navigate('/overview/upcoming')}
+          >
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                Próximos
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-xs text-muted-foreground">
+              Eventos que estão vindo
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Dica Contextual */}
+      <Card className="bg-blue-500/5 border-blue-500/30">
+        <CardContent className="pt-6">
+          <p className="text-sm text-muted-foreground">
+            <span className="font-medium text-foreground">💡 Dica:</span> Clique em qualquer indicador para explorar detalhes. Use os submódulos para análises mais profundas.
+          </p>
         </CardContent>
       </Card>
     </div>
