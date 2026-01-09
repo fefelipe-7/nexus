@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Layout } from '@/ui/components/components/Layout';
+import { ResponsiveLayout } from '@/ui/layouts/ResponsiveLayout';
 import { MODULES } from '@/config/modules.config';
 import { SubmodulePlaceholder } from '@/ui/components/SubmodulePlaceholder';
 
@@ -34,7 +34,7 @@ const moduleComponents: Record<string, React.ComponentType> = {
 function App() {
   return (
     <Router>
-      <Layout>
+      <ResponsiveLayout>
         <Routes>
           <Route path="/" element={<Home />} />
           
@@ -73,7 +73,7 @@ function App() {
           
           <Route path="*" element={<Navigate to="/overview" replace />} />
         </Routes>
-      </Layout>
+      </ResponsiveLayout>
     </Router>
   );
 }
