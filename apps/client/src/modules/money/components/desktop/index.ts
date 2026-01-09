@@ -6,3 +6,7 @@ export { FutureProjection } from './FutureProjection';
 export { AccountsOverview } from './AccountsOverview';
 export { AccountsGrid } from './AccountsGrid';
 export { RecentTransactionsTable } from './RecentTransactionsTable';
+export { CreditHealthOverview } from './CreditHealthOverview';
+export { CardsGrid } from './CardsGrid';
+export { CurrentInvoice } from './CurrentInvoice';
+export { FutureCommitments } from './FutureCommitments';

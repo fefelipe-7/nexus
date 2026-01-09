@@ -97,34 +97,6 @@ export function CashFlow() {
         {/* Coluna Esquerda - Timeline e Insights */}
         <div className="lg:col-span-5 space-y-6">
           <TimelineChart timeline={data.timeline} />
-          
-          {/* Widget de Insights Rápidos */}
-          <div className="bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-transparent border border-white/10 rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-4">💡 Insights do Período</h3>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-green-500 mt-2" />
-                <div>
-                  <p className="text-sm font-medium">Economia de 15% vs mês anterior</p>
-                  <p className="text-xs text-muted-foreground">Você gastou R$ 890 a menos este mês</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-amber-500 mt-2" />
-                <div>
-                  <p className="text-sm font-medium">Atenção: Gastos com alimentação aumentaram</p>
-                  <p className="text-xs text-muted-foreground">+22% comparado ao mês passado</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-blue-500 mt-2" />
-                <div>
-                  <p className="text-sm font-medium">Meta de economia em dia</p>
-                  <p className="text-xs text-muted-foreground">75% da meta mensal alcançada</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Coluna Central - Categorias e Compromissos */}
@@ -136,25 +108,6 @@ export function CashFlow() {
         {/* Coluna Direita - Projeção e Alertas */}
         <div className="lg:col-span-3 space-y-6">
           <FutureProjection futureFlow={data.futureFlow} />
-          
-          {/* Widget de Ações Rápidas */}
-          <div className="bg-gradient-to-br from-purple-500/10 via-pink-500/5 to-transparent border border-white/10 rounded-lg p-6">
-            <h3 className="text-sm font-semibold mb-4">⚡ Ações Rápidas</h3>
-            <div className="space-y-2">
-              <button className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 transition-colors text-sm">
-                📊 Ver relatório detalhado
-              </button>
-              <button className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 transition-colors text-sm">
-                🎯 Ajustar metas
-              </button>
-              <button className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 transition-colors text-sm">
-                💰 Gerenciar contas
-              </button>
-              <button className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 transition-colors text-sm">
-                🔔 Configurar alertas
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

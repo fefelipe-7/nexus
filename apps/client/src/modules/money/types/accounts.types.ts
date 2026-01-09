@@ -1,4 +1,4 @@
-export type AccountType = 'checking' | 'savings' | 'investment' | 'credit' | 'cash';
+export type AccountType = 'checking' | 'savings' | 'investment' | 'cash';
 export type AccountStatus = 'active' | 'inactive' | 'blocked';
 
 export interface Account {

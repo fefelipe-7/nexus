@@ -15,11 +15,10 @@ export function AccountCard({ account, onClick }: AccountCardProps) {
   return (
     <Card
       className={cn(
-        'cursor-pointer active:scale-98 transition-all',
-        'bg-gradient-to-br border border-white/10',
+        'cursor-pointer active:scale-98 transition-all border-l-4',
       )}
       style={{
-        background: `linear-gradient(135deg, ${account.color}15 0%, ${account.color}05 100%)`,
+        borderLeftColor: account.color,
       }}
       onClick={onClick}
     >
@@ -27,8 +26,7 @@ export function AccountCard({ account, onClick }: AccountCardProps) {
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
             <div
-              className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-              style={{ backgroundColor: `${account.color}20` }}
+              className="w-12 h-12 rounded-full flex items-center justify-center text-2xl bg-muted"
             >
               {account.icon}
             </div>

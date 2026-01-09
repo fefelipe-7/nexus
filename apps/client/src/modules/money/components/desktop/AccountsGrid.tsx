@@ -32,19 +32,18 @@ export function AccountsGrid({ accounts }: AccountsGridProps) {
             key={account.id}
             className={cn(
               'cursor-pointer transition-all duration-300',
-              'hover:-translate-y-1 hover:shadow-xl',
-              'bg-gradient-to-br border border-white/10'
+              'hover:-translate-y-1 hover:shadow-lg',
+              'border-l-4'
             )}
             style={{
-              background: `linear-gradient(135deg, ${account.color}20 0%, ${account.color}05 100%)`,
+              borderLeftColor: account.color,
             }}
           >
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-                    style={{ backgroundColor: `${account.color}30` }}
+                    className="w-12 h-12 rounded-full flex items-center justify-center text-2xl bg-muted"
                   >
                     {account.icon}
                   </div>

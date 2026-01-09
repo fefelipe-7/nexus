@@ -10,7 +10,7 @@ interface AccountsSummaryCardProps {
 
 export function AccountsSummaryCard({ summary }: AccountsSummaryCardProps) {
   return (
-    <Card className="bg-gradient-to-br from-blue-500/20 via-purple-500/10 to-transparent border border-white/10">
+    <Card>
       <CardContent className="pt-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">

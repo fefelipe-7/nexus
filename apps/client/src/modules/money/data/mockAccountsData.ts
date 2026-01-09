@@ -2,10 +2,10 @@ import type { AccountsData } from '../types/accounts.types';
 
 export const mockAccountsData: AccountsData = {
   summary: {
-    totalBalance: 15234.56,
+    totalBalance: 26234.56,
     totalIncome: 8500.00,
     totalExpenses: 6234.50,
-    accountsCount: 5,
+    accountsCount: 4,
     activeAccounts: 4,
     trend: {
       direction: 'up',
@@ -51,18 +51,6 @@ export const mockAccountsData: AccountsData = {
     },
     {
       id: '4',
-      name: 'Cartão de Crédito',
-      type: 'credit',
-      status: 'active',
-      balance: -2500.00,
-      currency: 'BRL',
-      institution: 'Nubank',
-      lastSync: new Date(),
-      color: '#EF4444',
-      icon: '💳',
-    },
-    {
-      id: '5',
       name: 'Dinheiro',
       type: 'cash',
       status: 'active',
@@ -93,13 +81,12 @@ export const mockAccountsData: AccountsData = {
     },
     {
       id: '3',
-      accountId: '4',
+      accountId: '1',
       date: new Date(Date.now() - 172800000),
       description: 'Netflix',
       amount: -49.90,
       type: 'expense',
       category: 'Entretenimento',
-      pending: true,
     },
     {
       id: '4',

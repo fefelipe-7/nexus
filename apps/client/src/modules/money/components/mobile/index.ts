@@ -5,3 +5,6 @@ export { RecurringCard } from './RecurringCard';
 export { FutureFlowCard } from './FutureFlowCard';
 export { AccountCard } from './AccountCard';
 export { AccountsSummaryCard } from './AccountsSummaryCard';
+export { CreditHealthCard } from './CreditHealthCard';
+export { CardListItem } from './CardListItem';
+export { InstallmentsCard } from './InstallmentsCard';
