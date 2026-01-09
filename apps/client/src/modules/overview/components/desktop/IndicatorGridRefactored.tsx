@@ -53,8 +53,12 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
           trend={{
             direction: getTrendDirection(indicator.trend),
             value: getTrendValue(indicator.trend),
+            animated: true,
           }}
-          variant="bordered"
+          variant="glass"
+          glassEffect
+          iconGradient
+          hoverEffect="scale"
           size="sm"
         />
       ))}

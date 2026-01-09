@@ -34,41 +34,61 @@ export function FlowOverview({ summary }: FlowOverviewProps) {
   return (
     <div className="grid gap-4 md:grid-cols-4">
       <StatCard
-        label="Status"
+        label="Status Financeiro"
         value={getHealthLabel()}
         icon={Activity}
         color={getHealthColor()}
         format="custom"
-        variant="bordered"
+        variant="gradient"
+        iconGradient
+        glassEffect
+        hoverEffect="lift"
+        size="md"
       />
 
       <StatCard
-        label="Entradas"
+        label="Entradas do Período"
         value={summary.totalIncome}
         format="currency"
         icon={TrendingUp}
-        variant="bordered"
+        color="green"
+        variant="gradient"
+        glassEffect
+        hoverEffect="lift"
+        animateValue
       />
 
       <StatCard
-        label="Saídas"
+        label="Saídas do Período"
         value={summary.totalExpenses}
         format="currency"
         icon={TrendingDown}
-        variant="bordered"
+        color="red"
+        variant="gradient"
+        glassEffect
+        hoverEffect="lift"
+        animateValue
       />
 
       <StatCard
-        label="Resultado"
+        label="Resultado Líquido"
         value={summary.netFlow}
         format="currency"
         trend={{
           direction: getTrendDirection(),
           value: summary.trend.percentage,
           label: 'vs período anterior',
+          animated: true,
         }}
         icon={DollarSign}
-        variant="bordered"
+        color="blue"
+        variant="gradient"
+        gradient="from-blue-500/20 via-purple-500/10 to-transparent"
+        glassEffect
+        glowEffect
+        iconGradient
+        hoverEffect="lift"
+        animateValue
       />
     </div>
   );
