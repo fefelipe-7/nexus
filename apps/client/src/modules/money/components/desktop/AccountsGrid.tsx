@@ -15,7 +15,6 @@ export function AccountsGrid({ accounts }: AccountsGridProps) {
       checking: 'Conta Corrente',
       savings: 'Poupança',
       investment: 'Investimento',
-      credit: 'Cartão de Crédito',
       cash: 'Dinheiro',
     };
     return labels[type as keyof typeof labels] || type;
@@ -25,7 +24,6 @@ export function AccountsGrid({ accounts }: AccountsGridProps) {
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {accounts.map((account) => {
         const isNegative = account.balance < 0;
-        const isCredit = account.type === 'credit';
 
         return (
           <Card
@@ -85,20 +83,6 @@ export function AccountsGrid({ accounts }: AccountsGridProps) {
                 </div>
               )}
 
-              {isCredit && (
-                <div className="pt-3 border-t border-white/10">
-                  <div className="flex items-center justify-between text-xs mb-2">
-                    <span className="text-muted-foreground">Limite utilizado</span>
-                    <span className="font-medium">45%</span>
-                  </div>
-                  <ProgressBar
-                    value={45}
-                    max={100}
-                    size="sm"
-                    color="red"
-                  />
-                </div>
-              )}
             </CardContent>
           </Card>
         );
