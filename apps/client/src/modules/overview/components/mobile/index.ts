@@ -1,2 +1,2 @@
-export { IndicatorCard } from './IndicatorCard';
+export { IndicatorCard } from './IndicatorCardRefactored';
 export { DailySummary } from './DailySummary';

@@ -1,5 +1,10 @@
 export { ChartContainer } from './base/ChartContainer';
 export { BarChart } from './BarChart';
 export { LineChart } from './LineChart';
+export { AreaChart } from './AreaChart';
+export { PieChart } from './PieChart';
+export { DonutChart } from './DonutChart';
+export { SparkLine } from './SparkLine';
+export { HeatMap } from './HeatMap';
 export { ProgressBar } from './ProgressBar';
 export * from './types';

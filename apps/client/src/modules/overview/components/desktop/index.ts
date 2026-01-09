@@ -1,2 +1,2 @@
-export { IndicatorGrid } from './IndicatorGrid';
+export { IndicatorGrid } from './IndicatorGridRefactored';
 export { DailyOverview } from './DailyOverview';
