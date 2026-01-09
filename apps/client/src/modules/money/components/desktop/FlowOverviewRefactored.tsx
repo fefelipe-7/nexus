@@ -39,10 +39,7 @@ export function FlowOverview({ summary }: FlowOverviewProps) {
         icon={Activity}
         color={getHealthColor()}
         format="custom"
-        variant="gradient"
-        iconGradient
-        glassEffect
-        hoverEffect="lift"
+        variant="bordered"
         size="md"
       />
 
@@ -52,10 +49,7 @@ export function FlowOverview({ summary }: FlowOverviewProps) {
         format="currency"
         icon={TrendingUp}
         color="green"
-        variant="gradient"
-        glassEffect
-        hoverEffect="lift"
-        animateValue
+        variant="bordered"
       />
 
       <StatCard
@@ -64,10 +58,7 @@ export function FlowOverview({ summary }: FlowOverviewProps) {
         format="currency"
         icon={TrendingDown}
         color="red"
-        variant="gradient"
-        glassEffect
-        hoverEffect="lift"
-        animateValue
+        variant="bordered"
       />
 
       <StatCard
@@ -78,17 +69,10 @@ export function FlowOverview({ summary }: FlowOverviewProps) {
           direction: getTrendDirection(),
           value: summary.trend.percentage,
           label: 'vs período anterior',
-          animated: true,
         }}
         icon={DollarSign}
         color="blue"
-        variant="gradient"
-        gradient="from-blue-500/20 via-purple-500/10 to-transparent"
-        glassEffect
-        glowEffect
-        iconGradient
-        hoverEffect="lift"
-        animateValue
+        variant="bordered"
       />
     </div>
   );

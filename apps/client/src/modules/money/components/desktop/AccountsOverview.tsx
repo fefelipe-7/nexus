@@ -15,17 +15,11 @@ export function AccountsOverview({ summary }: AccountsOverviewProps) {
         format="currency"
         icon={Wallet}
         color="blue"
-        variant="gradient"
-        gradient="from-blue-500/20 via-indigo-500/10 to-transparent"
-        glassEffect
-        glowEffect
-        iconGradient
-        hoverEffect="lift"
+        variant="bordered"
         trend={{
           direction: summary.trend.direction,
           value: summary.trend.percentage,
           label: 'vs mês anterior',
-          animated: true,
         }}
       />
 
@@ -35,10 +29,7 @@ export function AccountsOverview({ summary }: AccountsOverviewProps) {
         format="currency"
         icon={TrendingUp}
         color="green"
-        variant="gradient"
-        glassEffect
-        hoverEffect="lift"
-        animateValue
+        variant="bordered"
       />
 
       <StatCard
@@ -47,10 +38,7 @@ export function AccountsOverview({ summary }: AccountsOverviewProps) {
         format="currency"
         icon={TrendingDown}
         color="red"
-        variant="gradient"
-        glassEffect
-        hoverEffect="lift"
-        animateValue
+        variant="bordered"
       />
 
       <StatCard
@@ -59,10 +47,7 @@ export function AccountsOverview({ summary }: AccountsOverviewProps) {
         format="custom"
         icon={CreditCard}
         color="purple"
-        variant="gradient"
-        glassEffect
-        iconGradient
-        hoverEffect="scale"
+        variant="bordered"
       />
     </div>
   );
