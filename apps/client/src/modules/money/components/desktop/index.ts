@@ -3,3 +3,6 @@ export { TimelineChart } from './TimelineChartRefactored';
 export { CategoriesBreakdown } from './CategoriesBreakdownRefactored';
 export { RecurringCommitments } from './RecurringCommitments';
 export { FutureProjection } from './FutureProjection';
+export { AccountsOverview } from './AccountsOverview';
+export { AccountsGrid } from './AccountsGrid';
+export { RecentTransactionsTable } from './RecentTransactionsTable';

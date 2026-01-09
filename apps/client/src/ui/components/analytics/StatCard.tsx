@@ -67,6 +67,12 @@ export function StatCard({
   className,
   size = 'md',
   variant = 'default',
+  gradient,
+  glassEffect = false,
+  glowEffect = false,
+  iconGradient = false,
+  hoverEffect = 'none',
+  animateValue = false,
 }: StatCardProps) {
   const formatValue = (val: number | string): string => {
     if (formatFn) return formatFn(val);
