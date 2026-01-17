@@ -19,3 +19,10 @@ export { PurchasesFilterChips } from './PurchasesFilterChips';
 export { PurchaseListItem } from './PurchaseListItem';
 export { PurchasesList } from './PurchasesList';
 export { PurchaseDetailSheet } from './PurchaseDetailSheet';
+
+// Purchases Enhanced
+export { EnhancedSummaryCard } from './EnhancedSummaryCard';
+export { FilterSheet } from './FilterSheet';
+export { QuickFilterBar } from './QuickFilterBar';
+export { EnhancedPurchasesList } from './EnhancedPurchasesList';
+export { AddPurchaseSheet } from './AddPurchaseSheet';

@@ -2,15 +2,17 @@ import { useState } from 'react';
 import { useDeviceDetection } from '@/hooks/useDeviceDetection';
 import { mockPurchasesData } from '../data/mockPurchasesData';
 import { FAB } from '@/ui/layouts/MobileLayout/FAB';
-import { Plus, Download, Filter } from 'lucide-react';
-import { Button } from '@/ui/components/components/ui';
+import { Plus, Download, Filter, Search } from 'lucide-react';
+import { Button, Input } from '@/ui/components/components/ui';
 import type { Purchase, PurchasesFilters } from '../types/purchases.types';
 
 import {
-    PurchasesSummaryCard,
-    PurchasesFilterChips,
-    PurchasesList,
     PurchaseDetailSheet,
+    EnhancedSummaryCard,
+    FilterSheet,
+    QuickFilterBar,
+    EnhancedPurchasesList,
+    AddPurchaseSheet,
 } from '../components/mobile';
 
 import {
@@ -24,6 +26,9 @@ export function Purchases() {
 
     const [selectedPurchase, setSelectedPurchase] = useState<Purchase | null>(null);
     const [isDetailOpen, setIsDetailOpen] = useState(false);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [isAddOpen, setIsAddOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
     const [filters, setFilters] = useState<PurchasesFilters>({
         period: 'week',
         types: [],
@@ -39,13 +44,38 @@ export function Purchases() {
         setIsDetailOpen(true);
     };
 
-    const handleAddPurchase = () => {
-        console.log('Adicionar compra');
+    const handleAddPurchase = (purchaseData: {
+        description: string;
+        amount: number;
+        category?: string;
+        paymentMethod: string;
+        type: string;
+    }) => {
+        console.log('Nova compra:', purchaseData);
+        // TODO: Add to data
     };
+
+    // Calculate active filters count
+    const activeFiltersCount =
+        filters.types.length +
+        filters.paymentMethods.length +
+        filters.categories.length;
+
+    // Filter purchases based on search query
+    const filteredDayGroups = searchQuery
+        ? data.dayGroups.map(group => ({
+            ...group,
+            purchases: group.purchases.filter(p =>
+                p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                p.establishment?.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+        })).filter(group => group.purchases.length > 0)
+        : data.dayGroups;
 
     if (isMobileView) {
         return (
-            <div className="space-y-4">
+            <div className="space-y-4 pb-4">
+                {/* Header */}
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight mb-1">Compras e Gastos</h1>
                     <p className="text-sm text-muted-foreground">
@@ -53,18 +83,47 @@ export function Purchases() {
                     </p>
                 </div>
 
-                <PurchasesSummaryCard summary={data.summary} />
-
-                <PurchasesFilterChips
-                    filters={filters}
-                    onFiltersChange={setFilters}
+                {/* Enhanced Summary */}
+                <EnhancedSummaryCard
+                    summary={data.summary}
+                    categories={data.categories}
                 />
 
-                <PurchasesList
-                    dayGroups={data.dayGroups}
+                {/* Search */}
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                        placeholder="Buscar compras..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-9 h-11 bg-muted/50 border-0"
+                    />
+                </div>
+
+                {/* Quick Filter Bar */}
+                <QuickFilterBar
+                    filters={filters}
+                    onFiltersChange={setFilters}
+                    onOpenFilters={() => setIsFilterOpen(true)}
+                    activeCount={activeFiltersCount}
+                />
+
+                {/* Purchases List */}
+                <EnhancedPurchasesList
+                    dayGroups={filteredDayGroups}
                     onPurchaseClick={handlePurchaseClick}
                 />
 
+                {/* Filter Sheet */}
+                <FilterSheet
+                    isOpen={isFilterOpen}
+                    onClose={() => setIsFilterOpen(false)}
+                    filters={filters}
+                    onApply={setFilters}
+                    categories={data.categories}
+                />
+
+                {/* Purchase Detail Sheet */}
                 <PurchaseDetailSheet
                     purchase={selectedPurchase}
                     isOpen={isDetailOpen}
@@ -75,8 +134,17 @@ export function Purchases() {
                     onDelete={(p) => console.log('Delete', p)}
                 />
 
+                {/* Add Purchase Sheet */}
+                <AddPurchaseSheet
+                    isOpen={isAddOpen}
+                    onClose={() => setIsAddOpen(false)}
+                    onAdd={handleAddPurchase}
+                    categories={data.categories}
+                />
+
+                {/* FAB */}
                 <FAB
-                    onClick={handleAddPurchase}
+                    onClick={() => setIsAddOpen(true)}
                     icon={Plus}
                     label="Registrar"
                 />
@@ -95,9 +163,23 @@ export function Purchases() {
                     </p>
                 </div>
                 <div className="flex items-center gap-3">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                            placeholder="Buscar..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="pl-9 w-64"
+                        />
+                    </div>
                     <Button variant="outline" size="sm">
                         <Filter className="h-4 w-4 mr-2" />
                         Filtros
+                        {activeFiltersCount > 0 && (
+                            <span className="ml-1 bg-primary text-primary-foreground text-xs px-1.5 rounded-full">
+                                {activeFiltersCount}
+                            </span>
+                        )}
                     </Button>
                     <Button variant="outline" size="sm">
                         <Download className="h-4 w-4 mr-2" />
@@ -115,11 +197,11 @@ export function Purchases() {
 
             {/* Purchases Table */}
             <PurchasesTable
-                dayGroups={data.dayGroups}
+                dayGroups={filteredDayGroups}
                 onPurchaseClick={handlePurchaseClick}
             />
 
-            {/* Detail Sheet (desktop uses same as mobile for now) */}
+            {/* Detail Sheet */}
             <PurchaseDetailSheet
                 purchase={selectedPurchase}
                 isOpen={isDetailOpen}
