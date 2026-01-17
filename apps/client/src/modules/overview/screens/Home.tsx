@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/ui/components/components/ui';
+import { Card, CardContent } from '@/ui/components/components/ui';
 import { DollarSign, Heart, Clock, Smile, Target, FolderKanban, AlertCircle, Zap } from 'lucide-react';
 import { useDeviceDetection } from '@/hooks/useDeviceDetection';
 import { IndicatorCard, DailySummary } from '../components/mobile';
@@ -138,86 +138,83 @@ export function Home() {
         </div>
       )}
 
-      <div className="space-y-3">
+
+      <div className="space-y-4">
         <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">Explore Mais</h2>
-        <div className={isMobileView ? "grid gap-3 grid-cols-2" : "grid gap-3 md:grid-cols-2 lg:grid-cols-4"}>
-          <Card 
-            className={isMobileView 
-              ? "cursor-pointer active:scale-98 transition-all border-l-4 border-l-blue-500"
-              : "cursor-pointer hover:shadow-md transition-all border-l-4 border-l-blue-500"
-            }
+        <div className={isMobileView ? "grid gap-3 grid-cols-2" : "grid gap-4 md:grid-cols-2 lg:grid-cols-4"}>
+          <Card
+            className="cursor-pointer hover:bg-accent/50 active:scale-[0.98] transition-all group"
             onClick={() => navigate('/overview/weekly')}
           >
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                Semana
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-xs text-muted-foreground">
-              Análise estratégica da semana
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-muted group-hover:bg-primary/10 transition-colors">
+                  <Clock className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Semana</p>
+                  <p className="text-xs text-muted-foreground">Análise estratégica</p>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card 
-            className={isMobileView 
-              ? "cursor-pointer active:scale-98 transition-all border-l-4 border-l-red-500"
-              : "cursor-pointer hover:shadow-md transition-all border-l-4 border-l-red-500"
-            }
+          <Card
+            className="cursor-pointer hover:bg-accent/50 active:scale-[0.98] transition-all group"
             onClick={() => navigate('/overview/alerts')}
           >
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <AlertCircle className="h-4 w-4" />
-                Alertas
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-xs text-muted-foreground">
-              Sistema de risco e atenção
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-muted group-hover:bg-primary/10 transition-colors">
+                  <AlertCircle className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Alertas</p>
+                  <p className="text-xs text-muted-foreground">Sistema de atenção</p>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card 
-            className={isMobileView 
-              ? "cursor-pointer active:scale-98 transition-all border-l-4 border-l-amber-500"
-              : "cursor-pointer hover:shadow-md transition-all border-l-4 border-l-amber-500"
-            }
+          <Card
+            className="cursor-pointer hover:bg-accent/50 active:scale-[0.98] transition-all group"
             onClick={() => navigate('/overview/pending')}
           >
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <Zap className="h-4 w-4" />
-                Pendências
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-xs text-muted-foreground">
-              Passivo ativo que precisa resolver
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-muted group-hover:bg-primary/10 transition-colors">
+                  <Zap className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Pendências</p>
+                  <p className="text-xs text-muted-foreground">Tarefas pendentes</p>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card 
-            className={isMobileView 
-              ? "cursor-pointer active:scale-98 transition-all border-l-4 border-l-purple-500"
-              : "cursor-pointer hover:shadow-md transition-all border-l-4 border-l-purple-500"
-            }
+          <Card
+            className="cursor-pointer hover:bg-accent/50 active:scale-[0.98] transition-all group"
             onClick={() => navigate('/overview/upcoming')}
           >
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                Próximos
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-xs text-muted-foreground">
-              Eventos que estão vindo
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-full bg-muted group-hover:bg-primary/10 transition-colors">
+                  <Clock className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Próximos</p>
+                  <p className="text-xs text-muted-foreground">Eventos futuros</p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
       </div>
 
       {!isMobileView && (
-        <Card className="bg-blue-500/5 border-blue-500/30">
-          <CardContent className="pt-6">
+        <Card className="bg-muted/30 border-dashed">
+          <CardContent className="py-4 px-5">
             <p className="text-sm text-muted-foreground">
               <span className="font-medium text-foreground">💡 Dica:</span> Clique em qualquer indicador para explorar detalhes. Use os submódulos para análises mais profundas.
             </p>

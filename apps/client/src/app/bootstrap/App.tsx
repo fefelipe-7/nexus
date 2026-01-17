@@ -4,7 +4,7 @@ import { MODULES } from '@/config/modules.config';
 import { SubmodulePlaceholder } from '@/ui/components/SubmodulePlaceholder';
 
 import { Overview, Home, Weekly, Alerts, Pending, Upcoming, Suggestions } from '@/modules/overview';
-import { Money, CashFlow, Accounts, Cards } from '@/modules/money';
+import { Money, CashFlow, Accounts, Cards, Budget, Purchases } from '@/modules/money';
 import { Time } from '@/modules/time';
 import { Goals } from '@/modules/goals';
 import { Health } from '@/modules/health';
@@ -37,7 +37,7 @@ function App() {
       <ResponsiveLayout>
         <Routes>
           <Route path="/" element={<Home />} />
-          
+
           <Route path="/overview">
             <Route index element={<Overview />} />
             <Route path="weekly" element={<Weekly />} />
@@ -53,15 +53,16 @@ function App() {
             <Route path="accounts" element={<Accounts />} />
             <Route path="cards" element={<Cards />} />
             <Route path="budget" element={<Budget />} />
+            <Route path="purchases" element={<Purchases />} />
           </Route>
 
           {Object.values(MODULES).filter(m => m.id !== 'overview' && m.id !== 'money').map((module) => {
             const ModuleComponent = moduleComponents[module.id];
-            
+
             return (
               <Route key={module.id} path={module.path}>
                 <Route index element={<ModuleComponent />} />
-                
+
                 {module.submodules.map((submodule) => (
                   <Route
                     key={submodule.id}
@@ -78,8 +79,8 @@ function App() {
               </Route>
             );
           })}
-          
-          <Route path="*" element={<Navigate to="/overview" replace />} />
+
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </ResponsiveLayout>
     </Router>

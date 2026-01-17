@@ -1,18 +1,17 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { MobileHeader } from './MobileHeader';
-import { BottomNav } from './BottomNav';
-import { MobileDrawer } from './MobileDrawer';
-import { Breadcrumbs } from '@/ui/components/Breadcrumbs';
+import { ContextualHeader } from './ContextualHeader';
+import { ContextualBottomNav } from './ContextualBottomNav';
+import { ModuleSheet } from './ModuleSheet';
 
 interface MobileLayoutProps {
   children: ReactNode;
 }
 
 export function MobileLayout({ children }: MobileLayoutProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
+    if (isNavigationOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -21,30 +20,26 @@ export function MobileLayout({ children }: MobileLayoutProps) {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isMobileMenuOpen]);
+  }, [isNavigationOpen]);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <MobileHeader 
-        isMobileMenuOpen={isMobileMenuOpen}
-        onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      <ContextualHeader
+        onOpenNavigation={() => setIsNavigationOpen(true)}
       />
 
-      {isMobileMenuOpen && (
-        <MobileDrawer 
-          isOpen={isMobileMenuOpen}
-          onClose={() => setIsMobileMenuOpen(false)}
-        />
-      )}
+      <ModuleSheet
+        isOpen={isNavigationOpen}
+        onClose={() => setIsNavigationOpen(false)}
+      />
 
       <main className="flex-1 overflow-y-auto bg-background pb-20">
         <div className="px-4 py-4 max-w-full">
-          <Breadcrumbs />
           {children}
         </div>
       </main>
 
-      <BottomNav />
+      <ContextualBottomNav />
     </div>
   );
 }

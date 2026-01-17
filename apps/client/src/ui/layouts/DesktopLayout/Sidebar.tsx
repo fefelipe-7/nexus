@@ -3,6 +3,7 @@ import { cn } from '@nexus/shared';
 import { getAllModules } from '@/config/modules.config';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
+import logoNexus from '@/assets/logo-nexus.png';
 
 export function Sidebar() {
   const location = useLocation();
@@ -14,7 +15,7 @@ export function Sidebar() {
   };
 
   return (
-    <aside 
+    <aside
       className={cn(
         'border-r bg-card/50 backdrop-blur-sm flex-shrink-0 flex flex-col transition-all duration-300',
         isCollapsed ? 'w-16' : 'w-64'
@@ -25,11 +26,16 @@ export function Sidebar() {
           'flex h-16 items-center border-b px-4 justify-between',
           isCollapsed && 'px-2 justify-center'
         )}>
-          {!isCollapsed && (
-            <Link to="/overview">
-              <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+          {!isCollapsed ? (
+            <Link to="/" className="flex items-center gap-2">
+              <img src={logoNexus} alt="Nexus" className="h-8 w-8" />
+              <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                 Nexus
-              </h1>
+              </span>
+            </Link>
+          ) : (
+            <Link to="/">
+              <img src={logoNexus} alt="Nexus" className="h-6 w-6" />
             </Link>
           )}
           <button
@@ -49,7 +55,7 @@ export function Sidebar() {
           {modules.map((module) => {
             const isActive = isModuleActive(module.path);
             const Icon = module.icon;
-            
+
             return (
               <Link
                 key={module.id}

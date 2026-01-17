@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { ThemeSelector } from '@/ui/components/components/ThemeSelector';
+import logoNexus from '@/assets/logo-nexus.png';
 
 interface MobileHeaderProps {
   isMobileMenuOpen: boolean;
@@ -11,10 +12,11 @@ export function MobileHeader({ isMobileMenuOpen, onToggleMenu }: MobileHeaderPro
   return (
     <header className="sticky top-0 z-50 border-b bg-card/95 backdrop-blur-md shadow-sm">
       <div className="flex h-14 items-center justify-between px-4">
-        <Link to="/overview" className="flex-1">
-          <h1 className="text-lg font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+        <Link to="/" className="flex items-center gap-2 flex-1">
+          <img src={logoNexus} alt="Nexus" className="h-7 w-7" />
+          <span className="text-lg font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             Nexus
-          </h1>
+          </span>
         </Link>
         <div className="flex items-center gap-2">
           <ThemeSelector />

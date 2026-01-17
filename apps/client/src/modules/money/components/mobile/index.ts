@@ -12,3 +12,10 @@ export { BudgetOverviewCard } from './BudgetOverviewCard';
 export { CurrentMonthCard } from './CurrentMonthCard';
 export { BudgetCategoriesCard } from './BudgetCategoriesCard';
 export { BudgetAlertsCard } from './BudgetAlertsCard';
+
+// Purchases
+export { PurchasesSummaryCard } from './PurchasesSummaryCard';
+export { PurchasesFilterChips } from './PurchasesFilterChips';
+export { PurchaseListItem } from './PurchaseListItem';
+export { PurchasesList } from './PurchasesList';
+export { PurchaseDetailSheet } from './PurchaseDetailSheet';

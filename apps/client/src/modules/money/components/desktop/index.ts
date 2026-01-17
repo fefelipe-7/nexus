@@ -15,3 +15,7 @@ export { CurrentMonthOverview } from './CurrentMonthOverview';
 export { CategoriesBreakdownBudget } from './CategoriesBreakdownBudget';
 export { BudgetAlerts } from './BudgetAlerts';
 export { BudgetConfig } from './BudgetConfig';
+
+// Purchases
+export { PurchasesSummary } from './PurchasesSummary';
+export { PurchasesTable } from './PurchasesTable';
