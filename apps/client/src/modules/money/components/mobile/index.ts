@@ -26,3 +26,10 @@ export { FilterSheet } from './FilterSheet';
 export { QuickFilterBar } from './QuickFilterBar';
 export { EnhancedPurchasesList } from './EnhancedPurchasesList';
 export { AddPurchaseSheet } from './AddPurchaseSheet';
+
+// Subscriptions
+export { SubscriptionsSummaryCard } from './SubscriptionsSummaryCard';
+export { SubscriptionListItem } from './SubscriptionListItem';
+export { SubscriptionsList } from './SubscriptionsList';
+export { SubscriptionRiskCard } from './SubscriptionRiskCard';
+export { SubscriptionDetailSheet } from './SubscriptionDetailSheet';

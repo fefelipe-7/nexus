@@ -4,3 +4,4 @@ export { Accounts } from './screens/Accounts';
 export { Cards } from './screens/Cards';
 export { Budget } from './screens/Budget';
 export { Purchases } from './screens/Purchases';
+export { Subscriptions } from './screens/Subscriptions';

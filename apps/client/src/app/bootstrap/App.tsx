@@ -4,7 +4,7 @@ import { MODULES } from '@/config/modules.config';
 import { SubmodulePlaceholder } from '@/ui/components/SubmodulePlaceholder';
 
 import { Overview, Home, Weekly, Alerts, Pending, Upcoming, Suggestions } from '@/modules/overview';
-import { Money, CashFlow, Accounts, Cards, Budget, Purchases } from '@/modules/money';
+import { Money, CashFlow, Accounts, Cards, Budget, Purchases, Subscriptions } from '@/modules/money';
 import { Time } from '@/modules/time';
 import { Goals } from '@/modules/goals';
 import { Health } from '@/modules/health';
@@ -54,6 +54,7 @@ function App() {
             <Route path="cards" element={<Cards />} />
             <Route path="budget" element={<Budget />} />
             <Route path="purchases" element={<Purchases />} />
+            <Route path="subscriptions" element={<Subscriptions />} />
           </Route>
 
           {Object.values(MODULES).filter(m => m.id !== 'overview' && m.id !== 'money').map((module) => {
