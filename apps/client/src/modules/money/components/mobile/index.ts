@@ -46,3 +46,8 @@ export { AllocationCard } from './AllocationCard';
 export { AssetListItem } from './AssetListItem';
 export { GoalProgressCard } from './GoalProgressCard';
 export { AssetDetailSheet } from './AssetDetailSheet';
+
+// Patrimony
+export { NetWorthCard } from './NetWorthCard';
+export { CompositionCard } from './CompositionCard';
+export { EvolutionCard } from './EvolutionCard';

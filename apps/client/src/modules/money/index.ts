@@ -7,3 +7,4 @@ export { Purchases } from './screens/Purchases';
 export { Subscriptions } from './screens/Subscriptions';
 export { Debts } from './screens/Debts';
 export { Investments } from './screens/Investments';
+export { Patrimony } from './screens/Patrimony';
