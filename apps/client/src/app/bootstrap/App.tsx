@@ -64,7 +64,7 @@ function App() {
 
           <Route path="/time">
             <Route index element={<Time />} />
-            <Route path="agenda" element={<Agenda />} />
+            <Route path="calendar" element={<Agenda />} />
           </Route>
 
           {Object.values(MODULES).filter(m => m.id !== 'overview' && m.id !== 'money' && m.id !== 'time').map((module) => {
