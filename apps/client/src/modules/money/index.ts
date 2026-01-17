@@ -9,3 +9,4 @@ export { Debts } from './screens/Debts';
 export { Investments } from './screens/Investments';
 export { Patrimony } from './screens/Patrimony';
 export { FinancialGoals } from './screens/FinancialGoals';
+export { Reports } from './screens/Reports';

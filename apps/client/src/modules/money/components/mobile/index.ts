@@ -56,3 +56,10 @@ export { EvolutionCard } from './EvolutionCard';
 export { GoalsSummaryCard } from './GoalsSummaryCard';
 export { GoalListItem } from './GoalListItem';
 export { GoalDetailSheet } from './GoalDetailSheet';
+
+// Reports
+export { KPIsCard } from './KPIsCard';
+export { InsightCard, InsightsList } from './InsightCard';
+export { FinancialTimeline } from './FinancialTimeline';
+export { PatrimonyChart } from './PatrimonyChart';
+export { GoalHistoryCard } from './GoalHistoryCard';
