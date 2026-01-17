@@ -8,3 +8,4 @@ export { Subscriptions } from './screens/Subscriptions';
 export { Debts } from './screens/Debts';
 export { Investments } from './screens/Investments';
 export { Patrimony } from './screens/Patrimony';
+export { FinancialGoals } from './screens/FinancialGoals';

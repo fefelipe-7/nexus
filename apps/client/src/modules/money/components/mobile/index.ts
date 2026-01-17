@@ -51,3 +51,8 @@ export { AssetDetailSheet } from './AssetDetailSheet';
 export { NetWorthCard } from './NetWorthCard';
 export { CompositionCard } from './CompositionCard';
 export { EvolutionCard } from './EvolutionCard';
+
+// Financial Goals
+export { GoalsSummaryCard } from './GoalsSummaryCard';
+export { GoalListItem } from './GoalListItem';
+export { GoalDetailSheet } from './GoalDetailSheet';
