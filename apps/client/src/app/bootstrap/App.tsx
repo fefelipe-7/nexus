@@ -5,7 +5,7 @@ import { SubmodulePlaceholder } from '@/ui/components/SubmodulePlaceholder';
 
 import { Overview, Home, Weekly, Alerts, Pending, Upcoming, Suggestions } from '@/modules/overview';
 import { Money, CashFlow, Accounts, Cards, Budget, Purchases, Subscriptions, Debts, Investments, Patrimony, FinancialGoals, Reports } from '@/modules/money';
-import { Time } from '@/modules/time';
+import { Time, Agenda } from '@/modules/time';
 import { Goals } from '@/modules/goals';
 import { Health } from '@/modules/health';
 import { People } from '@/modules/people';
@@ -62,7 +62,12 @@ function App() {
             <Route path="reports" element={<Reports />} />
           </Route>
 
-          {Object.values(MODULES).filter(m => m.id !== 'overview' && m.id !== 'money').map((module) => {
+          <Route path="/time">
+            <Route index element={<Time />} />
+            <Route path="agenda" element={<Agenda />} />
+          </Route>
+
+          {Object.values(MODULES).filter(m => m.id !== 'overview' && m.id !== 'money' && m.id !== 'time').map((module) => {
             const ModuleComponent = moduleComponents[module.id];
 
             return (
