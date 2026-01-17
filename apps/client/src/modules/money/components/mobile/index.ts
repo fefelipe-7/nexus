@@ -33,3 +33,9 @@ export { SubscriptionListItem } from './SubscriptionListItem';
 export { SubscriptionsList } from './SubscriptionsList';
 export { SubscriptionRiskCard } from './SubscriptionRiskCard';
 export { SubscriptionDetailSheet } from './SubscriptionDetailSheet';
+
+// Debts
+export { DebtsSummaryCard } from './DebtsSummaryCard';
+export { DebtListItem } from './DebtListItem';
+export { InstallmentListItem } from './InstallmentListItem';
+export { DebtDetailSheet } from './DebtDetailSheet';
