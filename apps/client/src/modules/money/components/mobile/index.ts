@@ -39,3 +39,10 @@ export { DebtsSummaryCard } from './DebtsSummaryCard';
 export { DebtListItem } from './DebtListItem';
 export { InstallmentListItem } from './InstallmentListItem';
 export { DebtDetailSheet } from './DebtDetailSheet';
+
+// Investments
+export { InvestmentsSummaryCard } from './InvestmentsSummaryCard';
+export { AllocationCard } from './AllocationCard';
+export { AssetListItem } from './AssetListItem';
+export { GoalProgressCard } from './GoalProgressCard';
+export { AssetDetailSheet } from './AssetDetailSheet';
