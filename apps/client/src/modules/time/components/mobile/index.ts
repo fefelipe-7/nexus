@@ -20,3 +20,7 @@ export { QuickTaskInput } from './QuickTaskInput';
 export { HabitsHeader } from './HabitsHeader';
 export { HabitItem } from './HabitItem';
 export { ConsistencyChart } from './ConsistencyChart';
+
+// Time components - Routines
+export { RoutinesHeader } from './RoutinesHeader';
+export { RoutineCard } from './RoutineCard';
