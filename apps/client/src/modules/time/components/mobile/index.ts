@@ -15,3 +15,8 @@ export { CommitmentDetailSheet } from './CommitmentDetailSheet';
 export { TasksHeader } from './TasksHeader';
 export { TaskItem } from './TaskItem';
 export { QuickTaskInput } from './QuickTaskInput';
+
+// Time components - Habits
+export { HabitsHeader } from './HabitsHeader';
+export { HabitItem } from './HabitItem';
+export { ConsistencyChart } from './ConsistencyChart';
