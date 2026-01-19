@@ -28,3 +28,10 @@ export { RoutineCard } from './RoutineCard';
 // Time components - Priorities
 export { PrioritiesHeader } from './PrioritiesHeader';
 export { PriorityCard } from './PriorityCard';
+
+// Time components - History
+export { HistoryHeader } from './HistoryHeader';
+export { TimeDistributionChart } from './TimeDistributionChart';
+export { RealTimeline } from './RealTimeline';
+export { AdherenceStats } from './AdherenceStats';
+export { InsightCard } from './InsightCard';
