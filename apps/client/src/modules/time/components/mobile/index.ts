@@ -10,3 +10,8 @@ export { EventDetailSheet } from './EventDetailSheet';
 export { CommitmentsHeader } from './CommitmentsHeader';
 export { CommitmentItem } from './CommitmentItem';
 export { CommitmentDetailSheet } from './CommitmentDetailSheet';
+
+// Time components - Tasks
+export { TasksHeader } from './TasksHeader';
+export { TaskItem } from './TaskItem';
+export { QuickTaskInput } from './QuickTaskInput';
