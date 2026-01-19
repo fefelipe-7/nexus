@@ -4,3 +4,4 @@ export { Commitments } from './screens/Commitments';
 export { Tasks } from './screens/Tasks';
 export { Habits } from './screens/Habits';
 export { Routines } from './screens/Routines';
+export { Priorities } from './screens/Priorities';

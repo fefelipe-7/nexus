@@ -24,3 +24,7 @@ export { ConsistencyChart } from './ConsistencyChart';
 // Time components - Routines
 export { RoutinesHeader } from './RoutinesHeader';
 export { RoutineCard } from './RoutineCard';
+
+// Time components - Priorities
+export { PrioritiesHeader } from './PrioritiesHeader';
+export { PriorityCard } from './PriorityCard';
