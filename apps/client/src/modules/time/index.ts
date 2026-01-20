@@ -6,3 +6,4 @@ export { Habits } from './screens/Habits';
 export { Routines } from './screens/Routines';
 export { Priorities } from './screens/Priorities';
 export { History } from './screens/History';
+export { WeeklyPlanning } from './screens/WeeklyPlanning';

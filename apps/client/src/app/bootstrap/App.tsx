@@ -71,6 +71,7 @@ function App() {
             <Route path="routines" element={<Routines />} />
             <Route path="priorities" element={<Priorities />} />
             <Route path="history" element={<History />} />
+            <Route path="planning" element={<WeeklyPlanning />} />
           </Route>
 
           {Object.values(MODULES).filter(m => m.id !== 'overview' && m.id !== 'money' && m.id !== 'time').map((module) => {

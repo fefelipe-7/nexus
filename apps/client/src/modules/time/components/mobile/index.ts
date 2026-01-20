@@ -35,3 +35,12 @@ export { TimeDistributionChart } from './TimeDistributionChart';
 export { RealTimeline } from './RealTimeline';
 export { AdherenceStats } from './AdherenceStats';
 export { InsightCard } from './InsightCard';
+
+// Time components - Planning
+export { PlanningHeader } from './PlanningHeader';
+export { PreviousWeekReview } from './PreviousWeekReview';
+export { PriorityDefinition } from './PriorityDefinition';
+export { CapacityView } from './CapacityView';
+export { TimeBlockStep } from './TimeBlockStep';
+export { TaskIntegrationStep } from './TaskIntegrationStep';
+export { ConfirmationStep } from './ConfirmationStep';
