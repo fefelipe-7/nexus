@@ -6,7 +6,7 @@ import { SubmodulePlaceholder } from '@/ui/components/SubmodulePlaceholder';
 import { Overview, Home, Weekly, Alerts, Pending, Upcoming, Suggestions } from '@/modules/overview';
 import { Money, CashFlow, Accounts, Cards, Budget, Purchases, Subscriptions, Debts, Investments, Patrimony, FinancialGoals, Reports } from '@/modules/money';
 import { Time, Agenda, Commitments, Tasks, Habits, Routines, Priorities, History, WeeklyPlanning } from '@/modules/time';
-import { Goals } from '@/modules/goals';
+import { Goals, LifeGoals, YearlyGoals, ShortTermGoals, ActionPlans } from '@/modules/goals';
 import { Health } from '@/modules/health';
 import { People } from '@/modules/people';
 import { WorkStudy } from '@/modules/work-study';
@@ -81,16 +81,35 @@ function App() {
               <Route key={module.id} path={module.path}>
                 <Route index element={<ModuleComponent />} />
 
+                {module.id === 'goals' && (
+                  <>
+                    <Route path="life" element={<LifeGoals />} />
+                    <Route path="yearly" element={<YearlyGoals />} />
+                    <Route path="short-term" element={<ShortTermGoals />} />
+                    <Route path="action-plans" element={<ActionPlans />} />
+                  </>
+                )}
+
                 {module.submodules.map((submodule) => (
                   <Route
                     key={submodule.id}
                     path={submodule.path.replace(module.path + '/', '')}
                     element={
-                      <SubmodulePlaceholder
-                        title={submodule.name}
-                        description={submodule.description}
-                        moduleName={module.name}
-                      />
+                      (module.id === 'goals' && submodule.id === 'life') ? (
+                        <LifeGoals />
+                      ) : (module.id === 'goals' && submodule.id === 'yearly') ? (
+                        <YearlyGoals />
+                      ) : (module.id === 'goals' && submodule.id === 'short-term') ? (
+                        <ShortTermGoals />
+                      ) : (module.id === 'goals' && submodule.id === 'action-plans') ? (
+                        <ActionPlans />
+                      ) : (
+                        <SubmodulePlaceholder
+                          title={submodule.name}
+                          description={submodule.description}
+                          moduleName={module.name}
+                        />
+                      )
                     }
                   />
                 ))}
