@@ -5,7 +5,7 @@ import { SubmodulePlaceholder } from '@/ui/components/SubmodulePlaceholder';
 
 import { Overview, Home, Weekly, Alerts, Pending, Upcoming, Suggestions } from '@/modules/overview';
 import { Money, CashFlow, Accounts, Cards, Budget, Purchases, Subscriptions, Debts, Investments, Patrimony, FinancialGoals, Reports } from '@/modules/money';
-import { Time, Agenda, Commitments, Tasks, Habits, Routines, Priorities, History } from '@/modules/time';
+import { Time, Agenda, Commitments, Tasks, Habits, Routines, Priorities, History, WeeklyPlanning } from '@/modules/time';
 import { Goals } from '@/modules/goals';
 import { Health } from '@/modules/health';
 import { People } from '@/modules/people';
