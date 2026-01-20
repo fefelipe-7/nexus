@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@/ui/components/ui': path.resolve(__dirname, './src/ui/components/components/ui'),
       '@nexus/core': path.resolve(__dirname, '../../packages/core/src'),
       '@nexus/shared': path.resolve(__dirname, '../../packages/shared/src'),
     },
@@ -21,12 +22,9 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-      },
-    },
+  },
+  esbuild: {
+    drop: ['console', 'debugger'],
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],

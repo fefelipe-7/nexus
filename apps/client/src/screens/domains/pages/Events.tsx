@@ -23,7 +23,7 @@ export function Events() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const newEvent: Event = {
       title,
       description: description.trim() || undefined,
@@ -33,7 +33,7 @@ export function Events() {
     };
 
     await db.events.add(newEvent);
-    
+
     setTitle('');
     setDescription('');
     setStartTime('');
@@ -129,15 +129,14 @@ export function Events() {
                   key={event.id}
                   className="flex items-start gap-3 rounded-lg border p-4"
                 >
-                  <CalendarIcon className="h-5 w-5 text-muted-foreground mt-1" />
+                  <Calendar className="h-5 w-5 text-muted-foreground mt-1" />
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium">{event.title}</h4>
-                      <span className={`text-xs px-2 py-1 rounded-full ${
-                        event.type === 'scheduled' 
-                          ? 'bg-blue-100 text-blue-700' 
+                      <span className={`text-xs px-2 py-1 rounded-full ${event.type === 'scheduled'
+                          ? 'bg-blue-100 text-blue-700'
                           : 'bg-orange-100 text-orange-700'
-                      }`}>
+                        }`}>
                         {event.type}
                       </span>
                     </div>

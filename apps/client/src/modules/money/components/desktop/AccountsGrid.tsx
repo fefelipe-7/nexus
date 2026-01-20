@@ -24,6 +24,7 @@ export function AccountsGrid({ accounts }: AccountsGridProps) {
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {accounts.map((account) => {
         const isNegative = account.balance < 0;
+        const isCredit = account.type === 'credit';
 
         return (
           <Card

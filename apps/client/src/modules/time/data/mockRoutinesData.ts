@@ -215,8 +215,8 @@ const avgExecutionRate = Math.round(
 const predictabilityScore = Math.min(100, Math.round(avgExecutionRate * 1.1));
 
 // Insight
-let insight = {
-    type: 'info' as const,
+let insight: RoutinesSummary['insight'] = {
+    type: 'info',
     message: 'Suas rotinas estão estruturadas.',
 };
 

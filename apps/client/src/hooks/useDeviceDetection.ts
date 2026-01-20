@@ -41,7 +41,7 @@ export function useDeviceDetection(): DeviceDetection {
     const height = window.innerHeight;
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     const hasHoverCapability = window.matchMedia('(hover: hover)').matches;
-    
+
     let deviceType: DeviceType = 'desktop';
     if (width < BREAKPOINTS.mobile) {
       deviceType = 'mobile';
@@ -67,7 +67,7 @@ export function useDeviceDetection(): DeviceDetection {
       const height = window.innerHeight;
       const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
       const hasHoverCapability = window.matchMedia('(hover: hover)').matches;
-      
+
       let deviceType: DeviceType = 'desktop';
       if (width < BREAKPOINTS.mobile) {
         deviceType = 'mobile';
@@ -87,7 +87,7 @@ export function useDeviceDetection(): DeviceDetection {
       });
     };
 
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: any;
     const debouncedUpdate = () => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(updateDetection, 150);

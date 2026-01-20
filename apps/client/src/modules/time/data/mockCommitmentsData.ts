@@ -235,8 +235,8 @@ if (overdueCount >= 3 || criticalCount >= 3) {
 }
 
 // Generate insight
-let insight = {
-    type: 'info' as const,
+let insight: CommitmentsSummary['insight'] = {
+    type: 'info',
     message: 'Sua carga está equilibrada.',
 };
 if (overdueCount > 0) {

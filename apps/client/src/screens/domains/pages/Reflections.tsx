@@ -8,7 +8,7 @@ import { Textarea } from '@/ui/components/ui/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/components/ui/tabs';
 import { Plus, MessageSquare, BookMarked, BarChart3 } from 'lucide-react';
-import { formatDate } from '@nexus/shared';
+import { formatDate, formatDateTime } from '@nexus/shared';
 
 export function Reflections() {
   const [open, setOpen] = useState(false);
@@ -23,7 +23,7 @@ export function Reflections() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const newReflection: Reflection = {
       title: title.trim() || undefined,
       content,
@@ -33,7 +33,7 @@ export function Reflections() {
     };
 
     await db.reflections.add(newReflection);
-    
+
     setTitle('');
     setContent('');
     setType('journal');
@@ -68,8 +68,8 @@ export function Reflections() {
               <h4 className="font-medium">{reflection.title}</h4>
             )}
             <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-              {reflection.content.length > 300 
-                ? `${reflection.content.substring(0, 300)}...` 
+              {reflection.content.length > 300
+                ? `${reflection.content.substring(0, 300)}...`
                 : reflection.content}
             </p>
             <div className="flex gap-2 text-xs text-muted-foreground">
@@ -80,13 +80,12 @@ export function Reflections() {
             </div>
           </div>
         </div>
-        <span className={`text-xs px-2 py-1 rounded-full capitalize ${
-          reflection.type === 'journal' 
-            ? 'bg-blue-100 text-blue-700' 
+        <span className={`text-xs px-2 py-1 rounded-full capitalize ${reflection.type === 'journal'
+            ? 'bg-blue-100 text-blue-700'
             : reflection.type === 'review'
-            ? 'bg-green-100 text-green-700'
-            : 'bg-purple-100 text-purple-700'
-        }`}>
+              ? 'bg-green-100 text-green-700'
+              : 'bg-purple-100 text-purple-700'
+          }`}>
           {reflection.type}
         </span>
       </div>

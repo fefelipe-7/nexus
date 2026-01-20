@@ -227,8 +227,8 @@ const avgConsistency = Math.round(
 const activeStreaks = activeHabits.filter(h => h.currentStreak > 0).length;
 
 // Insight
-let insight = {
-    type: 'info' as const,
+let insight: HabitsSummary['insight'] = {
+    type: 'info',
     message: 'Continue construindo seus hábitos.',
 };
 

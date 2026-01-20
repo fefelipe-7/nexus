@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, Knowledge } from '@/data/local/db';
+import { db } from '@/data/local/db';
+import type { Knowledge as KnowledgeType } from '@/data/local/db';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/components/ui/card';
 import { Button } from '@/ui/components/ui/button';
 import { Input } from '@/ui/components/ui/input';
 import { Textarea } from '@/ui/components/ui/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/components/ui/tabs';
-import { Plus, BookOpen, Star } from 'lucide-react';
-import { formatDate } from '@nexus/shared';
+import { Plus, BookOpen, Star, FileText, Lightbulb, GraduationCap } from 'lucide-react';
+import { formatDate, formatDateTime } from '@nexus/shared';
 
 export function Knowledge() {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,7 @@ export function Knowledge() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const now = new Date();
     const newKnowledge: KnowledgeType = {
       title,
@@ -33,7 +34,7 @@ export function Knowledge() {
     };
 
     await db.knowledge.add(newKnowledge);
-    
+
     setTitle('');
     setContent('');
     setType('note');
@@ -66,8 +67,8 @@ export function Knowledge() {
           <div className="flex-1 space-y-1">
             <h4 className="font-medium">{item.title}</h4>
             <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-              {item.content.length > 200 
-                ? `${item.content.substring(0, 200)}...` 
+              {item.content.length > 200
+                ? `${item.content.substring(0, 200)}...`
                 : item.content}
             </p>
             <div className="flex gap-2 text-xs text-muted-foreground">
@@ -78,15 +79,14 @@ export function Knowledge() {
             </div>
           </div>
         </div>
-        <span className={`text-xs px-2 py-1 rounded-full capitalize ${
-          item.type === 'note' 
-            ? 'bg-blue-100 text-blue-700' 
+        <span className={`text-xs px-2 py-1 rounded-full capitalize ${item.type === 'note'
+            ? 'bg-blue-100 text-blue-700'
             : item.type === 'idea'
-            ? 'bg-purple-100 text-purple-700'
-            : item.type === 'learning'
-            ? 'bg-green-100 text-green-700'
-            : 'bg-gray-100 text-gray-700'
-        }`}>
+              ? 'bg-purple-100 text-purple-700'
+              : item.type === 'learning'
+                ? 'bg-green-100 text-green-700'
+                : 'bg-gray-100 text-gray-700'
+          }`}>
           {item.type}
         </span>
       </div>

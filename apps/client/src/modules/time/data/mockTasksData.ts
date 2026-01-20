@@ -198,8 +198,8 @@ const completedToday = tasks.filter(t => t.completedAt?.toDateString() === today
 const currentFocus = tasks.find(t => t.status === 'in_progress');
 
 // Generate insight
-let insight = {
-    type: 'info' as const,
+let insight: TasksSummary['insight'] = {
+    type: 'info',
     message: 'Sua lista está organizada.',
 };
 if (noPriorityCount >= 3) {

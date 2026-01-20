@@ -170,8 +170,8 @@ if (noActionsPriorities.length > 0) {
 }
 
 // Insight
-let insight = {
-    type: 'info' as const,
+let insight: PrioritiesSummary['insight'] = {
+    type: 'info',
     message: 'Suas prioridades estão equilibradas.',
 };
 

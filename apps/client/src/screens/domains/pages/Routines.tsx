@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db, Routine } from '@/data/local/db';
+import { db, Routine, RoutineLog } from '@/data/local/db';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/components/ui/card';
 import { Button } from '@/ui/components/ui/button';
 import { Input } from '@/ui/components/ui/input';
 import { Textarea } from '@/ui/components/ui/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/components/ui/dialog';
-import { Plus, Repeat, CheckCircle2 } from 'lucide-react';
-import { formatDate } from '@/lib/utils';
+import { Plus, Repeat, CheckCircle2, Circle } from 'lucide-react';
+import { formatDate } from '@nexus/shared';
 
 export function Routines() {
   const [open, setOpen] = useState(false);
@@ -32,7 +32,7 @@ export function Routines() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const newRoutine: Routine = {
       title,
       description: description.trim() || undefined,
@@ -42,7 +42,7 @@ export function Routines() {
     };
 
     await db.routines.add(newRoutine);
-    
+
     setTitle('');
     setDescription('');
     setFrequency('daily');
