@@ -6,7 +6,7 @@ import { SubmodulePlaceholder } from '@/ui/components/SubmodulePlaceholder';
 import { Overview, Home, Weekly, Alerts, Pending, Upcoming, Suggestions } from '@/modules/overview';
 import { Money, CashFlow, Accounts, Cards, Budget, Purchases, Subscriptions, Debts, Investments, Patrimony, FinancialGoals, Reports } from '@/modules/money';
 import { Time, Agenda, Commitments, Tasks, Habits, Routines, Priorities, History, WeeklyPlanning } from '@/modules/time';
-import { Goals, LifeGoals, YearlyGoals, ShortTermGoals, ActionPlans } from '@/modules/goals';
+import { Goals, LifeGoals, YearlyGoals, ShortTermGoals, ActionPlans, ProgressIndicators, PeriodicReviews, GoalConnections } from '@/modules/goals';
 import { Health } from '@/modules/health';
 import { People } from '@/modules/people';
 import { WorkStudy } from '@/modules/work-study';
@@ -87,6 +87,9 @@ function App() {
                     <Route path="yearly" element={<YearlyGoals />} />
                     <Route path="short-term" element={<ShortTermGoals />} />
                     <Route path="action-plans" element={<ActionPlans />} />
+                    <Route path="progress" element={<ProgressIndicators />} />
+                    <Route path="reviews" element={<PeriodicReviews />} />
+                    <Route path="connections" element={<GoalConnections />} />
                   </>
                 )}
 
@@ -103,6 +106,12 @@ function App() {
                         <ShortTermGoals />
                       ) : (module.id === 'goals' && submodule.id === 'action-plans') ? (
                         <ActionPlans />
+                      ) : (module.id === 'goals' && submodule.id === 'progress') ? (
+                        <ProgressIndicators />
+                      ) : (module.id === 'goals' && submodule.id === 'reviews') ? (
+                        <PeriodicReviews />
+                      ) : (module.id === 'goals' && submodule.id === 'connections') ? (
+                        <GoalConnections />
                       ) : (
                         <SubmodulePlaceholder
                           title={submodule.name}
