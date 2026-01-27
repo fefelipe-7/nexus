@@ -7,7 +7,7 @@ import { Overview, Home, Weekly, Alerts, Pending, Upcoming, Suggestions } from '
 import { Money, CashFlow, Accounts, Cards, Budget, Purchases, Subscriptions, Debts, Investments, Patrimony, FinancialGoals, Reports } from '@/modules/money';
 import { Time, Agenda, Commitments, Tasks, Habits, Routines, Priorities, History, WeeklyPlanning } from '@/modules/time';
 import { Goals, LifeGoals, YearlyGoals, ShortTermGoals, ActionPlans, ProgressIndicators, PeriodicReviews, GoalConnections } from '@/modules/goals';
-import { Health, PhysicalHealth, MentalHealth } from '@/modules/health';
+import { Health, PhysicalHealth, MentalHealth, Mood } from '@/modules/health';
 import { People } from '@/modules/people';
 import { WorkStudy } from '@/modules/work-study';
 import { HomeThings } from '@/modules/home-things';
@@ -119,6 +119,8 @@ function App() {
                         <PeriodicReviews />
                       ) : (module.id === 'goals' && submodule.id === 'connections') ? (
                         <GoalConnections />
+                      ) : (module.id === 'health' && submodule.id === 'mood') ? (
+                        <Mood />
                       ) : (
                         <SubmodulePlaceholder
                           title={submodule.name}
