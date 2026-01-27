@@ -7,7 +7,7 @@ export { AccountsOverview } from './AccountsOverview';
 export { AccountsGrid } from './AccountsGrid';
 export { RecentTransactionsTable } from './RecentTransactionsTable';
 export { CreditHealthOverview } from './CreditHealthOverview';
-export { CardsGrid } from './CardsGrid';
+// export { CardsGrid } from './CardsGrid';
 export { CurrentInvoice } from './CurrentInvoice';
 export { FutureCommitments } from './FutureCommitments';
 export { BudgetOverview } from './BudgetOverview';

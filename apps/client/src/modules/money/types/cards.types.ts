@@ -6,18 +6,16 @@ export interface Card {
   id: string;
   name: string;
   type: CardType;
-  brand: CardBrand;
-  lastDigits: string;
-  limit: number;
-  availableLimit: number;
-  usedLimit: number;
-  currentInvoice: number;
-  dueDate: Date;
-  closingDate: Date;
-  minimumPayment?: number;
-  status: CardStatus;
+  brand: string;
+  last_digits: string;
+  limit_amount?: number;
+  closing_day?: number;
+  due_day?: number;
+  account_id?: string;
+  status: 'active' | 'blocked' | 'cancelled';
   color: string;
-  institution: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Installment {
