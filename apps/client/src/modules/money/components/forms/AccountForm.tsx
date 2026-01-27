@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Input, Label } from '@/ui/components/components/ui';
+import { Button, Input } from '@/ui/components/components/ui';
 import { X } from 'lucide-react';
 import type { Account, AccountType } from '@/modules/money/types/accounts.types';
 
@@ -84,7 +84,7 @@ export function AccountForm({ account, onSubmit, onCancel }: AccountFormProps) {
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {/* Name */}
                         <div className="space-y-2">
-                            <Label htmlFor="name">Nome da Conta *</Label>
+                            <label htmlFor="name" className="text-sm font-medium">Nome da Conta *</label>
                             <Input
                                 id="name"
                                 value={name}
@@ -96,7 +96,7 @@ export function AccountForm({ account, onSubmit, onCancel }: AccountFormProps) {
 
                         {/* Type */}
                         <div className="space-y-2">
-                            <Label htmlFor="type">Tipo *</Label>
+                            <label htmlFor="type" className="text-sm font-medium">Tipo *</label>
                             <select
                                 id="type"
                                 value={type}
@@ -112,7 +112,7 @@ export function AccountForm({ account, onSubmit, onCancel }: AccountFormProps) {
 
                         {/* Balance */}
                         <div className="space-y-2">
-                            <Label htmlFor="balance">Saldo Inicial</Label>
+                            <label htmlFor="balance" className="text-sm font-medium">Saldo Inicial</label>
                             <Input
                                 id="balance"
                                 type="number"
@@ -125,7 +125,7 @@ export function AccountForm({ account, onSubmit, onCancel }: AccountFormProps) {
 
                         {/* Institution */}
                         <div className="space-y-2">
-                            <Label htmlFor="institution">Instituição (Opcional)</Label>
+                            <label htmlFor="institution" className="text-sm font-medium">Instituição (Opcional)</label>
                             <Input
                                 id="institution"
                                 value={institution}
@@ -136,7 +136,7 @@ export function AccountForm({ account, onSubmit, onCancel }: AccountFormProps) {
 
                         {/* Color */}
                         <div className="space-y-2">
-                            <Label>Cor</Label>
+                            <label className="text-sm font-medium">Cor</label>
                             <div className="flex gap-2 flex-wrap">
                                 {COLORS.map(c => (
                                     <button
@@ -153,7 +153,7 @@ export function AccountForm({ account, onSubmit, onCancel }: AccountFormProps) {
 
                         {/* Icon */}
                         <div className="space-y-2">
-                            <Label>Ícone</Label>
+                            <label className="text-sm font-medium">Ícone</label>
                             <div className="flex gap-2 flex-wrap">
                                 {ICONS.map(i => (
                                     <button
