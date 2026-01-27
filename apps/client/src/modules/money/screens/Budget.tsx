@@ -1,150 +1,132 @@
+import { useState } from 'react';
 import { useDeviceDetection } from '@/hooks/useDeviceDetection';
-import { mockBudgetData } from '../data/mockBudgetData';
+import { useBudget } from '@/hooks/data/useBudget';
 import { FAB } from '@/ui/layouts/MobileLayout/FAB';
-import { Plus, Settings } from 'lucide-react';
+import { Plus, Loader2 } from 'lucide-react';
 import { Button } from '@/ui/components/components/ui';
 
-import {
-  BudgetOverviewCard,
-  CurrentMonthCard,
-  BudgetCategoriesCard,
-  BudgetAlertsCard,
-} from '../components/mobile';
-
-import {
-  BudgetOverview,
-  CurrentMonthOverview,
-  CategoriesBreakdownBudget,
-  BudgetAlerts,
-  BudgetConfig,
-} from '../components/desktop';
+import { BudgetWizard } from '../components/wizards/BudgetWizard';
+import { EmptyBudget } from '../components/empty-states/EmptyBudget';
 
 export function Budget() {
   const { isMobile, isTablet } = useDeviceDetection();
   const isMobileView = isMobile || isTablet;
 
-  const data = mockBudgetData;
+  const { budgets, isLoading, error, addBudget, refresh } = useBudget();
+  const [showWizard, setShowWizard] = useState(false);
 
-  const handleCreateBudget = () => {
-    console.log('Criar orçamento');
+  const handleAddBudget = () => {
+    setShowWizard(true);
   };
 
-  const handleEditBudget = () => {
-    console.log('Editar orçamento');
+  const handleWizardComplete = async (budgetData: any) => {
+    await addBudget(budgetData);
+    setShowWizard(false);
   };
 
-  const handleAddCategory = () => {
-    console.log('Adicionar categoria');
-  };
-
-  const handleCategoryClick = (categoryId: string) => {
-    console.log('Categoria clicada:', categoryId);
-  };
-
-  const handleEditCategory = (categoryId: string) => {
-    console.log('Editar categoria:', categoryId);
-  };
-
-  const handleDismissAlert = (alertId: string) => {
-    console.log('Dispensar alerta:', alertId);
-  };
-
-  const handlePreviousMonth = () => {
-    console.log('Mês anterior');
-  };
-
-  const handleNextMonth = () => {
-    console.log('Próximo mês');
-  };
-
-  if (isMobileView) {
+  if (isLoading) {
     return (
-      <div className="space-y-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight mb-1">Orçamento</h1>
-          <p className="text-sm text-muted-foreground">
-            Controle seus gastos e mantenha suas finanças equilibradas
-          </p>
-        </div>
-
-        <BudgetOverviewCard overview={data.overview} />
-
-        <CurrentMonthCard
-          month={data.currentMonth}
-          onPreviousMonth={handlePreviousMonth}
-          onNextMonth={handleNextMonth}
-        />
-
-        <BudgetAlertsCard alerts={data.alerts} />
-
-        <BudgetCategoriesCard
-          categories={data.categories}
-          onCategoryClick={handleCategoryClick}
-        />
-
-        <FAB
-          onClick={handleEditBudget}
-          icon={Settings}
-          label="Configurar"
-        />
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
-  return (
-    <div className="space-y-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight mb-1">Orçamento</h1>
-          <p className="text-muted-foreground">
-            Controle financeiro inteligente e previsível
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" onClick={handleEditBudget}>
-            <Settings className="h-4 w-4 mr-2" />
-            Configurar
-          </Button>
-          <Button size="sm" onClick={handleAddCategory}>
-            <Plus className="h-4 w-4 mr-2" />
-            Nova Categoria
-          </Button>
-        </div>
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] p-8 text-center">
+        <p className="text-rose-600 mb-4">Erro ao carregar orçamentos: {error.message}</p>
+        <Button onClick={refresh}>Tentar Novamente</Button>
       </div>
+    );
+  }
 
-      <BudgetOverview overview={data.overview} />
+  if (budgets.length === 0) {
+    return (
+      <>
+        <EmptyBudget onAddBudget={handleAddBudget} />
+        {showWizard && (
+          <BudgetWizard
+            onComplete={handleWizardComplete}
+            onCancel={() => setShowWizard(false)}
+          />
+        )}
+      </>
+    );
+  }
 
-      <div className="grid gap-6 lg:grid-cols-12">
-        <div className="lg:col-span-4 space-y-6">
-          <CurrentMonthOverview
-            month={data.currentMonth}
-            onPreviousMonth={handlePreviousMonth}
-            onNextMonth={handleNextMonth}
-          />
-          
-          <BudgetConfig
-            config={data.config}
-            onCreateBudget={handleCreateBudget}
-            onEditBudget={handleEditBudget}
-            onAddCategory={handleAddCategory}
-          />
+  const BudgetList = () => (
+    <div className="space-y-4">
+      {budgets.map((budget) => (
+        <div key={budget.id} className="p-4 rounded-xl border border-border bg-background">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="font-semibold">{budget.category}</h3>
+            <span className="text-sm font-medium">R$ {budget.limit_amount}</span>
+          </div>
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div className="h-full bg-emerald-500 w-0" /> {/* Placeholder progress */}
+          </div>
+          <p className="text-xs text-muted-foreground mt-2 text-right">0% utilizado</p>
         </div>
-
-        <div className="lg:col-span-5 space-y-6">
-          <CategoriesBreakdownBudget
-            categories={data.categories}
-            onCategoryClick={handleCategoryClick}
-            onEditCategory={handleEditCategory}
-          />
-        </div>
-
-        <div className="lg:col-span-3 space-y-6">
-          <BudgetAlerts
-            alerts={data.alerts}
-            onDismissAlert={handleDismissAlert}
-          />
-        </div>
-      </div>
+      ))}
     </div>
+  );
+
+  if (isMobileView) {
+    return (
+      <>
+        <div className="space-y-4">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight mb-1">Orçamento</h1>
+            <p className="text-sm text-muted-foreground">
+              Planeje seus limites de gastos
+            </p>
+          </div>
+
+          <BudgetList />
+
+          <FAB
+            onClick={handleAddBudget}
+            icon={Plus}
+            label="Novo Orçamento"
+          />
+        </div>
+
+        {showWizard && (
+          <BudgetWizard
+            onComplete={handleWizardComplete}
+            onCancel={() => setShowWizard(false)}
+          />
+        )}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div className="space-y-6">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight mb-1">Orçamento</h1>
+            <p className="text-muted-foreground">
+              Defina limites e acompanhe seus gastos
+            </p>
+          </div>
+          <Button size="sm" onClick={handleAddBudget}>
+            <Plus className="h-4 w-4 mr-2" />
+            Novo Orçamento
+          </Button>
+        </div>
+
+        <BudgetList />
+      </div>
+
+      {showWizard && (
+        <BudgetWizard
+          onComplete={handleWizardComplete}
+          onCancel={() => setShowWizard(false)}
+        />
+      )}
+    </>
   );
 }
