@@ -52,6 +52,11 @@ async function migration_002_config(db) {
     ['sidebar_collapsed', '0'],
     ['active_tab', 'dia'],
     ['theme', 'light'],
+    ['window_width', '0'],
+    ['window_height', '0'],
+    ['window_x', ''],
+    ['window_y', ''],
+    ['window_maximized', '0'],
   ];
   for (const [chave, valor] of defaults) {
     await db.execute(

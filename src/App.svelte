@@ -1,13 +1,22 @@
 <script>
   import Sidebar from '$lib/components/layout/Sidebar.svelte';
   import Dashboard from './routes/Dashboard.svelte';
+  import Tarefas from './routes/Tarefas.svelte';
   import { currentRoute } from '$lib/stores/navigation.js';
   import { initDb } from '$lib/db/client.js';
+  import { restaurarJanela, iniciarPersistenciaJanela } from '$lib/utils/window.js';
   import { onMount } from 'svelte';
 
-  onMount(async () => { await initDb(); });
+  onMount(async () => {
+    await initDb();
+    await restaurarJanela();
+    await iniciarPersistenciaJanela();
+  });
 
-  const views = { dashboard: Dashboard };
+  const views = { 
+    dashboard: Dashboard,
+    tarefas: Tarefas
+  };
   $: currentView = views[$currentRoute] ?? Dashboard;
 </script>
 

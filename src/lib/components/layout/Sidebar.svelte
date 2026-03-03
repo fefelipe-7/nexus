@@ -10,7 +10,7 @@
       label: 'principal',
       items: [
         { id: 'dashboard',  label: 'dashboard',  icon: Home,        active: true  },
-        { id: 'tarefas',    label: 'tarefas',    icon: CheckSquare, active: false },
+        { id: 'tarefas',    label: 'tarefas',    icon: CheckSquare, active: true  },
         { id: 'calendario', label: 'calendario', icon: Calendar,    active: false },
       ]
     },

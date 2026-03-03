@@ -1,29 +1,36 @@
 <!-- src/lib/components/tarefas/ModalTarefa.svelte -->
 <script>
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { createEventDispatcher, onMount, tick } from 'svelte';
   import { activeModal, tarefaEditando } from '$lib/stores/ui.js';
   import { areas } from '$lib/stores/areas.js';
-  import { criarTarefa, atualizarTarefa } from '$lib/db/queries/tarefas.js';
+  import { criarTarefa, atualizarTarefa, deletarTarefa } from '$lib/db/queries/tarefas.js';
   import { hoje } from '$lib/utils/dates.js';
 
   const dispatch = createEventDispatcher();
 
   let inputTitulo;
+  let mostrarDetalhes = false;
 
-  // preenche com dados da tarefa sendo editada, ou valores padrao
   $: editando = $tarefaEditando;
 
-  let titulo       = editando?.titulo       ?? '';
-  let descricao    = editando?.descricao    ?? '';
-  let areaId       = editando?.area_id      ?? null;
-  let prioridade   = editando?.prioridade   ?? 'media';
+  let titulo       = editando?.titulo        ?? '';
+  let descricao    = editando?.descricao     ?? '';
+  let areaId       = editando?.area_id       ?? null;
+  let prioridade   = editando?.prioridade    ?? 'media';
   let dataPrevista = editando?.data_prevista ?? hoje();
   let horaPrevista = editando?.hora_prevista ?? '';
 
-  let salvando = false;
-  let erro     = '';
+  // abre detalhes automaticamente se a tarefa editada ja tem campos preenchidos
+  $: if (editando) {
+    mostrarDetalhes = !!(editando.descricao || editando.area_id || editando.hora_prevista || editando.prioridade !== 'media');
+  }
 
-  onMount(() => {
+  let salvando  = false;
+  let deletando = false;
+  let erro      = '';
+
+  onMount(async () => {
+    await tick(); // garante que o dom renderizou
     inputTitulo?.focus();
   });
 
@@ -35,30 +42,27 @@
   async function salvar() {
     if (!titulo.trim()) {
       erro = 'o titulo e obrigatorio';
+      inputTitulo?.focus();
       return;
     }
     salvando = true;
     erro = '';
     try {
+      const dados = {
+        titulo:       titulo.trim(),
+        descricao:    descricao.trim() || null,
+        areaId:       areaId || null,
+        prioridade,
+        dataPrevista: dataPrevista || null,
+        horaPrevista: horaPrevista || null,
+      };
+
       if (editando) {
-        await atualizarTarefa(editando.id, {
-          titulo: titulo.trim(),
-          descricao: descricao.trim() || null,
-          areaId: areaId || null,
-          prioridade,
-          dataPrevista: dataPrevista || null,
-          horaPrevista: horaPrevista || null,
-        });
+        await atualizarTarefa(editando.id, dados);
       } else {
-        await criarTarefa({
-          titulo: titulo.trim(),
-          descricao: descricao.trim() || null,
-          areaId: areaId || null,
-          prioridade,
-          dataPrevista: dataPrevista || null,
-          horaPrevista: horaPrevista || null,
-        });
+        await criarTarefa(dados);
       }
+
       dispatch('salvo');
       fechar();
     } catch (e) {
@@ -68,149 +72,261 @@
     }
   }
 
+  async function remover() {
+    if (!editando) return;
+    deletando = true;
+    try {
+      if (deletarTarefa) {
+        await deletarTarefa(editando.id);
+      }
+      dispatch('salvo');
+      fechar();
+    } finally {
+      deletando = false;
+    }
+  }
+
   function onKeydown(e) {
     if (e.key === 'Escape') fechar();
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) salvar();
   }
 
   const PRIORIDADES = [
-    { valor: 'critica', label: 'critica'  },
-    { valor: 'alta',    label: 'alta'     },
-    { valor: 'media',   label: 'media'    },
-    { valor: 'baixa',   label: 'baixa'    },
+    { valor: 'critica', label: 'critica', cor: '#ef4444' },
+    { valor: 'alta',    label: 'alta',    cor: '#f59e0b' },
+    { valor: 'media',   label: 'media',   cor: '#9b9b9b' },
+    { valor: 'baixa',   label: 'baixa',   cor: '#d4d2cc' },
   ];
+
+  $: corPrioridade = PRIORIDADES.find(p => p.valor === prioridade)?.cor ?? '#9b9b9b';
 </script>
 
 <svelte:window on:keydown={onKeydown} />
 
-<!-- backdrop -->
-<div class="backdrop" on:click={fechar} on:keydown={() => {}} />
+<!-- backdrop separado do modal para nao interferir no posicionamento -->
+<div
+  class="backdrop"
+  on:click={fechar}
+  on:keydown={() => {}}
+  role="presentation"
+></div>
 
-<div class="modal" role="dialog" aria-modal="true">
-  <div class="modal-header">
-    <h2>{editando ? 'editar tarefa' : 'nova tarefa'}</h2>
-    <button class="btn-fechar" on:click={fechar}>×</button>
-  </div>
+<!-- wrapper cuida so do posicionamento -->
+<div class="modal-wrapper" role="dialog" aria-modal="true">
 
-  <div class="modal-corpo">
-    <!-- titulo (campo principal — recebe foco automatico) -->
-    <div class="campo">
-      <input
-        bind:this={inputTitulo}
-        bind:value={titulo}
-        class="input-titulo"
-        placeholder="o que precisa ser feito?"
-        class:erro={!!erro}
-      />
-      {#if erro}<span class="msg-erro">{erro}</span>{/if}
+  <!-- conteudo cuida so da animacao e visual -->
+  <div class="modal-conteudo">
+
+    <!-- header minimalista -->
+    <div class="modal-header">
+      <span class="modal-label">{editando ? 'editar tarefa' : 'nova tarefa'}</span>
+      <button class="btn-fechar" on:click={fechar} aria-label="fechar">×</button>
     </div>
 
-    <!-- descricao -->
-    <div class="campo">
-      <textarea
-        bind:value={descricao}
-        class="input-desc"
-        placeholder="detalhes (opcional)"
-        rows="2"
-      />
+    <!-- corpo principal -->
+    <div class="modal-corpo">
+
+      <!-- titulo — campo principal, grande e dominante -->
+      <div class="campo-titulo">
+        <input
+          bind:this={inputTitulo}
+          bind:value={titulo}
+          class="input-titulo"
+          class:com-erro={!!erro}
+          placeholder="o que precisa ser feito?"
+          autocomplete="off"
+        />
+        {#if erro}
+          <span class="msg-erro">{erro}</span>
+        {/if}
+      </div>
+
+      <!-- linha de acoes rapidas — sempre visivel -->
+      <div class="acoes-rapidas">
+
+        <!-- data -->
+        <div class="chip-campo">
+          <span class="chip-icone">📅</span>
+          <input
+            type="date"
+            bind:value={dataPrevista}
+            class="chip-input"
+          />
+        </div>
+
+        <!-- prioridade -->
+        <div class="chip-campo">
+          <span class="indicador-prioridade" style="background: {corPrioridade}"></span>
+          <select bind:value={prioridade} class="chip-select">
+            {#each PRIORIDADES as p}
+              <option value={p.valor}>{p.label}</option>
+            {/each}
+          </select>
+        </div>
+
+        <!-- area -->
+        <div class="chip-campo">
+          <span class="chip-icone">◎</span>
+          <select bind:value={areaId} class="chip-select">
+            <option value={null}>sem area</option>
+            {#each $areas as area}
+              <option value={area.id}>{area.nome}</option>
+            {/each}
+          </select>
+        </div>
+
+        <!-- botao para mostrar/esconder detalhes -->
+        <button
+          class="btn-detalhes"
+          on:click={() => mostrarDetalhes = !mostrarDetalhes}
+        >
+          {mostrarDetalhes ? 'menos' : 'mais detalhes'}
+        </button>
+
+      </div>
+
+      <!-- detalhes opcionais — colapsavel -->
+      {#if mostrarDetalhes}
+        <div class="campos-detalhes">
+
+          <!-- hora -->
+          <div class="campo-detalhe">
+            <label>hora</label>
+            <input type="time" bind:value={horaPrevista} class="input-detalhe" />
+          </div>
+
+          <!-- descricao -->
+          <div class="campo-detalhe campo-detalhe--full">
+            <label>descricao</label>
+            <textarea
+              bind:value={descricao}
+              class="input-desc"
+              placeholder="detalhes adicionais (opcional)"
+              rows="3"
+            ></textarea>
+          </div>
+
+        </div>
+      {/if}
+
     </div>
 
-    <!-- linha de metadados -->
-    <div class="campos-linha">
-      <!-- data -->
-      <div class="campo campo-inline">
-        <label>data</label>
-        <input type="date" bind:value={dataPrevista} class="input-field" />
+    <!-- footer -->
+    <div class="modal-footer">
+      <div class="footer-esquerda">
+        {#if editando}
+          <button
+            class="btn-deletar"
+            on:click={remover}
+            disabled={deletando}
+          >
+            {deletando ? 'removendo...' : 'remover tarefa'}
+          </button>
+        {/if}
       </div>
 
-      <!-- hora -->
-      <div class="campo campo-inline">
-        <label>hora</label>
-        <input type="time" bind:value={horaPrevista} class="input-field" />
-      </div>
-
-      <!-- prioridade -->
-      <div class="campo campo-inline">
-        <label>prioridade</label>
-        <select bind:value={prioridade} class="input-field">
-          {#each PRIORIDADES as p}
-            <option value={p.valor}>{p.label}</option>
-          {/each}
-        </select>
-      </div>
-
-      <!-- area -->
-      <div class="campo campo-inline">
-        <label>area</label>
-        <select bind:value={areaId} class="input-field">
-          <option value={null}>sem area</option>
-          {#each $areas as area}
-            <option value={area.id}>{area.nome}</option>
-          {/each}
-        </select>
+      <div class="footer-direita">
+        <span class="hint">cmd+enter para salvar</span>
+        <button class="btn-cancelar" on:click={fechar}>cancelar</button>
+        <button
+          class="btn-salvar"
+          on:click={salvar}
+          disabled={salvando || !titulo.trim()}
+        >
+          {salvando ? 'salvando...' : 'salvar'}
+        </button>
       </div>
     </div>
-  </div>
 
-  <div class="modal-footer">
-    <span class="hint">cmd+enter para salvar · esc para fechar</span>
-    <div class="acoes">
-      <button class="btn-cancelar" on:click={fechar}>cancelar</button>
-      <button class="btn-salvar" on:click={salvar} disabled={salvando}>
-        {salvando ? 'salvando...' : 'salvar'}
-      </button>
-    </div>
   </div>
 </div>
 
 <style>
+  /* ── backdrop ──────────────────────────────────────────── */
   .backdrop {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.3);
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
     z-index: 100;
-    backdrop-filter: blur(2px);
-    animation: fadeIn var(--transition-fast) ease;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    animation: fadeIn 150ms ease;
   }
 
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
 
-  .modal {
+  /* ── wrapper: so posicionamento ────────────────────────── */
+  .modal-wrapper {
     position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 101;
+    pointer-events: none;
+  }
+
+  /* ── conteudo: so animacao e visual ────────────────────── */
+  .modal-conteudo {
+    pointer-events: all;
+    width: 540px;
+    max-width: calc(100vw - var(--space-8));
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-lg);
-    width: 520px;
-    max-width: calc(100vw - var(--space-8));
     display: flex;
     flex-direction: column;
-    animation: slideUp 200ms ease;
+    overflow: hidden;
+    animation: modalEntrar 180ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  /* animacao: so opacidade e escala — sem movimento de posicao */
+  @keyframes modalEntrar {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1);    }
+  }
+
+  /* ── header ────────────────────────────────────────────── */
   .modal-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: var(--space-4) var(--space-5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4) var(--space-3) var(--space-5);
     border-bottom: 1px solid var(--border);
   }
 
-  .modal-header h2 {
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--text-primary);
+  .modal-label {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 0.3px;
   }
 
   .btn-fechar {
-    background: none; border: none; cursor: pointer;
-    color: var(--text-muted); font-size: 20px; line-height: 1;
-    width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
-    border-radius: var(--radius-sm); transition: all var(--transition-fast);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 18px;
+    line-height: 1;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
   }
-  .btn-fechar:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .btn-fechar:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
 
+  /* ── corpo ─────────────────────────────────────────────── */
   .modal-corpo {
     padding: var(--space-5);
     display: flex;
@@ -218,41 +334,120 @@
     gap: var(--space-4);
   }
 
-  .campo { display: flex; flex-direction: column; gap: var(--space-1); }
+  /* titulo */
+  .campo-titulo { display: flex; flex-direction: column; gap: var(--space-1); }
 
   .input-titulo {
     border: none;
-    font-size: var(--text-md);
+    font-size: var(--text-xl);
     font-family: var(--font-body);
+    font-weight: 500;
     color: var(--text-primary);
     background: transparent;
     outline: none;
     width: 100%;
+    line-height: 1.3;
+  }
+  .input-titulo::placeholder {
+    color: var(--text-disabled);
+    font-weight: 400;
+  }
+  .input-titulo.com-erro { color: var(--status-danger); }
+
+  .msg-erro {
+    font-size: var(--text-xs);
+    color: var(--status-danger);
     font-weight: 500;
   }
-  .input-titulo::placeholder { color: var(--text-disabled); font-weight: 400; }
-  .input-titulo.erro { color: var(--status-danger); }
 
-  .msg-erro { font-size: var(--text-xs); color: var(--status-danger); }
-
-  .input-desc {
-    border: none; border-top: 1px solid var(--border);
-    font-size: var(--text-sm); font-family: var(--font-body);
-    color: var(--text-secondary); background: transparent;
-    outline: none; width: 100%; resize: none;
-    padding-top: var(--space-3);
+  /* acoes rapidas */
+  .acoes-rapidas {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
   }
-  .input-desc::placeholder { color: var(--text-disabled); }
 
-  .campos-linha {
+  .chip-campo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+  }
+  .chip-campo:hover { border-color: var(--border-strong); }
+
+  .chip-icone {
+    font-size: 13px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .indicador-prioridade {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+    transition: background var(--transition-fast);
+  }
+
+  .chip-input,
+  .chip-select {
+    border: none;
+    background: transparent;
+    font-size: var(--text-xs);
+    font-family: var(--font-body);
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+  }
+
+  .btn-detalhes {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    margin-left: auto;
+  }
+  .btn-detalhes:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+
+  /* detalhes */
+  .campos-detalhes {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto 1fr;
     gap: var(--space-3);
-    padding-top: var(--space-2);
+    padding-top: var(--space-3);
     border-top: 1px solid var(--border);
+    animation: expandir 150ms ease;
   }
 
-  .campo-inline { gap: 4px; }
+  @keyframes expandir {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0);    }
+  }
+
+  .campo-detalhe {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .campo-detalhe--full { grid-column: span 2; }
 
   label {
     font-size: var(--text-xs);
@@ -260,7 +455,7 @@
     font-weight: 500;
   }
 
-  .input-field {
+  .input-detalhe {
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     padding: 6px 10px;
@@ -269,39 +464,92 @@
     color: var(--text-primary);
     background: var(--bg-secondary);
     outline: none;
-    width: 100%;
     transition: border-color var(--transition-fast);
   }
-  .input-field:focus { border-color: var(--text-primary); background: var(--bg); }
+  .input-detalhe:focus {
+    border-color: var(--text-primary);
+    background: var(--bg);
+  }
 
+  .input-desc {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    font-size: var(--text-sm);
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    outline: none;
+    resize: vertical;
+    min-height: 72px;
+    transition: border-color var(--transition-fast);
+    width: 100%;
+  }
+  .input-desc:focus {
+    border-color: var(--text-primary);
+    background: var(--bg);
+  }
+  .input-desc::placeholder { color: var(--text-disabled); }
+
+  /* ── footer ────────────────────────────────────────────── */
   .modal-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-3) var(--space-5);
     border-top: 1px solid var(--border);
+    gap: var(--space-3);
   }
 
-  .hint { font-size: var(--text-xs); color: var(--text-disabled); }
+  .footer-esquerda { display: flex; align-items: center; }
+  .footer-direita  { display: flex; align-items: center; gap: var(--space-2); }
 
-  .acoes { display: flex; gap: var(--space-2); }
+  .hint {
+    font-size: var(--text-xs);
+    color: var(--text-disabled);
+  }
+
+  .btn-deletar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--text-xs);
+    color: var(--status-danger);
+    font-family: var(--font-body);
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    opacity: 0.7;
+  }
+  .btn-deletar:hover { opacity: 1; background: #fef2f2; }
+  .btn-deletar:disabled { opacity: 0.3; cursor: not-allowed; }
 
   .btn-cancelar {
-    background: none; border: 1px solid var(--border);
-    color: var(--text-secondary); border-radius: var(--radius-md);
-    padding: 7px 14px; font-size: var(--text-sm);
-    font-family: var(--font-body); cursor: pointer;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    border-radius: var(--radius-md);
+    padding: 7px 14px;
+    font-size: var(--text-sm);
+    font-family: var(--font-body);
+    cursor: pointer;
     transition: all var(--transition-fast);
   }
   .btn-cancelar:hover { background: var(--bg-hover); }
 
   .btn-salvar {
-    background: var(--text-primary); color: var(--bg);
-    border: none; border-radius: var(--radius-md);
-    padding: 7px 16px; font-size: var(--text-sm);
-    font-family: var(--font-body); font-weight: 500;
-    cursor: pointer; transition: opacity var(--transition-fast);
+    background: var(--text-primary);
+    color: var(--bg);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 7px 16px;
+    font-size: var(--text-sm);
+    font-family: var(--font-body);
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
   }
   .btn-salvar:hover:not(:disabled) { opacity: 0.85; }
-  .btn-salvar:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-salvar:disabled { opacity: 0.35; cursor: not-allowed; }
 </style>
