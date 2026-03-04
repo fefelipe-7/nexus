@@ -109,7 +109,7 @@
 
 <svelte:window on:keydown={onKeydown} />
 
-<div class="backdrop" on:click={fechar} on:keydown={() => {}} role="presentation" />
+<div class="backdrop" on:click={fechar} on:keydown={() => {}} role="presentation"></div>
 
 <div class="modal-wrapper" role="dialog" aria-modal="true">
   <div class="modal-conteudo">
@@ -142,33 +142,34 @@
 
       <div class="campos-tempo">
         <div class="campo-detalhe">
-          <label>data inicio</label>
-          <input type="date" bind:value={dataInicio} class="input-detalhe" disabled={ehTarefa} />
+          <label for="data-inicio">data inicio</label>
+          <input id="data-inicio" type="date" bind:value={dataInicio} class="input-detalhe" disabled={ehTarefa} />
         </div>
         {#if !diaInteiro}
           <div class="campo-detalhe">
-            <label>hora inicio</label>
-            <input type="time" bind:value={horaInicio} class="input-detalhe" disabled={ehTarefa} />
+            <label for="hora-inicio">hora inicio</label>
+            <input id="hora-inicio" type="time" bind:value={horaInicio} class="input-detalhe" disabled={ehTarefa} />
           </div>
           <div class="campo-detalhe">
-            <label>data fim</label>
-            <input type="date" bind:value={dataFim} class="input-detalhe" />
+            <label for="data-fim">data fim</label>
+            <input id="data-fim" type="date" bind:value={dataFim} class="input-detalhe" />
           </div>
           <div class="campo-detalhe">
-            <label>hora fim</label>
-            <input type="time" bind:value={horaFim} class="input-detalhe" />
+            <label for="hora-fim">hora fim</label>
+            <input id="hora-fim" type="time" bind:value={horaFim} class="input-detalhe" />
           </div>
         {/if}
-        <label class="label-check">
-          <input type="checkbox" bind:checked={diaInteiro} disabled={ehTarefa} />
+        <label class="label-check" for="dia-inteiro-chk">
+          <input id="dia-inteiro-chk" type="checkbox" bind:checked={diaInteiro} disabled={ehTarefa} />
           dia inteiro
         </label>
       </div>
 
       <div class="campos-extra">
         <div class="campo-detalhe campo-detalhe--full">
-          <label>local</label>
+          <label for="local-input">local</label>
           <input
+            id="local-input"
             type="text"
             bind:value={local}
             class="input-detalhe"
@@ -177,8 +178,8 @@
           />
         </div>
         <div class="campo-detalhe campo-detalhe--full">
-          <label>area</label>
-          <select bind:value={areaId} class="input-detalhe" disabled={ehTarefa}>
+          <label for="area-select">area</label>
+          <select id="area-select" bind:value={areaId} class="input-detalhe" disabled={ehTarefa}>
             <option value={null}>sem area</option>
             {#each $areas as area}
               <option value={area.id}>{area.nome}</option>
@@ -187,8 +188,8 @@
         </div>
         {#if !ehTarefa}
           <div class="campo-detalhe campo-detalhe--full">
-            <label>descricao</label>
-            <textarea bind:value={descricao} class="input-desc" placeholder="opcional" rows="2" />
+            <label for="desc-textarea">descricao</label>
+            <textarea id="desc-textarea" bind:value={descricao} class="input-desc" placeholder="opcional" rows="2"></textarea>
           </div>
         {/if}
       </div>

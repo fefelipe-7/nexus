@@ -55,7 +55,7 @@
 
   <!-- cabecalho dos dias -->
   <div class="grid-header">
-    <div class="coluna-horas" />
+    <div class="coluna-horas"></div>
     {#each dias as dia, i}
       <div class="coluna-dia-header" class:hoje={dia === hojeISO}>
         <span class="dia-label">{DIAS_LABEL[i]}</span>
@@ -89,7 +89,7 @@
             on:keydown={() => {}}
             role="button"
             tabindex="0"
-          />
+          ></div>
         {/each}
 
         <!-- eventos posicionados absolutamente -->

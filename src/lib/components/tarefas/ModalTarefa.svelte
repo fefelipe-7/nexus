@@ -186,7 +186,7 @@
           class="chip-campo"
           style="border-color: {areaAtual.cor}33; background: {areaAtual.cor}0d"
         >
-          <span class="chip-dot" style="background: {areaAtual.cor}" />
+          <span class="chip-dot" style="background: {areaAtual.cor}"></span>
           <select bind:value={areaId} class="chip-select" style="color: {areaAtual.cor}">
             <option value={null}>sem area</option>
             {#each $areas as area}
@@ -223,14 +223,15 @@
 
             <!-- hora -->
             <div class="campo-detalhe">
-              <label>hora</label>
-              <input type="time" bind:value={horaPrevista} class="input-detalhe" />
+              <label for="input-hora-prev">hora</label>
+              <input id="input-hora-prev" type="time" bind:value={horaPrevista} class="input-detalhe" />
             </div>
 
             <!-- descricao -->
             <div class="campo-detalhe campo-detalhe--full">
-              <label>descricao</label>
+              <label for="input-desc-prev">descricao</label>
               <textarea
+                id="input-desc-prev"
                 bind:value={descricao}
                 class="input-desc"
                 placeholder="detalhes adicionais (opcional)"

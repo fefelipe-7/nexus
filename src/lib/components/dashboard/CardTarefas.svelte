@@ -64,10 +64,10 @@
       <div class="secao-label secao-label--alerta">atrasadas</div>
       {#each atrasadas as tarefa (tarefa.id)}
         <div class="tarefa-item tarefa-item--atrasada">
-          <button class="tarefa-check" on:click={() => toggleConcluir(tarefa)}>
-            <span class="check-box" />
+          <button class="tarefa-check" on:click={() => toggleConcluir(tarefa)} aria-label="concluir tarefa">
+            <span class="check-box"></span>
           </button>
-          <div class="tarefa-corpo" on:click={() => editar(tarefa)} on:keydown={() => {}}>
+          <div class="tarefa-corpo" on:click={() => editar(tarefa)} on:keydown={() => {}} role="button" tabindex="0">
             <span class="tarefa-titulo">{tarefa.titulo}</span>
             <div class="tarefa-meta">
               <span class="tarefa-data atrasada">{labelRelativo(tarefa.data_prevista)}</span>
@@ -76,7 +76,7 @@
               {/if}
             </div>
           </div>
-          <div class="tarefa-prioridade" style="background: {PRIORIDADE_COR[tarefa.prioridade]}" title={tarefa.prioridade} />
+          <div class="tarefa-prioridade" style="background: {PRIORIDADE_COR[tarefa.prioridade]}" title={tarefa.prioridade}></div>
         </div>
       {/each}
     {/if}
@@ -87,12 +87,12 @@
 
     {#each tarefas as tarefa (tarefa.id)}
       <div class="tarefa-item" class:concluida={tarefa.status === 'concluida'}>
-        <button class="tarefa-check" on:click={() => toggleConcluir(tarefa)}>
+        <button class="tarefa-check" on:click={() => toggleConcluir(tarefa)} aria-label="concluir tarefa">
           <span class="check-box" class:checked={tarefa.status === 'concluida'}>
             {#if tarefa.status === 'concluida'}✓{/if}
           </span>
         </button>
-        <div class="tarefa-corpo" on:click={() => editar(tarefa)} on:keydown={() => {}}>
+        <div class="tarefa-corpo" on:click={() => editar(tarefa)} on:keydown={() => {}} role="button" tabindex="0">
           <span class="tarefa-titulo">{tarefa.titulo}</span>
           <div class="tarefa-meta">
             {#if tarefa.hora_prevista}
@@ -106,7 +106,7 @@
             {/if}
           </div>
         </div>
-        <div class="tarefa-prioridade" style="background: {PRIORIDADE_COR[tarefa.prioridade]}" title={tarefa.prioridade} />
+        <div class="tarefa-prioridade" style="background: {PRIORIDADE_COR[tarefa.prioridade]}" title={tarefa.prioridade}></div>
       </div>
     {/each}
   {/if}

@@ -48,6 +48,8 @@
   class="item-tarefa"
   class:concluida={tarefa.status === 'concluida'}
   class:atrasada
+  role="region"
+  aria-label="detalhes da tarefa"
   on:mouseenter={() => mostrarAcoes = true}
   on:mouseleave={() => mostrarAcoes = false}
 >

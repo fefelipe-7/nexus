@@ -7,6 +7,11 @@
   ],
   "permissions": [
     "core:default",
-    "sql:default"
+    "core:window:default",
+    "sql:default",
+    "sql:allow-execute",
+    "sql:allow-select",
+    "sql:allow-load",
+    "sql:allow-close"
   ]
 }

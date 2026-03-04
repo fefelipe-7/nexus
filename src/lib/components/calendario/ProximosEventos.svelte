@@ -24,7 +24,7 @@
           <div
             class="proximos-cor"
             style="background: {evento.area_cor ?? 'var(--border-strong)'}"
-          />
+          ></div>
           <div class="proximos-info">
             <span class="proximos-nome">{evento.titulo}</span>
             <span class="proximos-data">

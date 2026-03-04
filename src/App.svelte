@@ -12,6 +12,13 @@
   let erroInit = null;
 
   onMount(async () => {
+    // verifica se esta rodando no brownser normal
+    const isTauri = '__TAURI_INTERNALS__' in window;
+    if (!isTauri) {
+      erroInit = "O Nexus e um aplicativo nativo e precisa rodar dentro da janela do Tauri, não no navegador web. Por favor, aguarde a janela desktop abrir.";
+      return;
+    }
+
     try {
       await initDb();
       dbPronto = true;
@@ -20,10 +27,16 @@
         await iniciarPersistenciaJanela();
       } catch (errWin) {
         console.warn('erro nao-fatal ao restaurar janela:', errWin);
+        const { getCurrentWindow } = await import('@tauri-apps/api/window');
+        try { await getCurrentWindow().show(); } catch(e){}
       }
     } catch (e) {
       console.error('Erro critico na inicializacao:', e);
       erroInit = e.message || String(e);
+      try {
+        const { getCurrentWindow } = await import('@tauri-apps/api/window');
+        await getCurrentWindow().show();
+      } catch(e) {}
     }
   });
 
