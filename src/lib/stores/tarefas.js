@@ -6,6 +6,7 @@ import {
     getTarefasAtrasadas,
     getEstatisticasDoDia,
     buscarTarefas,
+    getTarefasSemData,
 } from '$lib/db/queries/tarefas.js';
 import { hoje, getIntervalo } from '$lib/utils/dates.js';
 
@@ -43,21 +44,21 @@ export async function carregarTarefas(tab, filtros = {}) {
                 getTarefasDoDia(h),
                 getTarefasAtrasadas(h),
                 getEstatisticasDoDia(h),
-                buscarTarefas({ dataInicio: null, dataFim: null }),
+                getTarefasSemData(),
             ]);
             tarefas.set(lista);
             tarefasAtrasadas.set(atrasadas);
             estatisticasDia.set(stats);
-            tarefasSemData.set(semData.filter(t => !t.data_prevista));
+            tarefasSemData.set(semData);
         } else {
             const [lista, semData] = await Promise.all([
                 getTarefasDoIntervalo(inicio, fim),
-                buscarTarefas({ dataInicio: null, dataFim: null }),
+                getTarefasSemData(),
             ]);
             tarefas.set(lista);
             tarefasAtrasadas.set([]);
             estatisticasDia.set(null);
-            tarefasSemData.set(semData.filter(t => !t.data_prevista));
+            tarefasSemData.set(semData);
         }
     } finally {
         carregando.set(false);

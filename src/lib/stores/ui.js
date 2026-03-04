@@ -9,4 +9,3 @@ export const metaEditando = writable(null); // novo
 export const habitoEditando = writable(null); // novo
 export const painelVisivel = writable(true);
 // pode ser ocultado pelo usuario
-export const eventoEditando = writable(null); // objeto do evento sendo editado, ou null

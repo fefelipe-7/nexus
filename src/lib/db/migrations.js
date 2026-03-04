@@ -1,16 +1,28 @@
 export async function runMigrations(db) {
+  // cria tabela de controle se nao existir
   await db.execute(`
     create table if not exists schema_version (
       version    integer primary key,
       applied_at text not null default (datetime('now'))
     )
   `);
-  await migration_001_areas(db);
-  await migration_002_config(db);
-  await migration_003_tarefas(db);
-  await migration_004_eventos(db);
-  await migration_005_metas(db);
-  await migration_006_habitos(db);
+
+  // funcao auxiliar para aplicar migracao apenas se nao aplicada
+  async function apply(version, migrationFn) {
+    const [row] = await db.select('select version from schema_version where version = ?', [version]);
+    if (!row) {
+      console.log(`[db] aplicando migracao v${version}...`);
+      await migrationFn(db);
+      await db.execute('insert into schema_version (version) values (?)', [version]);
+    }
+  }
+
+  await apply(1, migration_001_areas);
+  await apply(2, migration_002_config);
+  await apply(3, migration_003_tarefas);
+  await apply(4, migration_004_eventos);
+  await apply(5, migration_005_metas);
+  await apply(6, migration_006_habitos);
 }
 
 async function migration_001_areas(db) {

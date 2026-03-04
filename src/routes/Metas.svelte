@@ -111,13 +111,6 @@
 {/if}
 
 <style>
-  .page {
-    padding: var(--space-8) var(--coluna-padding);
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-  }
 
   .page-header {
     display: flex;

@@ -3,21 +3,22 @@
   import { activeTab } from '$lib/stores/navigation.js';
   import { tarefas, tarefasAtrasadas, estatisticasDia, carregando, carregarTarefas } from '$lib/stores/tarefas.js';
   import { metas, carregarMetas } from '$lib/stores/metas.js';
-  import { habitos, carregarHabitosHoje } from '$lib/stores/habitos.js';
+  import { habitos, streaks, carregarHabitosHoje } from '$lib/stores/habitos.js';
   import { activeModal } from '$lib/stores/ui.js';
-  import { areas } from '$lib/stores/areas.js';
-  import { carregarAreas } from '$lib/db/queries/areas.js';
+  import { areas, carregarAreas } from '$lib/stores/areas.js';
   import { saudacao, tituloPeriodo, hoje } from '$lib/utils/dates.js';
 
   import TemporalTabs from '$lib/components/layout/TemporalTabs.svelte';
   import BlocoDisretivo from '$lib/components/dashboard/BlocoDisretivo.svelte';
   import CardTarefas from '$lib/components/dashboard/CardTarefas.svelte';
+  import CardMetas from '$lib/components/dashboard/CardMetas.svelte';
+  import CardHabitos from '$lib/components/dashboard/CardHabitos.svelte';
   import CardVazio from '$lib/components/dashboard/CardVazio.svelte';
   import ModalTarefa from '$lib/components/tarefas/ModalTarefa.svelte';
 
   onMount(async () => {
     await carregarAreas();
-    await carregarTarefas($activeTab);
+    // carregarTarefas é chamado reativamente pelo $: 
     await carregarMetas();
     await carregarHabitosHoje();
   });
@@ -63,8 +64,14 @@
         tab={$activeTab}
         on:atualizar={() => carregarTarefas($activeTab)}
       />
-      <CardVazio modulo="metas"    icone="o" descricao="suas metas aparecem aqui" />
-      <CardVazio modulo="habitos"  icone="~" descricao="seu progresso diario aparece aqui" />
+      <CardTarefas
+        tarefas={$tarefas}
+        atrasadas={$tarefasAtrasadas}
+        tab={$activeTab}
+        on:atualizar={() => carregarTarefas($activeTab)}
+      />
+      <CardMetas metas={$metas} />
+      <CardHabitos habitos={$habitos} streaks={$streaks} />
       <CardVazio modulo="financas" icone="$" descricao="seu saldo e gastos aparecem aqui" />
     </div>
   {/if}

@@ -43,7 +43,7 @@
   });
 
   // views que exibem o painel lateral
-  const viewsComPainel = new Set(['dashboard', 'tarefas']);
+  const viewsComPainel = new Set(['dashboard', 'tarefas', 'metas', 'habitos']);
 
   const views = { 
     dashboard: Dashboard,

@@ -97,7 +97,10 @@ export async function atualizarTarefa(id, campos) {
 
   if (campos.titulo !== undefined) { sets.push('titulo = ?'); valores.push(campos.titulo); }
   if (campos.descricao !== undefined) { sets.push('descricao = ?'); valores.push(campos.descricao); }
-  if (campos.areaId !== undefined) { sets.push('area_id = ?'); valores.push(campos.areaId); }
+  if (campos.areaId !== undefined) {
+    sets.push('area_id = ?');
+    valores.push(campos.areaId === 'null' ? null : (campos.areaId ?? null));
+  }
   if (campos.prioridade !== undefined) { sets.push('prioridade = ?'); valores.push(campos.prioridade); }
   if (campos.status !== undefined) { sets.push('status = ?'); valores.push(campos.status); }
   if (campos.dataPrevista !== undefined) { sets.push('data_prevista = ?'); valores.push(campos.dataPrevista); }
@@ -128,9 +131,13 @@ export async function concluirTarefa(id) {
   `, [id]);
 
   // dispara recalculo se tinha meta vinculada
+  // dispara recalculo se tinha meta vinculada (SQL direto para evitar circular import)
   if (tarefa?.meta_id) {
-    const { recalcularProgressoMeta } = await import('./metas.js');
-    await recalcularProgressoMeta(tarefa.meta_id);
+    await db.execute(`
+      update metas
+      set atualizado_em = datetime('now')
+      where id = ?
+    `, [tarefa.meta_id]);
   }
 }
 
@@ -189,7 +196,7 @@ export async function buscarTarefas({ texto, areaId, prioridade, status, dataIni
     params.push(status);
   }
   if (dataInicio && dataFim) {
-    condicoes.push("(t.data_prevista between ? and ? or t.data_prevista is null)");
+    condicoes.push("t.data_prevista between ? and ?");
     params.push(dataInicio, dataFim);
   }
 
@@ -210,6 +217,26 @@ export async function buscarTarefas({ texto, areaId, prioridade, status, dataIni
       end,
       t.hora_prevista asc nulls last
   `, params);
+}
+
+// busca tarefas sem data definida
+export async function getTarefasSemData() {
+  const db = getDb();
+  return db.select(`
+    select t.*, a.nome as area_nome, a.cor as area_cor
+    from tarefas t
+    left join areas_de_vida a on t.area_id = a.id
+    where t.data_prevista is null
+    and t.status not in ('concluida', 'cancelada')
+    order by
+      case t.prioridade
+        when 'critica' then 1
+        when 'alta'    then 2
+        when 'media'   then 3
+        when 'baixa'   then 4
+      end,
+      t.criado_em asc
+  `);
 }
 
 // query para adiar tarefa

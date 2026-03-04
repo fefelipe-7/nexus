@@ -85,13 +85,6 @@
 {/if}
 
 <style>
-  .page {
-    padding: var(--space-8) var(--coluna-padding);
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-  }
 
   .page-header {
     display: flex; align-items: center; justify-content: space-between;

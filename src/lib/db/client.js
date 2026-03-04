@@ -6,6 +6,7 @@ let db = null;
 export async function initDb() {
     db = await Database.load('sqlite:nexus.db');
     await runMigrations(db);
+    await db.execute('PRAGMA foreign_keys = ON');
     return db;
 }
 
