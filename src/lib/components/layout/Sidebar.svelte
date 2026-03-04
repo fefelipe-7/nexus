@@ -17,8 +17,8 @@
     {
       label: 'vida',
       items: [
-        { id: 'metas',    label: 'metas',    icon: Target,     active: false },
-        { id: 'habitos',  label: 'habitos',  icon: Flame,      active: false },
+        { id: 'metas',    label: 'metas',    icon: Target,     active: true },
+        { id: 'habitos',  label: 'habitos',  icon: Flame,      active: true },
         { id: 'financas', label: 'financas', icon: DollarSign, active: false },
       ]
     },

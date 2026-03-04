@@ -112,15 +112,41 @@ export async function atualizarTarefa(id, campos) {
   );
 }
 
+// versao atualizada de concluirTarefa que dispara recalculo da meta
 export async function concluirTarefa(id) {
   const db = getDb();
+
+  // busca meta_id antes de concluir
+  const [tarefa] = await db.select('select meta_id from tarefas where id = ?', [id]);
+
   await db.execute(`
     update tarefas
     set status = 'concluida',
         data_conclusao = date('now'),
-        atualizado_em = datetime('now')
+        atualizado_em  = datetime('now')
     where id = ?
   `, [id]);
+
+  // dispara recalculo se tinha meta vinculada
+  if (tarefa?.meta_id) {
+    const { recalcularProgressoMeta } = await import('./metas.js');
+    await recalcularProgressoMeta(tarefa.meta_id);
+  }
+}
+
+// busca tarefas vinculadas a uma meta especifica
+export async function getTarefasDaMeta(metaId) {
+  const db = getDb();
+  return db.select(`
+    select t.*, a.nome as area_nome, a.cor as area_cor
+    from tarefas t
+    left join areas_de_vida a on t.area_id = a.id
+    where t.meta_id = ?
+    and t.status != 'cancelada'
+    order by
+      case t.status when 'concluida' then 1 else 0 end,
+      t.data_prevista asc nulls last
+  `, [metaId]);
 }
 
 export async function reabrirTarefa(id) {

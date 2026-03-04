@@ -3,6 +3,8 @@
   import Dashboard from './routes/Dashboard.svelte';
   import Tarefas from './routes/Tarefas.svelte';
   import Calendario from './routes/Calendario.svelte';
+  import Metas from './routes/Metas.svelte';
+  import Habitos from './routes/Habitos.svelte';
   import { currentRoute } from '$lib/stores/navigation.js';
   import { initDb } from '$lib/db/client.js';
   import { restaurarJanela, iniciarPersistenciaJanela } from '$lib/utils/window.js';
@@ -46,7 +48,9 @@
   const views = { 
     dashboard: Dashboard,
     tarefas: Tarefas,
-    calendario: Calendario
+    calendario: Calendario,
+    metas: Metas,
+    habitos: Habitos
   };
   
   $: currentView = views[$currentRoute] ?? Dashboard;

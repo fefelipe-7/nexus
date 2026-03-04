@@ -3,9 +3,37 @@
   export let tarefas   = [];
   export let atrasadas = [];
   export let stats     = null;
-  export let tab       = 'dia';
+  export let eventos      = [];
+  export let metas        = []; // novo
+  export let habitos      = []; // novo
+  export let tab          = 'dia';
 
   function gerarMensagem() {
+    // metas proximas do prazo (so na tab dia)
+    if (tab === 'dia' && metas.length > 0) {
+      const urgentes = metas.filter(m =>
+        m.dias_restantes !== null &&
+        m.dias_restantes <= 3 &&
+        m.dias_restantes >= 0 &&
+        m.status === 'ativa'
+      );
+      if (urgentes.length > 0) {
+        const n = urgentes.length;
+        return `${n} ${n > 1 ? 'metas vencem' : 'meta vence'} em menos de 3 dias. verifique seu progresso.`;
+      }
+    }
+
+    // habitos nao feitos ainda hoje (so na tab dia)
+    if (tab === 'dia' && habitos.length > 0) {
+      const naoFeitos = habitos.filter(h =>
+        h.frequencia_tipo === 'diaria' && !h.concluido_hoje
+      );
+      if (naoFeitos.length === habitos.filter(h => h.frequencia_tipo === 'diaria').length
+          && naoFeitos.length > 0) {
+        return `voce ainda nao fez nenhum habito hoje. comece por qualquer um.`;
+      }
+    }
+
     if (tab !== 'dia' || !stats) {
       const total = tarefas.length;
       const concluidas = tarefas.filter(t => t.status === 'concluida').length;

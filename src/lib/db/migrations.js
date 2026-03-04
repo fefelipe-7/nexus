@@ -9,6 +9,8 @@ export async function runMigrations(db) {
   await migration_002_config(db);
   await migration_003_tarefas(db);
   await migration_004_eventos(db);
+  await migration_005_metas(db);
+  await migration_006_habitos(db);
 }
 
 async function migration_001_areas(db) {
@@ -118,4 +120,72 @@ async function migration_004_eventos(db) {
   await db.execute(`create index if not exists idx_eventos_inicio  on eventos(inicio)`);
   await db.execute(`create index if not exists idx_eventos_area    on eventos(area_id)`);
   await db.execute(`create index if not exists idx_eventos_tarefa  on eventos(tarefa_id)`);
+}
+
+async function migration_005_metas(db) {
+  await db.execute(`
+    create table if not exists metas (
+      id                integer primary key autoincrement,
+      titulo            text    not null,
+      descricao         text,
+      meta_pai_id       integer references metas(id) on delete set null,
+      area_id           integer references areas_de_vida(id) on delete set null,
+      prazo_tipo        text    check(prazo_tipo in ('semana','mes','trimestre','semestre','ano') or prazo_tipo is null),
+      data_inicio       text,
+      data_fim          text,
+      modo_progresso    text    not null default 'tarefas'
+                        check(modo_progresso in ('numerico','percentual','binario','tarefas')),
+      valor_alvo        real,
+      valor_atual       real    not null default 0,
+      unidade           text,
+      percentual_atual  real    not null default 0,
+      binario_concluido integer not null default 0,
+      status            text    not null default 'ativa'
+                        check(status in ('ativa','concluida','abandonada','pausada')),
+      criado_em         text    not null default (datetime('now')),
+      atualizado_em     text    not null default (datetime('now'))
+    )
+  `);
+
+  await db.execute(`create index if not exists idx_metas_pai        on metas(meta_pai_id)`);
+  await db.execute(`create index if not exists idx_metas_area       on metas(area_id)`);
+  await db.execute(`create index if not exists idx_metas_status     on metas(status)`);
+  await db.execute(`create index if not exists idx_metas_prazo_tipo on metas(prazo_tipo)`);
+  await db.execute(`create index if not exists idx_metas_data_fim   on metas(data_fim)`);
+}
+
+async function migration_006_habitos(db) {
+  await db.execute(`
+    create table if not exists habitos (
+      id              integer primary key autoincrement,
+      nome            text    not null,
+      descricao       text,
+      icone           text,
+      area_id         integer references areas_de_vida(id) on delete set null,
+      frequencia_tipo text    not null default 'diaria'
+                      check(frequencia_tipo in ('diaria','semanal','mensal','trimestral','semestral','anual')),
+      frequencia_alvo integer not null default 1,
+      graca_ativa     integer not null default 1,
+      ativo           integer not null default 1,
+      criado_em       text    not null default (datetime('now')),
+      atualizado_em   text    not null default (datetime('now'))
+    )
+  `);
+
+  await db.execute(`
+    create table if not exists registros_habitos (
+      id        integer primary key autoincrement,
+      habito_id integer not null references habitos(id) on delete cascade,
+      data      text    not null,
+      concluido integer not null default 1,
+      nota      text,
+      criado_em text    not null default (datetime('now')),
+      unique(habito_id, data)
+    )
+  `);
+
+  await db.execute(`create index if not exists idx_habitos_area          on habitos(area_id)`);
+  await db.execute(`create index if not exists idx_registros_habito      on registros_habitos(habito_id)`);
+  await db.execute(`create index if not exists idx_registros_data        on registros_habitos(data)`);
+  await db.execute(`create index if not exists idx_registros_habito_data on registros_habitos(habito_id, data)`);
 }

@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
   import { activeTab } from '$lib/stores/navigation.js';
   import { tarefas, tarefasAtrasadas, estatisticasDia, carregando, carregarTarefas } from '$lib/stores/tarefas.js';
+  import { metas, carregarMetas } from '$lib/stores/metas.js';
+  import { habitos, carregarHabitosHoje } from '$lib/stores/habitos.js';
   import { activeModal } from '$lib/stores/ui.js';
   import { areas } from '$lib/stores/areas.js';
   import { carregarAreas } from '$lib/db/queries/areas.js';
@@ -16,10 +18,13 @@
   onMount(async () => {
     await carregarAreas();
     await carregarTarefas($activeTab);
+    await carregarMetas();
+    await carregarHabitosHoje();
   });
 
   // recarrega sempre que a tab muda
   $: carregarTarefas($activeTab);
+  $: if ($activeTab === 'dia') carregarHabitosHoje();
 
   $: titulo = tituloPeriodo($activeTab, hoje());
   $: greeting = saudacao();
@@ -46,6 +51,8 @@
       tarefas={$tarefas}
       atrasadas={$tarefasAtrasadas}
       stats={$estatisticasDia}
+      metas={$metas}
+      habitos={$habitos}
       tab={$activeTab}
     />
 
