@@ -119,12 +119,65 @@ export function tituloPeriodo(tab, base) {
     }
 }
 
-// helper interno
-function toISO(date) {
+// helper interno (exportado para calendario)
+export function toISO(date) {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
+}
+
+// retorna os dias de uma semana dado uma data de referencia
+// retorna array de strings ISO ['2026-03-01', '2026-03-02', ...]
+export function diasDaSemana(dataRef) {
+    const [ano, mes, dia] = dataRef.split('-').map(Number);
+    const ref = new Date(ano, mes - 1, dia);
+    const diaSemana = ref.getDay(); // 0 = domingo
+    const inicio = new Date(ref);
+    inicio.setDate(ref.getDate() - diaSemana);
+
+    return Array.from({ length: 7 }, (_, i) => {
+        const d = new Date(inicio);
+        d.setDate(inicio.getDate() + i);
+        return toISO(d);
+    });
+}
+
+// retorna os dias de um mes com padding para completar a grade (6 semanas)
+export function diasDoMes(dataRef) {
+    const [ano, mes] = dataRef.split('-').map(Number);
+    const primeiroDia = new Date(ano, mes - 1, 1);
+    const ultimoDia = new Date(ano, mes, 0);
+
+    // padding inicial (dias do mes anterior)
+    const diasAntes = primeiroDia.getDay();
+    const inicio = new Date(primeiroDia);
+    inicio.setDate(primeiroDia.getDate() - diasAntes);
+
+    // sempre 42 dias (6 semanas x 7 dias)
+    return Array.from({ length: 42 }, (_, i) => {
+        const d = new Date(inicio);
+        d.setDate(inicio.getDate() + i);
+        return {
+            iso: toISO(d),
+            mesAtual: d.getMonth() === mes - 1,
+        };
+    });
+}
+
+// navega para o periodo anterior ou proximo
+// retorna a nova dataRef
+export function navegarPeriodo(dataRef, view, direcao) {
+    const [ano, mes, dia] = dataRef.split('-').map(Number);
+    const d = new Date(ano, mes - 1, dia);
+
+    if (view === 'semana') {
+        d.setDate(d.getDate() + (direcao === 'proximo' ? 7 : -7));
+    } else {
+        d.setMonth(d.getMonth() + (direcao === 'proximo' ? 1 : -1));
+    }
+
+    return toISO(d);
 }
 
 // retorna a saudacao correta baseada na hora atual

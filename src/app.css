@@ -83,8 +83,13 @@
   /* layout */
   --sidebar-width: 220px;
   --sidebar-collapsed: 56px;
-  --content-max-width: 900px;
   --topbar-height: 52px;
+
+  /* layout de duas colunas */
+  --painel-width: 320px;
+  --coluna-padding: var(--space-8);
+  --layout-break-painel: 1100px;
+  /* abaixo disso o painel some */
 
   /* transicoes */
   --transition-fast: 150ms ease;
@@ -123,4 +128,13 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+
+/* padrao para todas as paginas — substitui o .dashboard, .tarefas-page etc */
+.page {
+  padding: var(--space-8) var(--coluna-padding);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
 }

@@ -8,6 +8,7 @@ export async function runMigrations(db) {
   await migration_001_areas(db);
   await migration_002_config(db);
   await migration_003_tarefas(db);
+  await migration_004_eventos(db);
 }
 
 async function migration_001_areas(db) {
@@ -95,3 +96,26 @@ async function migration_003_tarefas(db) {
   await db.execute(`create index if not exists idx_tarefas_prioridade on tarefas(prioridade)`);
 }
 
+async function migration_004_eventos(db) {
+  await db.execute(`
+    create table if not exists eventos (
+      id          integer primary key autoincrement,
+      titulo      text    not null,
+      descricao   text,
+      local       text,
+      inicio      text    not null,
+      fim         text,
+      dia_inteiro integer not null default 0,
+      area_id     integer references areas_de_vida(id) on delete set null,
+      cor         text,
+      tarefa_id   integer references tarefas(id) on delete cascade,
+      recorrente  integer not null default 0,
+      criado_em   text    not null default (datetime('now')),
+      atualizado_em text  not null default (datetime('now'))
+    )
+  `);
+
+  await db.execute(`create index if not exists idx_eventos_inicio  on eventos(inicio)`);
+  await db.execute(`create index if not exists idx_eventos_area    on eventos(area_id)`);
+  await db.execute(`create index if not exists idx_eventos_tarefa  on eventos(tarefa_id)`);
+}

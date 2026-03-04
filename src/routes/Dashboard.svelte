@@ -25,7 +25,7 @@
   $: greeting = saudacao();
 </script>
 
-<div class="dashboard">
+<div class="page">
   <header class="dashboard-header">
     <div class="dashboard-title">
       <span class="eyebrow">{greeting}</span>
@@ -68,16 +68,6 @@
 {/if}
 
 <style>
-  .dashboard {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: var(--space-8);
-    width: 100%;
-    gap: var(--space-6);
-  }
 
   .dashboard-header {
     display: flex;

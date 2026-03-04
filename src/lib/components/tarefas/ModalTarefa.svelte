@@ -12,6 +12,8 @@
   let mostrarDetalhes = false;
 
   $: editando = $tarefaEditando;
+  $: areaAtual = areaId ? $areas.find(a => a.id === Number(areaId)) : null;
+  $: corBotaoSalvar = areaAtual?.cor ?? 'var(--text-primary)';
 
   let titulo       = editando?.titulo        ?? '';
   let descricao    = editando?.descricao     ?? '';
@@ -51,7 +53,7 @@
       const dados = {
         titulo:       titulo.trim(),
         descricao:    descricao.trim() || null,
-        areaId:       areaId || null,
+        areaId:       areaId === 'null' ? null : (areaId || null),
         prioridade,
         dataPrevista: dataPrevista || null,
         horaPrevista: horaPrevista || null,
@@ -67,6 +69,7 @@
       fechar();
     } catch (e) {
       erro = 'erro ao salvar. tente novamente.';
+      console.error('Erro ao salvar tarefa:', e);
     } finally {
       salvando = false;
     }
@@ -119,7 +122,16 @@
 
     <!-- header minimalista -->
     <div class="modal-header">
-      <span class="modal-label">{editando ? 'editar tarefa' : 'nova tarefa'}</span>
+      <div class="modal-header-inner">
+        <span class="modal-label">
+          {editando ? 'editar tarefa' : 'nova tarefa'}
+        </span>
+        {#if editando && editando.area_nome}
+          <span class="modal-area-badge" style="color: {editando.area_cor}">
+            {editando.area_nome}
+          </span>
+        {/if}
+      </div>
       <button class="btn-fechar" on:click={fechar} aria-label="fechar">×</button>
     </div>
 
@@ -133,7 +145,7 @@
           bind:value={titulo}
           class="input-titulo"
           class:com-erro={!!erro}
-          placeholder="o que precisa ser feito?"
+          placeholder="no que voce precisa trabalhar?"
           autocomplete="off"
         />
         {#if erro}
@@ -155,7 +167,11 @@
         </div>
 
         <!-- prioridade -->
-        <div class="chip-campo">
+        <div
+          class="chip-campo"
+          class:chip-ativo={prioridade !== 'media'}
+          style={prioridade !== 'media' ? `border-color: ${corPrioridade}33; background: ${corPrioridade}0d` : ''}
+        >
           <span class="indicador-prioridade" style="background: {corPrioridade}"></span>
           <select bind:value={prioridade} class="chip-select">
             {#each PRIORIDADES as p}
@@ -165,6 +181,20 @@
         </div>
 
         <!-- area -->
+        {#if areaAtual}
+        <div
+          class="chip-campo"
+          style="border-color: {areaAtual.cor}33; background: {areaAtual.cor}0d"
+        >
+          <span class="chip-dot" style="background: {areaAtual.cor}" />
+          <select bind:value={areaId} class="chip-select" style="color: {areaAtual.cor}">
+            <option value={null}>sem area</option>
+            {#each $areas as area}
+              <option value={area.id}>{area.nome}</option>
+            {/each}
+          </select>
+        </div>
+        {:else}
         <div class="chip-campo">
           <span class="chip-icone">◎</span>
           <select bind:value={areaId} class="chip-select">
@@ -174,6 +204,7 @@
             {/each}
           </select>
         </div>
+        {/if}
 
         <!-- botao para mostrar/esconder detalhes -->
         <button
@@ -185,29 +216,31 @@
 
       </div>
 
-      <!-- detalhes opcionais — colapsavel -->
-      {#if mostrarDetalhes}
-        <div class="campos-detalhes">
+      <!-- detalhes opcionais — colapsavel com CSS Grid -->
+      <div class="detalhes-wrapper" class:aberto={mostrarDetalhes}>
+        <div class="detalhes-inner">
+          <div class="campos-detalhes">
 
-          <!-- hora -->
-          <div class="campo-detalhe">
-            <label>hora</label>
-            <input type="time" bind:value={horaPrevista} class="input-detalhe" />
+            <!-- hora -->
+            <div class="campo-detalhe">
+              <label>hora</label>
+              <input type="time" bind:value={horaPrevista} class="input-detalhe" />
+            </div>
+
+            <!-- descricao -->
+            <div class="campo-detalhe campo-detalhe--full">
+              <label>descricao</label>
+              <textarea
+                bind:value={descricao}
+                class="input-desc"
+                placeholder="detalhes adicionais (opcional)"
+                rows="3"
+              ></textarea>
+            </div>
+
           </div>
-
-          <!-- descricao -->
-          <div class="campo-detalhe campo-detalhe--full">
-            <label>descricao</label>
-            <textarea
-              bind:value={descricao}
-              class="input-desc"
-              placeholder="detalhes adicionais (opcional)"
-              rows="3"
-            ></textarea>
-          </div>
-
         </div>
-      {/if}
+      </div>
 
     </div>
 
@@ -230,6 +263,7 @@
         <button class="btn-cancelar" on:click={fechar}>cancelar</button>
         <button
           class="btn-salvar"
+          style="background: {corBotaoSalvar}"
           on:click={salvar}
           disabled={salvando || !titulo.trim()}
         >
@@ -296,7 +330,14 @@
     align-items: center;
     justify-content: space-between;
     padding: var(--space-3) var(--space-4) var(--space-3) var(--space-5);
+    background: var(--bg-secondary);
     border-bottom: 1px solid var(--border);
+  }
+
+  .modal-header-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
   }
 
   .modal-label {
@@ -304,6 +345,12 @@
     color: var(--text-muted);
     font-weight: 500;
     letter-spacing: 0.3px;
+  }
+
+  .modal-area-badge {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    opacity: 0.8;
   }
 
   .btn-fechar {
@@ -339,6 +386,9 @@
 
   .input-titulo {
     border: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    padding-bottom: var(--space-3);
     font-size: var(--text-xl);
     font-family: var(--font-body);
     font-weight: 500;
@@ -347,7 +397,9 @@
     outline: none;
     width: 100%;
     line-height: 1.3;
+    transition: border-color var(--transition-fast);
   }
+  .input-titulo:focus { border-bottom-color: var(--text-primary); }
   .input-titulo::placeholder {
     color: var(--text-disabled);
     font-weight: 400;
@@ -408,6 +460,13 @@
     padding: 0;
   }
 
+  .chip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+  }
+
   .btn-detalhes {
     background: none;
     border: none;
@@ -427,18 +486,27 @@
   }
 
   /* detalhes */
+  .detalhes-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 200ms ease;
+  }
+
+  .detalhes-wrapper.aberto {
+    grid-template-rows: 1fr;
+  }
+
+  .detalhes-inner {
+    overflow: hidden;
+  }
+
   .campos-detalhes {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: var(--space-3);
-    padding-top: var(--space-3);
+    padding-top: var(--space-4);
     border-top: 1px solid var(--border);
-    animation: expandir 150ms ease;
-  }
-
-  @keyframes expandir {
-    from { opacity: 0; transform: translateY(-4px); }
-    to   { opacity: 1; transform: translateY(0);    }
+    margin-top: var(--space-1);
   }
 
   .campo-detalhe {

@@ -82,7 +82,7 @@ export async function criarTarefa(tarefa) {
   `, [
     tarefa.titulo,
     tarefa.descricao ?? null,
-    tarefa.areaId ?? null,
+    tarefa.areaId === 'null' ? null : (tarefa.areaId ?? null),
     tarefa.prioridade ?? 'media',
     tarefa.dataPrevista ?? null,
     tarefa.horaPrevista ?? null,

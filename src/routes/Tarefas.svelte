@@ -66,7 +66,7 @@
                     + $tarefasAtrasadas.length;
 </script>
 
-<div class="tarefas-page">
+<div class="page">
 
   <!-- header -->
   <header class="page-header">
@@ -193,16 +193,6 @@
 {/if}
 
 <style>
-  .tarefas-page {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: var(--space-8);
-    width: 100%;
-    gap: var(--space-5);
-  }
 
   .page-header {
     display: flex;

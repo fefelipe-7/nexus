@@ -1,33 +1,52 @@
 <script>
-  import Sidebar from '$lib/components/layout/Sidebar.svelte';
+  import AppShell from '$lib/components/layout/AppShell.svelte';
   import Dashboard from './routes/Dashboard.svelte';
   import Tarefas from './routes/Tarefas.svelte';
+  import Calendario from './routes/Calendario.svelte';
   import { currentRoute } from '$lib/stores/navigation.js';
   import { initDb } from '$lib/db/client.js';
   import { restaurarJanela, iniciarPersistenciaJanela } from '$lib/utils/window.js';
   import { onMount } from 'svelte';
 
+  let dbPronto = false;
+
   onMount(async () => {
     await initDb();
+    dbPronto = true;
     await restaurarJanela();
     await iniciarPersistenciaJanela();
   });
 
+  // views que exibem o painel lateral
+  const viewsComPainel = new Set(['dashboard', 'tarefas']);
+
   const views = { 
     dashboard: Dashboard,
-    tarefas: Tarefas
+    tarefas: Tarefas,
+    calendario: Calendario
   };
+  
   $: currentView = views[$currentRoute] ?? Dashboard;
+  $: showPainel  = viewsComPainel.has($currentRoute);
 </script>
 
-<div class="app-shell">
-  <Sidebar />
-  <main class="app-main">
-    <svelte:component this={currentView} />
-  </main>
-</div>
+{#if dbPronto}
+  <AppShell {currentView} {showPainel} />
+{:else}
+  <div class="app-loading">
+    <span>nexus</span>
+  </div>
+{/if}
 
 <style>
-  .app-shell { display: flex; height: 100vh; overflow: hidden; background: var(--bg); }
-  .app-main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+  .app-loading {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    color: var(--text-muted);
+    background: var(--bg);
+  }
 </style>
