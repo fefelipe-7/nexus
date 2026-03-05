@@ -1,19 +1,18 @@
-<!-- src/lib/components/habitos/ModalHabito.svelte -->
 <script>
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { activeModal, habitoEditando } from '$lib/stores/ui.js';
   import { areas } from '$lib/stores/areas.js';
   import { criarHabito, atualizarHabito, deletarHabito } from '$lib/db/queries/habitos.js';
 
-  const dispatch = createEventDispatcher();
+  let { onfechar, onsalvo } = $props();
 
-  let nome = '';
-  let descricao = '';
-  let icone = '';
-  let areaId = null;
-  let frequenciaTipo = 'diaria';
-  let frequenciaAlvo = 1;
-  let gracaAtiva = true;
+  let nome = $state('');
+  let descricao = $state('');
+  let icone = $state('');
+  let areaId = $state(null);
+  let frequenciaTipo = $state('diaria');
+  let frequenciaAlvo = $state(1);
+  let gracaAtiva = $state(true);
 
   const FREQUENCIAS = [
     { id: 'diaria', label: 'diaria' },
@@ -55,14 +54,14 @@
       await criarHabito(dados);
     }
 
-    dispatch('salvo');
+    onsalvo?.();
     fechar();
   }
 
   async function handleDeletar() {
     if (confirm('deseja excluir este habito e todo o seu historico?')) {
       await deletarHabito($habitoEditando.id);
-      dispatch('salvo');
+      onsalvo?.();
       fechar();
     }
   }
@@ -70,15 +69,15 @@
   function fechar() {
     activeModal.set(null);
     habitoEditando.set(null);
-    dispatch('fechar');
+    onfechar?.();
   }
 </script>
 
-<div class="modal-overlay" on:click|self={fechar}>
+<div class="modal-overlay" onclick={(e) => { if (e.target === e.currentTarget) fechar(); }}>
   <div class="modal-content">
     <header>
       <h2>{$habitoEditando ? 'editar habito' : 'novo habito'}</h2>
-      <button class="btn-close" on:click={fechar}>×</button>
+      <button class="btn-close" onclick={fechar}>×</button>
     </header>
 
     <div class="form">
@@ -131,11 +130,11 @@
 
     <footer>
       {#if $habitoEditando}
-        <button class="btn-danger" on:click={handleDeletar}>excluir</button>
+        <button class="btn-danger" onclick={handleDeletar}>excluir</button>
       {/if}
       <div class="acoes-fim">
-        <button class="btn-secondary" on:click={fechar}>cancelar</button>
-        <button class="btn-primary" on:click={salvar} disabled={!nome}>
+        <button class="btn-secondary" onclick={fechar}>cancelar</button>
+        <button class="btn-primary" onclick={salvar} disabled={!nome}>
           {$habitoEditando ? 'salvar' : 'criar habito'}
         </button>
       </div>

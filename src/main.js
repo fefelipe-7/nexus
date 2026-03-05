@@ -1,3 +1,4 @@
+console.log('[nexus] main.js carregando...');
 import { mount } from 'svelte';
 import App from './App.svelte';
 

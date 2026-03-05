@@ -16,10 +16,11 @@
 
   onMount(() => carregarMetas());
 
-  $: carregarMetas({ status: filtroStatus, areaId: filtroArea, prazoTipo: filtroPrazo });
+  $effect(() => {
+    carregarMetas({ status: filtroStatus, areaId: filtroArea, prazoTipo: filtroPrazo });
+  });
 
-  // agrupa metas por prazo_tipo para exibicao
-  $: grupos = agruparPorPrazo($metas);
+  let grupos = $derived(agruparPorPrazo($metas));
 
   function agruparPorPrazo(lista) {
     const ordem = ['semana', 'mes', 'trimestre', 'semestre', 'ano', null];
@@ -50,7 +51,7 @@
       <h1>metas</h1>
       <span class="badge-contador">{$metas.filter(m => m.status === 'ativa').length} ativas</span>
     </div>
-    <button class="btn-primary" on:click={() => activeModal.set('novaMeta')}>
+    <button class="btn-primary" onclick={() => activeModal.set('novaMeta')}>
       + nova meta
     </button>
   </header>
@@ -68,7 +69,7 @@
     <div class="estado-vazio">
       <span class="vazio-icone">◎</span>
       <p>nenhuma meta encontrada</p>
-      <button class="btn-ghost" on:click={() => activeModal.set('novaMeta')}>
+      <button class="btn-ghost" onclick={() => activeModal.set('novaMeta')}>
         + criar primeira meta
       </button>
     </div>
@@ -84,9 +85,9 @@
           {#each grupo.itens as meta (meta.id)}
             <CardMeta
               {meta}
-              on:abrir={() => abrirMeta(meta.id)}
-              on:editar={() => { metaEditando.set(meta); activeModal.set('editarMeta'); }}
-              on:atualizar={() => carregarMetas({ status: filtroStatus })}
+              onabrir={() => abrirMeta(meta.id)}
+              oneditar={() => { metaEditando.set(meta); activeModal.set('editarMeta'); }}
+              onatualizar={() => carregarMetas({ status: filtroStatus })}
             />
           {/each}
         </div>
@@ -98,15 +99,15 @@
 {#if $metaAtiva}
   <DetalheMeta
     meta={$metaAtiva}
-    on:fechar={() => metaAtiva.set(null)}
-    on:atualizar={() => { carregarMetas(); abrirMeta($metaAtiva.id); }}
+    onfechar={() => metaAtiva.set(null)}
+    onatualizar={() => { carregarMetas(); abrirMeta($metaAtiva.id); }}
   />
 {/if}
 
 {#if $activeModal === 'novaMeta' || $activeModal === 'editarMeta'}
   <ModalMeta
-    on:fechar={() => activeModal.set(null)}
-    on:salvo={() => carregarMetas({ status: filtroStatus })}
+    onfechar={() => activeModal.set(null)}
+    onsalvo={() => carregarMetas({ status: filtroStatus })}
   />
 {/if}
 

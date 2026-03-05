@@ -21,8 +21,8 @@
     await carregarHabitosHoje();
   }
 
-  $: concluidos = $habitos.filter(h => h.concluido_hoje).length;
-  $: total      = $habitos.length;
+  let concluidos = $derived($habitos.filter(h => h.concluido_hoje).length);
+  let total      = $derived($habitos.length);
 </script>
 
 <div class="page">
@@ -33,7 +33,7 @@
         <span class="badge-contador">{concluidos}/{total} hoje</span>
       {/if}
     </div>
-    <button class="btn-primary" on:click={() => activeModal.set('novoHabito')}>
+    <button class="btn-primary" onclick={() => activeModal.set('novoHabito')}>
       + novo habito
     </button>
   </header>
@@ -45,7 +45,7 @@
     <div class="estado-vazio">
       <span class="vazio-icone">~</span>
       <p>nenhum habito cadastrado</p>
-      <button class="btn-ghost" on:click={() => activeModal.set('novoHabito')}>
+      <button class="btn-ghost" onclick={() => activeModal.set('novoHabito')}>
         + criar primeiro habito
       </button>
     </div>
@@ -69,8 +69,8 @@
         <ItemHabito
           {habito}
           streak={$streaks[habito.id] ?? 0}
-          on:toggle={() => toggleCheckin(habito)}
-          on:editar={() => { habitoEditando.set(habito); activeModal.set('editarHabito'); }}
+          ontoggle={() => toggleCheckin(habito)}
+          oneditar={() => { habitoEditando.set(habito); activeModal.set('editarHabito'); }}
         />
       {/each}
     </div>
@@ -79,8 +79,8 @@
 
 {#if $activeModal === 'novoHabito' || $activeModal === 'editarHabito'}
   <ModalHabito
-    on:fechar={() => activeModal.set(null)}
-    on:salvo={() => carregarHabitosHoje()}
+    onfechar={() => activeModal.set(null)}
+    onsalvo={() => carregarHabitosHoje()}
   />
 {/if}
 

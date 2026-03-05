@@ -3,22 +3,24 @@
   import { diasDoMes, hoje } from '$lib/utils/dates.js';
   import { activeModal, eventoEditando } from '$lib/stores/ui.js';
 
-  export let eventos = [];
-  export let dataRef = hoje();
+  let { 
+    eventos = [], 
+    dataRef = hoje() 
+  } = $props();
 
   const dispatch = createEventDispatcher();
 
   const CABECALHO = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
 
-  $: dias = diasDoMes(dataRef);
-  $: hojeISO = hoje();
+  let dias = $derived(diasDoMes(dataRef));
+  let hojeISO = $derived(hoje());
 
-  $: eventosPorDia = eventos.reduce((acc, e) => {
+  let eventosPorDia = $derived(eventos.reduce((acc, e) => {
     const dia = e.inicio.slice(0, 10);
     if (!acc[dia]) acc[dia] = [];
     acc[dia].push(e);
     return acc;
-  }, {});
+  }, {}));
 
   function abrirEvento(evento) {
     eventoEditando.set(evento);
@@ -47,8 +49,8 @@
         class="mes-celula"
         class:fora-mes={!mesAtual}
         class:hoje={iso === hojeISO}
-        on:click={() => novoPorDia(iso)}
-        on:keydown={() => {}}
+        onclick={() => novoPorDia(iso)}
+        onkeydown={() => {}}
         role="button"
         tabindex="0"
       >
@@ -60,8 +62,8 @@
             <div
               class="mes-evento-chip"
               style="background: {evento.area_cor ?? 'var(--accent)'}22; color: {evento.area_cor ?? 'var(--text-primary)'};"
-              on:click|stopPropagation={() => abrirEvento(evento)}
-              on:keydown={() => {}}
+              onclick={(e) => { e.stopPropagation(); abrirEvento(evento); }}
+              onkeydown={() => {}}
               role="button"
               tabindex="0"
               title={evento.titulo}

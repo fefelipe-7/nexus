@@ -1,5 +1,4 @@
 <script>
-  import { currentRoute } from '$lib/stores/navigation.js';
   import MiniCalendario from '$lib/components/calendario/MiniCalendario.svelte';
   import ProximosEventos from '$lib/components/calendario/ProximosEventos.svelte';
 </script>

@@ -5,19 +5,30 @@
   import Calendario from './routes/Calendario.svelte';
   import Metas from './routes/Metas.svelte';
   import Habitos from './routes/Habitos.svelte';
-  import { currentRoute } from '$lib/stores/navigation.js';
+  import { navigationState } from '$lib/stores/navigation.js';
   import { initDb } from '$lib/db/client.js';
   import { restaurarJanela, iniciarPersistenciaJanela } from '$lib/utils/window.js';
   import { onMount } from 'svelte';
 
-  let dbPronto = false;
-  let erroInit = null;
+  console.log('[nexus] carregando script de App.svelte...');
+
+  let dbPronto = $state(false);
+  let erroInit = $state(null);
 
   onMount(async () => {
-    // verifica se esta rodando no brownser normal
+    window.onerror = (msg, url, line, col, error) => {
+      console.error('[nexus] erro global:', msg, error);
+      return false;
+    };
+    window.onunhandledrejection = (event) => {
+      console.error('[nexus] promessa nao tratada:', event.reason);
+    };
+
+    console.log('[nexus] iniciando App...');
+
     const isTauri = '__TAURI_INTERNALS__' in window;
     if (!isTauri) {
-      erroInit = "O Nexus e um aplicativo nativo e precisa rodar dentro da janela do Tauri, não no navegador web. Por favor, aguarde a janela desktop abrir.";
+      erroInit = "Ambiente nao-Tauri detectado.";
       return;
     }
 
@@ -28,21 +39,13 @@
         await restaurarJanela();
         await iniciarPersistenciaJanela();
       } catch (errWin) {
-        console.warn('erro nao-fatal ao restaurar janela:', errWin);
-        const { getCurrentWindow } = await import('@tauri-apps/api/window');
-        try { await getCurrentWindow().show(); } catch(e){}
+        console.warn('[nexus] erro na janela:', errWin);
       }
     } catch (e) {
-      console.error('Erro critico na inicializacao:', e);
       erroInit = e.message || String(e);
-      try {
-        const { getCurrentWindow } = await import('@tauri-apps/api/window');
-        await getCurrentWindow().show();
-      } catch(e) {}
     }
   });
 
-  // views que exibem o painel lateral
   const viewsComPainel = new Set(['dashboard', 'tarefas', 'metas', 'habitos']);
 
   const views = { 
@@ -53,8 +56,8 @@
     habitos: Habitos
   };
   
-  $: currentView = views[$currentRoute] ?? Dashboard;
-  $: showPainel  = viewsComPainel.has($currentRoute);
+  let currentView = $derived(views[navigationState.currentRoute] ?? Dashboard);
+  let showPainel  = $derived(viewsComPainel.has(navigationState.currentRoute));
 </script>
 
 {#if dbPronto}
@@ -63,27 +66,28 @@
   <div class="app-loading">
     {#if erroInit}
       <div class="erro-box">
-        <h3>Erro fatal ao carregar o nexus</h3>
-        <p>{erroInit}</p>
-        <p class="dica">Verifique se as permissoes do plugin-sql ou window estao no tauri.conf.json / capabilities.</p>
-        <button on:click={() => window.location.reload()}>tentar novamente</button>
+        <h1 style="color: white; font-size: 30px;">ERRO CRITICO</h1>
+        <p style="color: white;">{erroInit}</p>
+        <button onclick={() => window.location.reload()}>RECARREGAR</button>
       </div>
     {:else}
-      <span>nexus</span>
+      <div style="text-align: center;">
+        <h1 style="font-size: 50px; color: white;">CARREGANDO NEXUS...</h1>
+        <p style="color: white;">Aguardando banco de dados...</p>
+      </div>
     {/if}
   </div>
 {/if}
 
 <style>
+
   .app-loading {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-display);
-    font-size: var(--text-xl);
-    color: var(--text-muted);
     background: var(--bg);
+    position: relative;
   }
 
   .erro-box {
@@ -91,12 +95,12 @@
     flex-direction: column;
     align-items: center;
     gap: var(--space-4);
-    max-width: 400px;
+    max-width: 80%;
     text-align: center;
-    background: var(--bg-secondary);
+    background: red;
     padding: var(--space-6);
     border-radius: var(--radius-lg);
-    border: 1px solid var(--status-danger);
+    border: 5px solid white;
   }
   .erro-box h3 { color: var(--status-danger); font-size: var(--text-md); margin: 0; }
   .erro-box p { color: var(--text-primary); font-size: var(--text-sm); font-family: var(--font-body); margin: 0; word-break: break-all; }

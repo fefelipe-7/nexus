@@ -1,15 +1,14 @@
 <!-- src/lib/components/metas/CardMeta.svelte -->
 <script>
-  import { createEventDispatcher } from 'svelte';
-
-  export let meta;
-
-  const dispatch = createEventDispatcher();
+  let { 
+    meta, 
+    onabrir 
+  } = $props();
 
   // calcula o progresso para exibicao dependendo do modo
-  $: progresso = calcularProgresso(meta);
-  $: urgente   = meta.dias_restantes !== null && meta.dias_restantes <= 7 && meta.status === 'ativa';
-  $: atrasada  = meta.dias_restantes !== null && meta.dias_restantes < 0  && meta.status === 'ativa';
+  let progresso = $derived(calcularProgresso(meta));
+  let urgente   = $derived(meta.dias_restantes !== null && meta.dias_restantes <= 7 && meta.status === 'ativa');
+  let atrasada  = $derived(meta.dias_restantes !== null && meta.dias_restantes < 0  && meta.status === 'ativa');
 
   function calcularProgresso(m) {
     switch (m.modo_progresso) {
@@ -33,8 +32,8 @@
   class:urgente
   class:atrasada
   class:concluida={meta.status === 'concluida'}
-  on:click={() => dispatch('abrir')}
-  on:keydown={() => {}}
+  onclick={() => onabrir?.()}
+  onkeydown={() => {}}
   role="button"
   tabindex="0"
 >

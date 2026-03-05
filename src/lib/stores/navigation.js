@@ -1,3 +1,5 @@
-import { writable } from 'svelte/store';
-export const currentRoute = writable('dashboard');
-export const activeTab = writable('dia');
+// src/lib/stores/navigation.js
+export const navigationState = $state({
+    currentRoute: 'dashboard',
+    activeTab: 'dia'
+});

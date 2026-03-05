@@ -15,8 +15,8 @@
   {#each tabs as tab}
     <button
       class="tab"
-      class:active={$activeTab === tab.id}
-      on:click={() => activeTab.set(tab.id)}
+      class:active={navigationState.activeTab === tab.id}
+      onclick={() => navigationState.activeTab = tab.id}
     >
       {tab.label}
     </button>

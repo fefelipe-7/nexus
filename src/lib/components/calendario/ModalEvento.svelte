@@ -1,13 +1,13 @@
 <script>
-  import { createEventDispatcher, onMount, tick } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { activeModal, eventoEditando } from '$lib/stores/ui.js';
   import { areas } from '$lib/stores/areas.js';
   import { criarEvento, atualizarEvento, deletarEvento } from '$lib/db/queries/eventos.js';
 
-  const dispatch = createEventDispatcher();
+  let { onfechar, onsalvo } = $props();
 
-  let inputTitulo;
-  $: editando = $eventoEditando;
+  let inputTitulo = $state();
+  let editando = $derived($eventoEditando);
 
   // pre-preenche com dados do evento ou valores do clique no grid
   let titulo      = editando?.titulo    ?? '';
@@ -19,26 +19,27 @@
   let areaId      = editando?.area_id   ?? null;
 
   // separar data e hora do inicio para inputs separados
-  $: dataInicio = inicio ? inicio.slice(0, 10) : '';
-  $: horaInicio = inicio && inicio.includes(' ') ? inicio.slice(11, 16) : '';
-  $: dataFim    = fim ? fim.slice(0, 10) : '';
-  $: horaFim    = fim && fim.includes(' ') ? fim.slice(11, 16) : '';
+  let dataInicio = $derived(inicio ? inicio.slice(0, 10) : '');
+  let horaInicio = $derived(inicio && inicio.includes(' ') ? inicio.slice(11, 16) : '');
+  let dataFim    = $derived(fim ? fim.slice(0, 10) : '');
+  let horaFim    = $derived(fim && fim.includes(' ') ? fim.slice(11, 16) : '');
 
   let salvando  = false;
   let deletando = false;
   let erro      = '';
 
-  onMount(async () => {
-    await tick();
-    if (inputTitulo) {
-      inputTitulo.focus();
+  $effect(() => {
+    if ($activeModal === 'novoEvento' || $activeModal === 'editarEvento') {
+      tick().then(() => {
+        inputTitulo?.focus();
+      });
     }
   });
 
   function fechar() {
     eventoEditando.set(null);
     activeModal.set(null);
-    dispatch('fechar');
+    onfechar?.();
   }
 
   function montarDatetime(data, hora) {
@@ -75,7 +76,7 @@
         await criarEvento(dados);
       }
 
-      dispatch('salvo');
+      onsalvo?.();
       fechar();
     } catch (e) {
       console.error('[nexus] erro ao salvar evento:', e);
@@ -90,7 +91,7 @@
     deletando = true;
     try {
       await deletarEvento(editando.id);
-      dispatch('salvo');
+      onsalvo?.();
       fechar();
     } finally {
       deletando = false;
@@ -102,14 +103,14 @@
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) salvar();
   }
 
-  $: areaAtual = areaId ? $areas.find(a => a.id === Number(areaId)) : null;
-  $: corBotao  = areaAtual?.cor ?? 'var(--text-primary)';
-  $: ehTarefa  = editando?.tipo === 'tarefa';
+  let areaAtual = $derived(areaId ? $areas.find(a => a.id === Number(areaId)) : null);
+  let corBotao  = $derived(areaAtual?.cor ?? 'var(--text-primary)');
+  let ehTarefa  = $derived(editando?.tipo === 'tarefa');
 </script>
 
-<svelte:window on:keydown={onKeydown} />
+<svelte:window onkeydown={onKeydown} />
 
-<div class="backdrop" on:click={fechar} on:keydown={() => {}} role="presentation"></div>
+<div class="backdrop" onclick={fechar} onkeydown={() => {}} role="presentation"></div>
 
 <div class="modal-wrapper" role="dialog" aria-modal="true">
   <div class="modal-conteudo">
@@ -123,7 +124,7 @@
           <span class="modal-area-badge" style="color: {areaAtual.cor}">{areaAtual.nome}</span>
         {/if}
       </div>
-      <button class="btn-fechar" on:click={fechar}>×</button>
+      <button class="btn-fechar" onclick={fechar}>×</button>
     </div>
 
     <div class="modal-corpo">
@@ -205,19 +206,19 @@
     <div class="modal-footer">
       <div class="footer-esquerda">
         {#if editando?.id && !ehTarefa}
-          <button class="btn-deletar" on:click={remover} disabled={deletando}>
+          <button class="btn-deletar" onclick={remover} disabled={deletando}>
             {deletando ? 'removendo...' : 'remover evento'}
           </button>
         {/if}
       </div>
       <div class="footer-direita">
         <span class="hint">cmd+enter para salvar</span>
-        <button class="btn-cancelar" on:click={fechar}>cancelar</button>
+        <button class="btn-cancelar" onclick={fechar}>cancelar</button>
         {#if !ehTarefa}
           <button
             class="btn-salvar"
             style="background: {corBotao}"
-            on:click={salvar}
+            onclick={salvar}
             disabled={salvando || !titulo.trim()}
           >
             {salvando ? 'salvando...' : 'salvar'}

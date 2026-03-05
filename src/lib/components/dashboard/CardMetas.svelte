@@ -1,13 +1,8 @@
 <!-- src/lib/components/dashboard/CardMetas.svelte -->
 <script>
-  import { createEventDispatcher } from 'svelte';
-  import { currentRoute } from '$lib/stores/navigation.js';
+  let { metas = [] } = $props();
 
-  export let metas = [];
-
-  const dispatch = createEventDispatcher();
-
-  $: metasAtivas = metas.filter(m => m.status === 'ativa').slice(0, 3);
+  let metasAtivas = $derived(metas.filter(m => m.status === 'ativa').slice(0, 3));
 </script>
 
 <div class="card-dashboard card-metas">
@@ -16,7 +11,7 @@
       <span class="icone">◎</span>
       <h3>metas</h3>
     </div>
-    <button class="btn-ver-mais" on:click={() => currentRoute.set('metas')}>
+    <button class="btn-ver-mais" onclick={() => navigationState.currentRoute = 'metas'}>
       ver todas
     </button>
   </header>

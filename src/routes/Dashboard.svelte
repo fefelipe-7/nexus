@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte';
-  import { activeTab } from '$lib/stores/navigation.js';
+  import { navigationState } from '$lib/stores/navigation.js';
   import { tarefas, tarefasAtrasadas, estatisticasDia, carregando, carregarTarefas } from '$lib/stores/tarefas.js';
   import { metas, carregarMetas } from '$lib/stores/metas.js';
   import { habitos, streaks, carregarHabitosHoje } from '$lib/stores/habitos.js';
@@ -18,17 +18,20 @@
 
   onMount(async () => {
     await carregarAreas();
-    // carregarTarefas é chamado reativamente pelo $: 
     await carregarMetas();
     await carregarHabitosHoje();
   });
 
   // recarrega sempre que a tab muda
-  $: carregarTarefas($activeTab);
-  $: if ($activeTab === 'dia') carregarHabitosHoje();
+  $effect(() => {
+    carregarTarefas(navigationState.activeTab);
+    if (navigationState.activeTab === 'dia') {
+      carregarHabitosHoje();
+    }
+  });
 
-  $: titulo = tituloPeriodo($activeTab, hoje());
-  $: greeting = saudacao();
+  let titulo = $derived(tituloPeriodo(navigationState.activeTab, hoje()));
+  let greeting = $derived(saudacao());
 </script>
 
 <div class="page">
@@ -39,7 +42,7 @@
     </div>
     <div class="dashboard-actions">
       <TemporalTabs />
-      <button class="btn-primary" on:click={() => activeModal.set('novaTarefa')}>
+      <button class="btn-primary" onclick={() => activeModal.set('novaTarefa')}>
         <span>+</span> nova tarefa
       </button>
     </div>
@@ -54,21 +57,15 @@
       stats={$estatisticasDia}
       metas={$metas}
       habitos={$habitos}
-      tab={$activeTab}
+      tab={navigationState.activeTab}
     />
 
     <div class="cards-grid">
       <CardTarefas
         tarefas={$tarefas}
         atrasadas={$tarefasAtrasadas}
-        tab={$activeTab}
-        on:atualizar={() => carregarTarefas($activeTab)}
-      />
-      <CardTarefas
-        tarefas={$tarefas}
-        atrasadas={$tarefasAtrasadas}
-        tab={$activeTab}
-        on:atualizar={() => carregarTarefas($activeTab)}
+        tab={navigationState.activeTab}
+        onatualizar={() => carregarTarefas(navigationState.activeTab)}
       />
       <CardMetas metas={$metas} />
       <CardHabitos habitos={$habitos} streaks={$streaks} />
@@ -78,7 +75,7 @@
 </div>
 
 {#if $activeModal === 'novaTarefa' || $activeModal === 'editarTarefa'}
-  <ModalTarefa on:fechar={() => activeModal.set(null)} on:salvo={() => carregarTarefas($activeTab)} />
+  <ModalTarefa onfechar={() => activeModal.set(null)} onsalvo={() => carregarTarefas(navigationState.activeTab)} />
 {/if}
 
 <style>

@@ -6,10 +6,10 @@
   const MESES = ['janeiro','fevereiro','marco','abril','maio','junho',
                  'julho','agosto','setembro','outubro','novembro','dezembro'];
 
-  let mesRef = hoje();
-  $: [ano, mes] = mesRef.split('-').map(Number);
-  $: dias = diasDoMes(mesRef);
-  $: hojeISO = hoje();
+  let mesRef = $state(hoje());
+  let [ano, mes] = $derived(mesRef.split('-').map(Number));
+  let dias = $derived(diasDoMes(mesRef));
+  let hojeISO = $derived(hoje());
 
   function navMes(dir) {
     mesRef = navegarPeriodo(mesRef, 'mes', dir === 1 ? 'proximo' : 'anterior');
@@ -22,9 +22,9 @@
 
 <div class="mini-cal">
   <div class="mini-cal-header">
-    <button class="mini-nav" on:click={() => navMes(-1)}>‹</button>
+    <button class="mini-nav" onclick={() => navMes(-1)}>‹</button>
     <span class="mini-titulo">{MESES[mes - 1]} {ano}</span>
-    <button class="mini-nav" on:click={() => navMes(1)}>›</button>
+    <button class="mini-nav" onclick={() => navMes(1)}>›</button>
   </div>
 
   <div class="mini-grid-header">
@@ -38,7 +38,7 @@
         class:fora={!mesAtual}
         class:hoje={iso === hojeISO}
         class:selecionado={iso === $dataReferencia}
-        on:click={() => selecionarDia(iso)}
+        onclick={() => selecionarDia(iso)}
       >
         {parseInt(iso.slice(8))}
       </button>

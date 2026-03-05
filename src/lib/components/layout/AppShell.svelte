@@ -3,8 +3,7 @@
   import PainelLateral from './PainelLateral.svelte';
   import { painelVisivel } from '$lib/stores/ui.js';
 
-  export let currentView;
-  export let showPainel = false;
+  let { currentView: CurrentView, showPainel = false } = $props();
 </script>
 
 <div class="shell">
@@ -13,7 +12,7 @@
   <div class="shell-corpo">
     <!-- coluna principal -->
     <div class="coluna-principal">
-      <svelte:component this={currentView} />
+      <CurrentView />
     </div>
 
     <!-- painel lateral — so aparece quando showPainel = true -->

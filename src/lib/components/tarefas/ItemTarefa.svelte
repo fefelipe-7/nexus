@@ -1,13 +1,10 @@
 <!-- src/lib/components/tarefas/ItemTarefa.svelte -->
 <script>
-  import { createEventDispatcher } from 'svelte';
-  import { activeModal, tarefaEditando } from '$lib/stores/ui.js';
-  import { adiarTarefa } from '$lib/db/queries/tarefas.js';
-  import { labelRelativo, hoje } from '$lib/utils/dates.js';
-
-  export let tarefa;
-
-  const dispatch = createEventDispatcher();
+  let { 
+    tarefa, 
+    onconcluir, 
+    onatualizar 
+  } = $props();
 
   const PRIORIDADE_COR = {
     critica: '#ef4444',
@@ -28,7 +25,7 @@
     d.setDate(d.getDate() + 1);
     const amanha = d.toISOString().slice(0, 10);
     await adiarTarefa(tarefa.id, amanha);
-    dispatch('atualizar');
+    onatualizar?.();
   }
 
   async function adiarParaProximaSemana() {
@@ -37,11 +34,11 @@
     const diasAteSegunda = diaSemana === 0 ? 1 : 8 - diaSemana;
     d.setDate(d.getDate() + diasAteSegunda);
     await adiarTarefa(tarefa.id, d.toISOString().slice(0, 10));
-    dispatch('atualizar');
+    onatualizar?.();
   }
 
-  $: atrasada = tarefa.data_prevista && tarefa.data_prevista < hoje() && tarefa.status !== 'concluida';
-  $: corPrioridade = PRIORIDADE_COR[tarefa.prioridade] ?? PRIORIDADE_COR.media;
+  let atrasada = $derived(tarefa.data_prevista && tarefa.data_prevista < hoje() && tarefa.status !== 'concluida');
+  let corPrioridade = $derived(PRIORIDADE_COR[tarefa.prioridade] ?? PRIORIDADE_COR.media);
 </script>
 
 <div
@@ -50,13 +47,13 @@
   class:atrasada
   role="region"
   aria-label="detalhes da tarefa"
-  on:mouseenter={() => mostrarAcoes = true}
-  on:mouseleave={() => mostrarAcoes = false}
+  onmouseenter={() => mostrarAcoes = true}
+  onmouseleave={() => mostrarAcoes = false}
 >
   <!-- checkbox -->
   <button
     class="check-btn"
-    on:click={() => dispatch('concluir')}
+    onclick={() => onconcluir?.()}
     aria-label={tarefa.status === 'concluida' ? 'reabrir tarefa' : 'concluir tarefa'}
   >
     <span class="check-box" class:checked={tarefa.status === 'concluida'}>
@@ -65,7 +62,7 @@
   </button>
 
   <!-- corpo clicavel -->
-  <div class="item-corpo" on:click={editar} on:keydown={() => {}} role="button" tabindex="0">
+  <div class="item-corpo" onclick={editar} onkeydown={() => {}} role="button" tabindex="0">
     <span class="item-titulo">{tarefa.titulo}</span>
     <div class="item-meta">
       {#if tarefa.hora_prevista}
@@ -94,13 +91,13 @@
   <!-- hover actions -->
   {#if mostrarAcoes && tarefa.status !== 'concluida'}
     <div class="hover-acoes">
-      <button class="acao-btn" on:click={adiarParaAmanha} title="adiar para amanha">
+      <button class="acao-btn" onclick={adiarParaAmanha} title="adiar para amanha">
         amanha
       </button>
-      <button class="acao-btn" on:click={adiarParaProximaSemana} title="adiar para proxima semana">
+      <button class="acao-btn" onclick={adiarParaProximaSemana} title="adiar para proxima semana">
         prox. semana
       </button>
-      <button class="acao-btn" on:click={editar} title="editar">
+      <button class="acao-btn" onclick={editar} title="editar">
         editar
       </button>
     </div>

@@ -3,7 +3,7 @@
   import { filtroTexto, filtroArea, filtroPrioridade } from '$lib/stores/tarefas.js';
   import { areas } from '$lib/stores/areas.js';
 
-  $: temFiltro = $filtroTexto || $filtroArea || $filtroPrioridade;
+  let temFiltro = $derived($filtroTexto || $filtroArea || $filtroPrioridade);
 
   function limpar() {
     filtroTexto.set('');
@@ -26,7 +26,7 @@
       placeholder="buscar tarefas..."
     />
     {#if $filtroTexto}
-      <button class="btn-limpar-campo" on:click={() => filtroTexto.set('')}>×</button>
+      <button class="btn-limpar-campo" onclick={() => filtroTexto.set('')}>×</button>
     {/if}
   </div>
 
@@ -48,7 +48,7 @@
 
   <!-- limpar filtros -->
   {#if temFiltro}
-    <button class="btn-limpar" on:click={limpar}>limpar filtros</button>
+    <button class="btn-limpar" onclick={limpar}>limpar filtros</button>
   {/if}
 
 </div>

@@ -1,35 +1,39 @@
-<!-- src/lib/components/tarefas/ModalTarefa.svelte -->
 <script>
-  import { createEventDispatcher, onMount, tick } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { activeModal, tarefaEditando } from '$lib/stores/ui.js';
   import { areas } from '$lib/stores/areas.js';
   import { criarTarefa, atualizarTarefa, deletarTarefa } from '$lib/db/queries/tarefas.js';
   import { hoje } from '$lib/utils/dates.js';
 
-  const dispatch = createEventDispatcher();
+  let { 
+    onfechar, 
+    onsalvo 
+  } = $props();
 
-  let inputTitulo;
-  let mostrarDetalhes = false;
+  let inputTitulo = $state();
+  let mostrarDetalhes = $state(false);
 
-  $: editando = $tarefaEditando;
-  $: areaAtual = areaId ? $areas.find(a => a.id === Number(areaId)) : null;
-  $: corBotaoSalvar = areaAtual?.cor ?? 'var(--text-primary)';
+  let editando = $derived($tarefaEditando);
+  let areaAtual = $derived(areaId ? $areas.find(a => a.id === Number(areaId)) : null);
+  let corBotaoSalvar = $derived(areaAtual?.cor ?? 'var(--text-primary)');
 
-  let titulo       = editando?.titulo        ?? '';
-  let descricao    = editando?.descricao     ?? '';
-  let areaId       = editando?.area_id       ?? null;
-  let prioridade   = editando?.prioridade    ?? 'media';
-  let dataPrevista = editando?.data_prevista ?? hoje();
-  let horaPrevista = editando?.hora_prevista ?? '';
+  let titulo       = $state(editando?.titulo        ?? '');
+  let descricao    = $state(editando?.descricao     ?? '');
+  let areaId       = $state(editando?.area_id       ?? null);
+  let prioridade   = $state(editando?.prioridade    ?? 'media');
+  let dataPrevista = $state(editando?.data_prevista ?? hoje());
+  let horaPrevista = $state(editando?.hora_prevista ?? '');
 
   // abre detalhes automaticamente se a tarefa editada ja tem campos preenchidos
-  $: if (editando) {
-    mostrarDetalhes = !!(editando.descricao || editando.area_id || editando.hora_prevista || editando.prioridade !== 'media');
-  }
+  $effect(() => {
+    if (editando) {
+      mostrarDetalhes = !!(editando.descricao || editando.area_id || editando.hora_prevista || editando.prioridade !== 'media');
+    }
+  });
 
-  let salvando  = false;
-  let deletando = false;
-  let erro      = '';
+  let salvando  = $state(false);
+  let deletando = $state(false);
+  let erro      = $state('');
 
   onMount(async () => {
     await tick(); // garante que o dom renderizou
@@ -38,7 +42,7 @@
 
   function fechar() {
     tarefaEditando.set(null);
-    dispatch('fechar');
+    onfechar?.();
   }
 
   async function salvar() {
@@ -65,7 +69,7 @@
         await criarTarefa(dados);
       }
 
-      dispatch('salvo');
+      onsalvo?.();
       fechar();
     } catch (e) {
       erro = 'erro ao salvar. tente novamente.';
@@ -82,7 +86,7 @@
       if (deletarTarefa) {
         await deletarTarefa(editando.id);
       }
-      dispatch('salvo');
+      onsalvo?.();
       fechar();
     } finally {
       deletando = false;
@@ -101,16 +105,16 @@
     { valor: 'baixa',   label: 'baixa',   cor: '#d4d2cc' },
   ];
 
-  $: corPrioridade = PRIORIDADES.find(p => p.valor === prioridade)?.cor ?? '#9b9b9b';
+  let corPrioridade = $derived(PRIORIDADES.find(p => p.valor === prioridade)?.cor ?? '#9b9b9b');
 </script>
 
-<svelte:window on:keydown={onKeydown} />
+<svelte:window onkeydown={onKeydown} />
 
 <!-- backdrop separado do modal para nao interferir no posicionamento -->
 <div
   class="backdrop"
-  on:click={fechar}
-  on:keydown={() => {}}
+  onclick={fechar}
+  onkeydown={() => {}}
   role="presentation"
 ></div>
 
@@ -132,7 +136,7 @@
           </span>
         {/if}
       </div>
-      <button class="btn-fechar" on:click={fechar} aria-label="fechar">×</button>
+      <button class="btn-fechar" onclick={fechar} aria-label="fechar">×</button>
     </div>
 
     <!-- corpo principal -->
@@ -209,7 +213,7 @@
         <!-- botao para mostrar/esconder detalhes -->
         <button
           class="btn-detalhes"
-          on:click={() => mostrarDetalhes = !mostrarDetalhes}
+          onclick={() => mostrarDetalhes = !mostrarDetalhes}
         >
           {mostrarDetalhes ? 'menos' : 'mais detalhes'}
         </button>
@@ -251,7 +255,7 @@
         {#if editando}
           <button
             class="btn-deletar"
-            on:click={remover}
+            onclick={remover}
             disabled={deletando}
           >
             {deletando ? 'removendo...' : 'remover tarefa'}
@@ -261,11 +265,11 @@
 
       <div class="footer-direita">
         <span class="hint">cmd+enter para salvar</span>
-        <button class="btn-cancelar" on:click={fechar}>cancelar</button>
+        <button class="btn-cancelar" onclick={fechar}>cancelar</button>
         <button
           class="btn-salvar"
           style="background: {corBotaoSalvar}"
-          on:click={salvar}
+          onclick={salvar}
           disabled={salvando || !titulo.trim()}
         >
           {salvando ? 'salvando...' : 'salvar'}

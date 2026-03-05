@@ -1,12 +1,14 @@
 <!-- src/lib/components/dashboard/BlocoDisretivo.svelte -->
 <script>
-  export let tarefas   = [];
-  export let atrasadas = [];
-  export let stats     = null;
-  export let eventos      = [];
-  export let metas        = []; // novo
-  export let habitos      = []; // novo
-  export let tab          = 'dia';
+  let { 
+    tarefas = [], 
+    atrasadas = [], 
+    stats = null, 
+    eventos = [], 
+    metas = [], 
+    habitos = [], 
+    tab = 'dia' 
+  } = $props();
 
   function gerarMensagem() {
     // metas proximas do prazo (so na tab dia)
@@ -28,8 +30,8 @@
       const naoFeitos = habitos.filter(h =>
         h.frequencia_tipo === 'diaria' && !h.concluido_hoje
       );
-      if (naoFeitos.length === habitos.filter(h => h.frequencia_tipo === 'diaria').length
-          && naoFeitos.length > 0) {
+      const diarios = habitos.filter(h => h.frequencia_tipo === 'diaria');
+      if (naoFeitos.length === diarios.length && naoFeitos.length > 0) {
         return `voce ainda nao fez nenhum habito hoje. comece por qualquer um.`;
       }
     }
@@ -65,9 +67,9 @@
     return `${concluidas} de ${total} ${total === 1 ? 'tarefa concluida' : 'tarefas concluidas'}. faltam ${pendentes}.`;
   }
 
-  $: mensagem = gerarMensagem();
-  $: temAtrasadas = atrasadas.length > 0;
-  $: todasConcluidas = stats && stats.concluidas === stats.total && stats.total > 0;
+  let mensagem = $derived(gerarMensagem());
+  let temAtrasadas = $derived(atrasadas.length > 0);
+  let todasConcluidas = $derived(stats && stats.concluidas === stats.total && stats.total > 0);
 </script>
 
 <div class="bloco-diretivo" class:alerta={temAtrasadas} class:ok={todasConcluidas}>

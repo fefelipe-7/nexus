@@ -1,8 +1,6 @@
 <!-- src/lib/components/dashboard/CardVazio.svelte -->
 <script>
-  export let modulo     = '';
-  export let icone      = 'o';
-  export let descricao  = '';
+  let { modulo = '', icone = 'o', descricao = '' } = $props();
 </script>
 
 <div class="card card-vazio-modulo">

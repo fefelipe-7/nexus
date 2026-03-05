@@ -1,11 +1,11 @@
 <!-- src/lib/components/habitos/ItemHabito.svelte -->
 <script>
-  import { createEventDispatcher } from 'svelte';
-
-  export let habito;
-  export let streak = 0;
-
-  const dispatch = createEventDispatcher();
+  let { 
+    habito, 
+    streak = 0, 
+    ontoggle, 
+    oneditar 
+  } = $props();
 
   const FREQ_LABEL = {
     diaria:      'diario',
@@ -24,7 +24,7 @@
   <!-- check -->
   <button
     class="check-btn"
-    on:click={() => dispatch('toggle')}
+    onclick={() => ontoggle?.()}
     aria-label={habito.concluido_hoje ? 'desmarcar habito' : 'marcar habito'}
   >
     <span class="check-box" class:checked={habito.concluido_hoje}
@@ -60,7 +60,7 @@
   <!-- botao editar no hover -->
   <button
     class="btn-editar"
-    on:click|stopPropagation={() => dispatch('editar')}
+    onclick={(e) => { e.stopPropagation(); oneditar?.(); }}
     aria-label="editar habito"
   >
     ···

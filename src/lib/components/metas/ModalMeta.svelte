@@ -1,23 +1,22 @@
-<!-- src/lib/components/metas/ModalMeta.svelte -->
 <script>
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import { activeModal, metaEditando } from '$lib/stores/ui.js';
   import { areas } from '$lib/stores/areas.js';
   import { metas } from '$lib/stores/metas.js';
   import { criarMeta, atualizarMeta } from '$lib/db/queries/metas.js';
 
-  const dispatch = createEventDispatcher();
+  let { onfechar, onsalvo } = $props();
 
-  let titulo = '';
-  let descricao = '';
-  let areaId = null;
-  let metaPaiId = null;
-  let prazoTipo = null;
-  let dataInicio = null;
-  let dataFim = null;
-  let modoProgresso = 'tarefas';
-  let valorAlvo = null;
-  let unidade = '';
+  let titulo = $state('');
+  let descricao = $state('');
+  let areaId = $state(null);
+  let metaPaiId = $state(null);
+  let prazoTipo = $state(null);
+  let dataInicio = $state(null);
+  let dataFim = $state(null);
+  let modoProgresso = $state('tarefas');
+  let valorAlvo = $state(null);
+  let unidade = $state('');
 
   const MODOS = [
     { id: 'tarefas', label: 'por tarefas vinculadas' },
@@ -72,22 +71,22 @@
       await criarMeta(dados);
     }
 
-    dispatch('salvo');
+    onsalvo?.();
     fechar();
   }
 
   function fechar() {
     activeModal.set(null);
     metaEditando.set(null);
-    dispatch('fechar');
+    onfechar?.();
   }
 </script>
 
-<div class="modal-overlay" on:click|self={fechar}>
+<div class="modal-overlay" onclick={(e) => { if (e.target === e.currentTarget) fechar(); }}>
   <div class="modal-content">
     <header>
       <h2>{$metaEditando ? 'editar meta' : 'nova meta'}</h2>
-      <button class="btn-close" on:click={fechar}>×</button>
+      <button class="btn-close" onclick={fechar}>×</button>
     </header>
 
     <div class="form">
@@ -130,7 +129,7 @@
             <button
               class="modo-btn"
               class:active={modoProgresso === m.id}
-              on:click={() => modoProgresso = m.id}
+              onclick={() => modoProgresso = m.id}
             >
               {m.label}
             </button>
@@ -162,8 +161,8 @@
     </div>
 
     <footer>
-      <button class="btn-secondary" on:click={fechar}>cancelar</button>
-      <button class="btn-primary" on:click={salvar} disabled={!titulo}>
+      <button class="btn-secondary" onclick={fechar}>cancelar</button>
+      <button class="btn-primary" onclick={salvar} disabled={!titulo}>
         {$metaEditando ? 'salvar alteracoes' : 'criar meta'}
       </button>
     </footer>

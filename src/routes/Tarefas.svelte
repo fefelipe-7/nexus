@@ -1,7 +1,7 @@
 <!-- src/routes/Tarefas.svelte -->
 <script>
   import { onMount } from 'svelte';
-  import { activeTab } from '$lib/stores/navigation.js';
+  import { navigationState } from '$lib/stores/navigation.js';
   import {
     tarefas, tarefasAtrasadas, tarefasSemData,
     carregando, carregarTarefas,
@@ -21,17 +21,18 @@
   let debounceTimer;
 
   onMount(() => {
-    carregarTarefas($activeTab);
+    carregarTarefas(navigationState.activeTab);
   });
 
-  $: carregarTarefas($activeTab, {
-    texto: $filtroTexto,
-    areaId: $filtroArea,
-    prioridade: $filtroPrioridade,
-  });
+  let groups = $derived(agruparPorData($tarefas, navigationState.activeTab));
 
-  // agrupa tarefas por data para exibicao
-  $: grupos = agruparPorData($tarefas, $activeTab);
+  $effect(() => {
+    carregarTarefas(navigationState.activeTab, {
+      texto: $filtroTexto,
+      areaId: $filtroArea,
+      prioridade: $filtroPrioridade,
+    });
+  });
 
   function agruparPorData(lista, tab) {
     if (tab === 'dia') return []; // na tab dia nao precisa agrupar, so mostra a lista plana
@@ -61,9 +62,9 @@
     carregarTarefas($activeTab);
   }
 
-  $: temFiltroAtivo = $filtroTexto || $filtroArea || $filtroPrioridade;
-  $: totalPendentes = $tarefas.filter(t => t.status !== 'concluida').length
-                    + $tarefasAtrasadas.length;
+  let temFiltroAtivo = $derived($filtroTexto || $filtroArea || $filtroPrioridade);
+  let totalPendentes = $derived($tarefas.filter(t => t.status !== 'concluida').length
+                    + $tarefasAtrasadas.length);
 </script>
 
 <div class="page">
@@ -78,7 +79,7 @@
     </div>
     <div class="page-actions">
       <TemporalTabs />
-      <button class="btn-primary" on:click={() => activeModal.set('novaTarefa')}>
+      <button class="btn-primary" onclick={() => activeModal.set('novaTarefa')}>
         + nova tarefa
       </button>
     </div>
@@ -96,7 +97,7 @@
       <span class="vazio-icone">✓</span>
       <p>nenhuma tarefa {temFiltroAtivo ? 'encontrada com esses filtros' : 'para este periodo'}</p>
       {#if !temFiltroAtivo}
-        <button class="btn-ghost" on:click={() => activeModal.set('novaTarefa')}>
+        <button class="btn-ghost" onclick={() => activeModal.set('novaTarefa')}>
           + adicionar tarefa
         </button>
       {/if}
@@ -114,8 +115,8 @@
         {#each $tarefasAtrasadas as tarefa (tarefa.id)}
           <ItemTarefa
             {tarefa}
-            on:concluir={() => toggleConcluir(tarefa)}
-            on:atualizar={() => carregarTarefas($activeTab)}
+            onconcluir={() => toggleConcluir(tarefa)}
+            onatualizar={() => carregarTarefas($activeTab)}
           />
         {/each}
       </section>
@@ -134,8 +135,8 @@
           {#each $tarefas as tarefa (tarefa.id)}
             <ItemTarefa
               {tarefa}
-              on:concluir={() => toggleConcluir(tarefa)}
-              on:atualizar={() => carregarTarefas($activeTab)}
+              onconcluir={() => toggleConcluir(tarefa)}
+              onatualizar={() => carregarTarefas($activeTab)}
             />
           {/each}
         </section>
@@ -156,8 +157,8 @@
           {#each grupo.itens as tarefa (tarefa.id)}
             <ItemTarefa
               {tarefa}
-              on:concluir={() => toggleConcluir(tarefa)}
-              on:atualizar={() => carregarTarefas($activeTab)}
+              onconcluir={() => toggleConcluir(tarefa)}
+              onatualizar={() => carregarTarefas($activeTab)}
             />
           {/each}
         </section>
@@ -174,8 +175,8 @@
         {#each $tarefasSemData as tarefa (tarefa.id)}
           <ItemTarefa
             {tarefa}
-            on:concluir={() => toggleConcluir(tarefa)}
-            on:atualizar={() => carregarTarefas($activeTab)}
+            onconcluir={() => toggleConcluir(tarefa)}
+            onatualizar={() => carregarTarefas($activeTab)}
           />
         {/each}
       </section>
@@ -187,8 +188,8 @@
 
 {#if $activeModal === 'novaTarefa' || $activeModal === 'editarTarefa'}
   <ModalTarefa
-    on:fechar={() => activeModal.set(null)}
-    on:salvo={() => carregarTarefas($activeTab)}
+    onfechar={() => activeModal.set(null)}
+    onsalvo={() => carregarTarefas($activeTab)}
   />
 {/if}
 

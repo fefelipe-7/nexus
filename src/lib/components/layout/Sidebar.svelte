@@ -2,7 +2,7 @@
   import { Home, CheckSquare, Calendar, Target, Flame,
            DollarSign, FileText, Users, Settings, Search,
            ChevronsLeft, ChevronsRight } from 'lucide-svelte';
-  import { currentRoute } from '$lib/stores/navigation.js';
+  import { navigationState } from '$lib/stores/navigation.js';
   import { sidebarCollapsed } from '$lib/stores/ui.js';
 
   const navItems = [
@@ -33,7 +33,7 @@
 
   function navigate(item) {
     if (!item.active) return;
-    currentRoute.set(item.id);
+    navigationState.currentRoute = item.id;
   }
 </script>
 
@@ -49,7 +49,7 @@
     {/if}
     <button
       class="collapse-btn"
-      on:click={() => sidebarCollapsed.update(v => !v)}
+      onclick={() => sidebarCollapsed.update(v => !v)}
       aria-label="alternar sidebar"
     >
       {#if $sidebarCollapsed}
@@ -76,11 +76,11 @@
       {#each group.items as item}
         <button
           class="nav-item"
-          class:active={$currentRoute === item.id}
+          class:active={navigationState.currentRoute === item.id}
           class:disabled={!item.active}
-          on:click={() => navigate(item)}
+          onclick={() => navigate(item)}
         >
-          <svelte:component this={item.icon} size={16} />
+          <item.icon size={16} />
           {#if !$sidebarCollapsed}
             <span>{item.label}</span>
           {/if}
@@ -92,8 +92,8 @@
   <div class="sidebar-footer">
     <button
       class="nav-item"
-      class:active={$currentRoute === 'configuracoes'}
-      on:click={() => currentRoute.set('configuracoes')}
+      class:active={navigationState.currentRoute === 'configuracoes'}
+      onclick={() => navigationState.currentRoute = 'configuracoes'}
     >
       <Settings size={16} />
       {#if !$sidebarCollapsed}

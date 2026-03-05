@@ -1,14 +1,16 @@
 <!-- src/lib/components/metas/DetalheMeta.svelte -->
 <script>
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { onMount } from 'svelte';
   import { getTarefasDaMeta } from '$lib/db/queries/tarefas.js';
   import { deletarMeta } from '$lib/db/queries/metas.js';
   import { activeModal, metaEditando } from '$lib/stores/ui.js';
+  let { 
+    meta, 
+    onfechar, 
+    onatualizar 
+  } = $props();
 
-  export let meta;
-
-  const dispatch = createEventDispatcher();
-  let tarefas = [];
+  let tarefas = $state([]);
 
   onMount(async () => {
     tarefas = await getTarefasDaMeta(meta.id);
@@ -17,8 +19,8 @@
   async function handleDeletar() {
     if (confirm('tem certeza que deseja excluir esta meta? submetas serao desvinculadas.')) {
       await deletarMeta(meta.id);
-      dispatch('atualizar');
-      dispatch('fechar');
+      onatualizar?.();
+      onfechar?.();
     }
   }
 
@@ -28,12 +30,12 @@
   }
 </script>
 
-<div class="detalhe-overlay" on:click|self={() => dispatch('fechar')}>
+<div class="detalhe-overlay" onclick={(e) => { if (e.target === e.currentTarget) onfechar?.(); }}>
   <div class="detalhe-painel">
     <header>
       <div class="topo">
         <span class="area" style="color: {meta.area_cor}">{meta.area_nome || 'sem area'}</span>
-        <button class="btn-close" on:click={() => dispatch('fechar')}>×</button>
+        <button class="btn-close" onclick={() => onfechar?.()}>×</button>
       </div>
       <h1>{meta.titulo}</h1>
       <p class="desc">{meta.descricao || 'sem descricao'}</p>
@@ -71,8 +73,8 @@
     </div>
 
     <footer>
-      <button class="btn-danger" on:click={handleDeletar}>excluir meta</button>
-      <button class="btn-secondary" on:click={editar}>editar</button>
+      <button class="btn-danger" onclick={handleDeletar}>excluir meta</button>
+      <button class="btn-secondary" onclick={editar}>editar</button>
     </footer>
   </div>
 </div>

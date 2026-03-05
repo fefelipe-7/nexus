@@ -3,13 +3,12 @@
   import { concluirTarefa, reabrirTarefa, deletarTarefa } from '$lib/db/queries/tarefas.js';
   import { activeModal, tarefaEditando } from '$lib/stores/ui.js';
   import { labelRelativo } from '$lib/utils/dates.js';
-  import { createEventDispatcher } from 'svelte';
-
-  export let tarefas   = [];
-  export let atrasadas = [];
-  export let tab       = 'dia';
-
-  const dispatch = createEventDispatcher();
+  let { 
+    tarefas = [], 
+    atrasadas = [], 
+    tab = 'dia',
+    onatualizar
+  } = $props();
 
   const PRIORIDADE_COR = {
     critica: '#ef4444',
@@ -24,12 +23,12 @@
     } else {
       await concluirTarefa(tarefa.id);
     }
-    dispatch('atualizar');
+    onatualizar?.();
   }
 
   async function remover(id) {
     await deletarTarefa(id);
-    dispatch('atualizar');
+    onatualizar?.();
   }
 
   function editar(tarefa) {
@@ -38,8 +37,8 @@
   }
 
   // na tab dia mostra atrasadas separadas antes das de hoje
-  $: mostraAtrasadas = tab === 'dia' && atrasadas.length > 0;
-  $: totalVisiveis = tarefas.length + atrasadas.length;
+  let mostraAtrasadas = $derived(tab === 'dia' && atrasadas.length > 0);
+  let totalVisiveis = $derived(tarefas.length + atrasadas.length);
 </script>
 
 <div class="card card-tarefas">
@@ -54,7 +53,7 @@
     <div class="card-vazio">
       <span class="vazio-icone">✓</span>
       <p>nenhuma tarefa para este periodo</p>
-      <button class="btn-vazio" on:click={() => activeModal.set('novaTarefa')}>
+      <button class="btn-vazio" onclick={() => activeModal.set('novaTarefa')}>
         + adicionar tarefa
       </button>
     </div>
@@ -64,10 +63,10 @@
       <div class="secao-label secao-label--alerta">atrasadas</div>
       {#each atrasadas as tarefa (tarefa.id)}
         <div class="tarefa-item tarefa-item--atrasada">
-          <button class="tarefa-check" on:click={() => toggleConcluir(tarefa)} aria-label="concluir tarefa">
+          <button class="tarefa-check" onclick={() => toggleConcluir(tarefa)} aria-label="concluir tarefa">
             <span class="check-box"></span>
           </button>
-          <div class="tarefa-corpo" on:click={() => editar(tarefa)} on:keydown={() => {}} role="button" tabindex="0">
+          <div class="tarefa-corpo" onclick={() => editar(tarefa)} onkeydown={() => {}} role="button" tabindex="0">
             <span class="tarefa-titulo">{tarefa.titulo}</span>
             <div class="tarefa-meta">
               <span class="tarefa-data atrasada">{labelRelativo(tarefa.data_prevista)}</span>
@@ -87,12 +86,12 @@
 
     {#each tarefas as tarefa (tarefa.id)}
       <div class="tarefa-item" class:concluida={tarefa.status === 'concluida'}>
-        <button class="tarefa-check" on:click={() => toggleConcluir(tarefa)} aria-label="concluir tarefa">
+        <button class="tarefa-check" onclick={() => toggleConcluir(tarefa)} aria-label="concluir tarefa">
           <span class="check-box" class:checked={tarefa.status === 'concluida'}>
             {#if tarefa.status === 'concluida'}✓{/if}
           </span>
         </button>
-        <div class="tarefa-corpo" on:click={() => editar(tarefa)} on:keydown={() => {}} role="button" tabindex="0">
+        <div class="tarefa-corpo" onclick={() => editar(tarefa)} onkeydown={() => {}} role="button" tabindex="0">
           <span class="tarefa-titulo">{tarefa.titulo}</span>
           <div class="tarefa-meta">
             {#if tarefa.hora_prevista}
@@ -112,7 +111,7 @@
   {/if}
 
   <div class="card-footer">
-    <button class="btn-link" on:click={() => activeModal.set('novaTarefa')}>+ nova tarefa</button>
+    <button class="btn-link" onclick={() => activeModal.set('novaTarefa')}>+ nova tarefa</button>
   </div>
 </div>
 

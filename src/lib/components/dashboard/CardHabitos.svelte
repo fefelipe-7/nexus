@@ -1,14 +1,8 @@
 <!-- src/lib/components/dashboard/CardHabitos.svelte -->
 <script>
-  import { createEventDispatcher } from 'svelte';
-  import { currentRoute } from '$lib/stores/navigation.js';
+  let { habitos = [], streaks = {} } = $props();
 
-  export let habitos = [];
-  export let streaks = {};
-
-  const dispatch = createEventDispatcher();
-
-  $: habitosHoje = habitos.filter(h => h.frequencia_tipo === 'diaria').slice(0, 4);
+  let habitosHoje = $derived(habitos.filter(h => h.frequencia_tipo === 'diaria').slice(0, 4));
 </script>
 
 <div class="card-dashboard card-habitos">
@@ -17,7 +11,7 @@
       <span class="icone">~</span>
       <h3>habitos</h3>
     </div>
-    <button class="btn-ver-mais" on:click={() => currentRoute.set('habitos')}>
+    <button class="btn-ver-mais" onclick={() => navigationState.currentRoute = 'habitos'}>
       ver todos
     </button>
   </header>

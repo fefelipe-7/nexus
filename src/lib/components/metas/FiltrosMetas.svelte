@@ -1,8 +1,10 @@
 <!-- src/lib/components/metas/FiltrosMetas.svelte -->
 <script>
-  export let status = 'ativa';
-  export let area = null;
-  export let prazo = null;
+  let { 
+    status = $bindable('ativa'), 
+    area = $bindable(null), 
+    prazo = $bindable(null) 
+  } = $props();
 
   import { areas } from '$lib/stores/areas.js';
 
@@ -28,7 +30,7 @@
       <button
         class="filtro-item"
         class:active={status === s.id}
-        on:click={() => status = s.id}
+        onclick={() => status = s.id}
       >
         {s.label}
       </button>

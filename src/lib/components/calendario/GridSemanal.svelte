@@ -3,8 +3,10 @@
   import { diasDaSemana, hoje } from '$lib/utils/dates.js';
   import { activeModal, eventoEditando } from '$lib/stores/ui.js';
 
-  export let eventos  = [];
-  export let dataRef  = hoje();
+  let { 
+    eventos = [], 
+    dataRef = hoje() 
+  } = $props();
 
   const dispatch = createEventDispatcher();
 
@@ -14,14 +16,14 @@
 
   const DIAS_LABEL = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
 
-  $: dias = diasDaSemana(dataRef);
-  $: hojeISO = hoje();
+  let dias = $derived(diasDaSemana(dataRef));
+  let hojeISO = $derived(hoje());
 
   // mapeia eventos para cada dia
-  $: eventosPorDia = dias.reduce((acc, dia) => {
+  let eventosPorDia = $derived(dias.reduce((acc, dia) => {
     acc[dia] = eventos.filter(e => e.inicio.slice(0, 10) === dia);
     return acc;
-  }, {});
+  }, {}));
 
   function getEventoStyle(evento) {
     if (!evento.inicio.includes(' ')) return '';
@@ -85,8 +87,8 @@
         {#each HORAS as hora}
           <div
             class="celula-tempo"
-            on:click={() => novoPorClique(dia, hora)}
-            on:keydown={() => {}}
+            onclick={() => novoPorClique(dia, hora)}
+            onkeydown={() => {}}
             role="button"
             tabindex="0"
           ></div>
@@ -98,8 +100,8 @@
             class="evento-bloco"
             class:evento-tarefa={evento.tipo === 'tarefa'}
             style="{getEventoStyle(evento)} background: {evento.area_cor ?? evento.cor ?? 'var(--accent)'}22; border-left: 3px solid {evento.area_cor ?? evento.cor ?? 'var(--accent)'};"
-            on:click|stopPropagation={() => abrirEvento(evento)}
-            on:keydown={() => {}}
+            onclick={(e) => { e.stopPropagation(); abrirEvento(evento); }}
+            onkeydown={() => {}}
             role="button"
             tabindex="0"
             title={evento.titulo}

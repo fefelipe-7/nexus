@@ -12,12 +12,14 @@
     carregarEventos($dataReferencia, $viewCalendario);
   });
 
-  $: carregarEventos($dataReferencia, $viewCalendario);
+  $effect(() => {
+    carregarEventos($dataReferencia, $viewCalendario);
+  });
 
-  $: titulo = tituloPeriodo(
+  let titulo = $derived(tituloPeriodo(
     $viewCalendario === 'semana' ? 'semana' : 'mes',
     $dataReferencia
-  );
+  ));
 
   function navegar(direcao) {
     dataReferencia.update(ref => navegarPeriodo(ref, $viewCalendario, direcao));
@@ -39,9 +41,9 @@
     <div class="page-actions">
       <!-- navegacao de periodo -->
       <div class="nav-periodo">
-        <button class="btn-nav" on:click={() => navegar('anterior')}>‹</button>
+        <button class="btn-nav" onclick={() => navegar('anterior')}>‹</button>
         <span class="periodo-titulo">{titulo}</span>
-        <button class="btn-nav" on:click={() => navegar('proximo')}>›</button>
+        <button class="btn-nav" onclick={() => navegar('proximo')}>›</button>
       </div>
 
       <!-- toggle semana / mes -->
@@ -49,18 +51,18 @@
         <button
           class="toggle-btn"
           class:ativo={$viewCalendario === 'semana'}
-          on:click={() => viewCalendario.set('semana')}
+          onclick={() => viewCalendario.set('semana')}
         >semana</button>
         <button
           class="toggle-btn"
           class:ativo={$viewCalendario === 'mes'}
-          on:click={() => viewCalendario.set('mes')}
+          onclick={() => viewCalendario.set('mes')}
         >mes</button>
       </div>
 
-      <button class="btn-ghost" on:click={irParaHoje}>hoje</button>
+      <button class="btn-ghost" onclick={irParaHoje}>hoje</button>
 
-      <button class="btn-primary" on:click={() => activeModal.set('novoEvento')}>
+      <button class="btn-primary" onclick={() => activeModal.set('novoEvento')}>
         + novo evento
       </button>
     </div>
@@ -73,13 +75,13 @@
     <GridSemanal
       eventos={$eventos}
       dataRef={$dataReferencia}
-      on:atualizar={() => carregarEventos($dataReferencia, $viewCalendario)}
+      onatualizar={() => carregarEventos($dataReferencia, $viewCalendario)}
     />
   {:else}
     <GridMensal
       eventos={$eventos}
       dataRef={$dataReferencia}
-      on:atualizar={() => carregarEventos($dataReferencia, $viewCalendario)}
+      onatualizar={() => carregarEventos($dataReferencia, $viewCalendario)}
     />
   {/if}
 
@@ -87,8 +89,8 @@
 
 {#if $activeModal === 'novoEvento' || $activeModal === 'editarEvento'}
   <ModalEvento
-    on:fechar={() => activeModal.set(null)}
-    on:salvo={() => carregarEventos($dataReferencia, $viewCalendario)}
+    onfechar={() => activeModal.set(null)}
+    onsalvo={() => carregarEventos($dataReferencia, $viewCalendario)}
   />
 {/if}
 
