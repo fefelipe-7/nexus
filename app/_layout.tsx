@@ -1,21 +1,24 @@
+import React from 'react';
 import { Tabs } from 'expo-router';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { darkTheme } from '@design/theme';
-import { spacing } from '@design/spacing';
+import { useTheme } from '@/components/common/ThemeProvider';
+import { spacing } from '@/design/spacing';
 
 export default function Layout() {
+  const theme = useTheme();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: darkTheme.colors.surface,
+          backgroundColor: theme.colors.surface,
           borderTopWidth: 0,
           height: 70,
           paddingBottom: spacing.sm,
         },
-        tabBarActiveTintColor: darkTheme.colors.accent.violet,
-        tabBarInactiveTintColor: darkTheme.colors.neutral[500],
+        tabBarActiveTintColor: theme.colors.accent?.violet || '#8B5CF6',
+        tabBarInactiveTintColor: theme.colors.text.tertiary,
       }}
     >
       <Tabs.Screen
@@ -58,6 +61,13 @@ export default function Layout() {
         options={{
           title: 'Finança',
           tabBarIcon: ({ color }) => <FontAwesome5 name="coins" size={20} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Ajustes',
+          tabBarIcon: ({ color }) => <FontAwesome5 name="cog" size={20} color={color} />,
         }}
       />
     </Tabs>
