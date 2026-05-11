@@ -1,0 +1,120 @@
+import { HomeData } from '../types';
+
+export const mockHome: HomeData = {
+  greeting: "Bom dia, Felipe",
+  daySummary: "Hoje é um dia para focar nas prioridades e cuidar de si mesmo.",
+  metrics: [
+    {
+      id: "energy",
+      title: "Energia",
+      value: "85%",
+      subtitle: "Bem acima da média",
+      trend: "up",
+      icon: "energy",
+      color: "#F59E0B",
+    },
+    {
+      id: "tasks",
+      title: "Tarefas",
+      value: "3/5",
+      subtitle: "Concluídas",
+      trend: "up",
+      icon: "check-circle",
+      color: "#10B981",
+    },
+    {
+      id: "steps",
+      title: "Passos",
+      value: "7.2k",
+      subtitle: "de 10k",
+      trend: "down",
+      icon: "walk",
+      color: "#F43F5E",
+    },
+  ],
+  quickActions: [
+    {
+      id: "add-task",
+      title: "Adicionar Tarefa",
+      icon: "plus",
+      color: "#6366F1",
+      action: () => console.log("Add task"),
+    },
+    {
+      id: "log-meal",
+      title: "Registrar Refeição",
+      icon: "utensils",
+      color: "#10B981",
+      action: () => console.log("Log meal"),
+    },
+    {
+      id: "meditate",
+      title: "Meditar",
+      icon: "meditation",
+      color: "#8B5CF6",
+      action: () => console.log("Meditate"),
+    },
+  ],
+  attentionSection: {
+    title: "O que merece sua atenção hoje",
+    items: [
+      {
+        title: "Reunião com equipe",
+        description: "10:00 AM - Sala 3",
+        icon: "calendar",
+      },
+      {
+        title: "Checkup médico",
+        description: "14:00 PM - Clínica Central",
+        icon: "doctor",
+      },
+      {
+        title: "Limite de crédito",
+        description: "85% do limite utilizado",
+        icon: "credit-card",
+      },
+    ],
+  },
+  modulePreviews: [
+    {
+      id: "vida",
+      title: "Vida",
+      description: "Organização pessoal e hábitos",
+      icon: "home",
+      color: "#F59E0B",
+      module: "vida",
+    },
+    {
+      id: "mente",
+      title: "Mente",
+      description: "Foco e clareza mental",
+      icon: "brain",
+      color: "#8B5CF6",
+      module: "mente",
+    },
+    {
+      id: "saude",
+      title: "Saúde",
+      description: "Bem-estar físico e saúde",
+      icon: "heart",
+      color: "#10B981",
+      module: "saude",
+    },
+    {
+      id: "acao",
+      title: "Ação",
+      description: "Produtividade e execução",
+      icon: "rocket",
+      color: "#F43F5E",
+      module: "acao",
+    },
+    {
+      id: "financa",
+      title: "Finança",
+      description: "Saúde financeira",
+      icon: "coins",
+      color: "#14B8A6",
+      module: "financa",
+    },
+  ],
+};
